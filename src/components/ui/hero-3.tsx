@@ -127,18 +127,6 @@ export function Hero3({
   const [clip, setClip] = React.useState<{ d: string; supported: boolean } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  // Lock body scroll when mobile menu is open
-  React.useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
   // Recompute the notch clip-path whenever the panel resizes.
   React.useEffect(() => {
     const panel = panelRef.current;
@@ -218,30 +206,33 @@ export function Hero3({
               {ctaLabel}
             </a>
 
-            {/* Mobile Animated Hamburger Button */}
+            {/* Mobile Animated Hamburger Button (Stationary in hero header when closed, fixed when open) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileMenuOpen}
-              className="pointer-events-auto relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border border-white/25 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.28),0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all active:scale-95 sm:hidden"
+              className={cn(
+                "pointer-events-auto flex items-center justify-center p-2.5 text-white transition-all active:scale-90 sm:hidden",
+                mobileMenuOpen ? "fixed top-8 right-8 z-50" : "relative z-30"
+              )}
             >
-              <div className="flex h-4 w-5 flex-col items-center justify-between">
+              <div className="flex h-4 w-6 flex-col items-center justify-between">
                 <span
                   className={cn(
-                    "h-0.5 w-5 rounded-full bg-white transition-all duration-300 ease-out origin-center",
+                    "h-0.5 w-6 rounded-full bg-white transition-all duration-300 ease-out origin-center",
                     mobileMenuOpen && "translate-y-[7px] rotate-45"
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-5 rounded-full bg-white transition-all duration-200 ease-out",
+                    "h-0.5 w-6 rounded-full bg-white transition-all duration-200 ease-out",
                     mobileMenuOpen && "opacity-0 scale-x-0"
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-5 rounded-full bg-white transition-all duration-300 ease-out origin-center",
+                    "h-0.5 w-6 rounded-full bg-white transition-all duration-300 ease-out origin-center",
                     mobileMenuOpen && "-translate-y-[7px] -rotate-45"
                   )}
                 />
@@ -299,7 +290,7 @@ export function Hero3({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 flex flex-col justify-between p-6 pt-24 backdrop-blur-2xl sm:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-between p-6 pt-24 backdrop-blur-2xl sm:hidden overflow-y-auto"
             style={{
               background:
                 "radial-gradient(circle at 50% 25%, rgba(75, 20, 38, 0.55) 0%, rgba(16, 3, 7, 0.98) 75%)",
