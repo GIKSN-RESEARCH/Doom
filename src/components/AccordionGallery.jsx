@@ -31,6 +31,7 @@ const DEFAULT_ITEMS = [
     background: 'marketing-field',
     label: 'Marketing',
     link: '#',
+    status: 'Coming Soon',
     copy: [
       'Most marketing still runs on old habits. Generic content. Disconnected tools. Campaigns that look busy but move nothing.',
       'We treat marketing as a system. Clearer positioning. Stronger messaging. Channels that bring the right people in.',
@@ -239,6 +240,14 @@ const AccordionGallery = ({
 
             {/* Active Content Shell */}
             <div className="ag-panel__content" aria-hidden={!isActive}>
+              {/* Top-Right Status Badge (e.g., "Coming Soon") */}
+              {item.status && (
+                <div className="ag-panel__status-badge">
+                  <span className="ag-panel__status-dot" aria-hidden="true" />
+                  <span>{item.status}</span>
+                </div>
+              )}
+
               <div className="ag-panel__content-inner">
                 {/* Category / Index Badge */}
                 <div className="ag-panel__header">
