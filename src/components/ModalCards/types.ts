@@ -1,9 +1,13 @@
 export interface CardData {
   id: string | number;
   imageUrl: string;
-  title: string;
-  description: string;
+  logoUrl?: string;
+  logoBg?: string;
+  linkUrl?: string;
+  title?: string;
+  description?: string;
   gradientColor?: string; // overrides the component-level default for this card only
+  subtitle?: string;
 }
 
 export type AnimationSpeed = "slow" | "normal" | "fast" | "none";
@@ -52,29 +56,22 @@ export const SPEED_PRESETS: Record<
 
 export const defaultCards: CardData[] = [
   {
-    id: 1,
-    imageUrl:
-      "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&h=600&fit=crop",
-    title: "Mountain Vista",
+    id: "giksn",
+    imageUrl: "/work/giksn/screenshot.png",
+    logoUrl: "/work/giksn/logo.jpg",
+    linkUrl: "https://giksn.com",
     description:
-      "Serene alpine peaks shrouded in morning mist, carving sharp silhouettes against a golden dawn sky.",
+      "GIKSN Research is an independent research lab exploring what comes next in intelligence, computing and systems.",
+    gradientColor: "#9333ea",
   },
   {
-    id: 2,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    title: "Ocean Waves",
+    id: "rinne",
+    imageUrl: "/work/rinne/screenshot.png",
+    logoUrl: "/work/rinne/logo.png",
+    logoBg: "#ffffff",
+    linkUrl: "https://rinne.giksn.com",
     description:
-      "Crystalline turquoise surf rolling over deep coastal reefs in perpetual kinetic rhythm.",
-    gradientColor: "#14b8a6",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=800&h=600&fit=crop",
-    title: "Forest Path",
-    description:
-      "Sunlight filtering through ancient emerald canopies onto moss-covered winding trails.",
-    gradientColor: "#22c55e",
+      "A CLI harness you talk to directly. Plans a graph, runs the AI tools and model APIs already on your machine and verifies until the goal is met.",
+    gradientColor: "#06b6d4",
   },
 ];
