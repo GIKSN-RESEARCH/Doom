@@ -1,5 +1,6 @@
 import { Hero3 } from "@/components/ui/hero-3";
 import AccordionGallery from "@/components/AccordionGallery";
+import { ModalCards } from "@/components/ModalCards";
 
 export default function Home() {
   return (
@@ -22,25 +23,44 @@ export default function Home() {
       />
 
       {/* Services — accordion gallery */}
-      <section id="services" className="w-full px-5 py-16 sm:px-6 sm:py-24">
-        <div className="mb-10 text-center sm:mb-14">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-[#4b1426]">
+      <section id="services" className="w-full p-5 sm:p-6 py-16 sm:py-24 flex flex-col items-center">
+        <div className="mb-12 text-center sm:mb-16 max-w-3xl">
+          <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.35em] text-[#4b1426]">
             What we do
           </p>
           <h2 className="font-heading text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             Services
           </h2>
-          <p className="mt-6 w-full text-base leading-relaxed text-foreground/60 sm:text-lg">
+          <p className="mt-6 w-full text-base leading-relaxed text-foreground/70 sm:text-lg">
             Design, engineering and marketing under one roof. Micro products
             and full product suites when you need the whole system. Every part
             is built to kill a bottleneck.
           </p>
         </div>
         <AccordionGallery
+          height={520}
           accentColor="#fff2f2"
           overlayColor="#4b1426"
           textColor="#fff2f2"
         />
+      </section>
+
+      {/* Work — modal cards grid */}
+      <section id="work" className="w-full p-5 sm:p-6 py-16 sm:py-24 flex flex-col items-center">
+        <div className="mb-12 text-center sm:mb-16 max-w-3xl">
+          <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.35em] text-[#4b1426]">
+            Selected Works
+          </p>
+          <h2 className="font-heading text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Work
+          </h2>
+          <p className="mt-6 w-full text-base leading-relaxed text-foreground/70 sm:text-lg">
+            A curated showcase of systems, platforms, and standalone products built to eliminate bottlenecks.
+          </p>
+        </div>
+        <div className="w-full">
+          <ModalCards />
+        </div>
       </section>
     </main>
   );
