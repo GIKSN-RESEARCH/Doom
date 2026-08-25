@@ -295,6 +295,32 @@ export default function HeroShader({ className = "" }: HeroShaderProps) {
     container.addEventListener("touchmove", handleTouchMove, { passive: true });
     container.addEventListener("touchend", handleTouchEnd, { passive: true });
 
+    // Animation & Drawing Helpers
+    let animationFrameId: number;
+    const startTime = performance.now();
+
+    const drawFrame = (now: number) => {
+      const elapsed = (now - startTime) * 0.001;
+
+      // Smooth mouse interpolation (lerp)
+      const lerpSpeed = isReducedMotion ? 0.01 : 0.06;
+      mouse.currentX += (mouse.targetX - mouse.currentX) * lerpSpeed;
+      mouse.currentY += (mouse.targetY - mouse.currentY) * lerpSpeed;
+      mouse.currentActive += (mouse.targetActive - mouse.currentActive) * 0.04;
+
+      const effectiveTime = isReducedMotion ? 1.0 : elapsed;
+      const aspect = width > 0 && height > 0 ? width / height : 1.0;
+
+      gl.useProgram(program);
+      gl.uniform2f(uResolutionLoc, canvas.width, canvas.height);
+      gl.uniform1f(uTimeLoc, effectiveTime);
+      gl.uniform2f(uMouseLoc, mouse.currentX, mouse.currentY);
+      gl.uniform1f(uMouseActiveLoc, isReducedMotion ? 0.0 : mouse.currentActive);
+      gl.uniform1f(uAspectLoc, aspect);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    };
+
     // Handle canvas resizing
     let width = 0;
     let height = 0;
@@ -316,6 +342,8 @@ export default function HeroShader({ className = "" }: HeroShaderProps) {
         canvas.width = displayWidth;
         canvas.height = displayHeight;
         gl.viewport(0, 0, displayWidth, displayHeight);
+        // Immediately draw into the new WebGL buffer to prevent black flash
+        drawFrame(performance.now());
       }
     };
 
@@ -337,36 +365,10 @@ export default function HeroShader({ className = "" }: HeroShaderProps) {
     );
     intersectionObserver.observe(container);
 
-    // Animation Loop
-    let animationFrameId: number;
-    const startTime = performance.now();
-
     const render = (now: number) => {
-      if (!isVisible) {
-        animationFrameId = requestAnimationFrame(render);
-        return;
+      if (isVisible) {
+        drawFrame(now);
       }
-
-      const elapsed = (now - startTime) * 0.001;
-
-      // Smooth mouse interpolation (lerp)
-      const lerpSpeed = isReducedMotion ? 0.01 : 0.06;
-      mouse.currentX += (mouse.targetX - mouse.currentX) * lerpSpeed;
-      mouse.currentY += (mouse.targetY - mouse.currentY) * lerpSpeed;
-      mouse.currentActive += (mouse.targetActive - mouse.currentActive) * 0.04;
-
-      const effectiveTime = isReducedMotion ? 1.0 : elapsed;
-      const aspect = width > 0 && height > 0 ? width / height : 1.0;
-
-      gl.useProgram(program);
-      gl.uniform2f(uResolutionLoc, canvas.width, canvas.height);
-      gl.uniform1f(uTimeLoc, effectiveTime);
-      gl.uniform2f(uMouseLoc, mouse.currentX, mouse.currentY);
-      gl.uniform1f(uMouseActiveLoc, isReducedMotion ? 0.0 : mouse.currentActive);
-      gl.uniform1f(uAspectLoc, aspect);
-
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-
       animationFrameId = requestAnimationFrame(render);
     };
 
