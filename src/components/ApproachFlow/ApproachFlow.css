@@ -1,0 +1,235 @@
+.approach-flow {
+  --af-hot: #e07a93;
+  --af-wine: #4b1426;
+  --af-wine-mid: #6e2740;
+  --af-ink: #fff2f2;
+  --af-muted: rgba(255, 242, 242, 0.62);
+  --af-line: color-mix(in srgb, #6e2740 80%, #e07a93);
+  --af-board: #150509;
+  --af-node: #4b1426;
+  width: 100%;
+  max-width: 52rem;
+}
+
+.approach-flow__track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.45rem;
+  border: 1px solid var(--af-wine);
+  border-radius: 999px;
+  background: var(--af-wine);
+  color: var(--af-ink);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.approach-flow__track-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--af-hot);
+}
+
+.approach-flow__board {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--af-board);
+  box-shadow: 0 24px 60px -28px rgba(21, 5, 9, 0.85);
+  padding: 2.25rem 1.25rem 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .approach-flow__board {
+    padding: 2.75rem 2.5rem 3rem;
+  }
+}
+
+.approach-flow__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.af-node {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 20.5rem);
+  margin: 0;
+  padding: 1.05rem 1.15rem 1.1rem;
+  border: 1px solid var(--af-wine-mid);
+  border-radius: 14px;
+  background: var(--af-node);
+  box-shadow: inset 0 1px 0 rgba(255, 242, 242, 0.06);
+  text-align: left;
+}
+
+.af-node--start,
+.af-node--end {
+  border-color: var(--af-hot);
+  background: #330d19;
+}
+
+.af-node--end {
+  width: min(100%, 22rem);
+}
+
+.af-node__idx {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--af-hot);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.af-node__title {
+  margin: 0;
+  color: var(--af-ink);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.af-node__hint {
+  margin: 0.4rem 0 0;
+  color: var(--af-muted);
+  font-size: 0.86rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.af-wire {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 2px;
+  height: 2.35rem;
+  background: var(--af-line);
+}
+
+.af-wire::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--af-hot);
+  margin-top: auto;
+  translate: 0 1px;
+}
+
+.af-diamond {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 10.5rem;
+  height: 10.5rem;
+  rotate: 45deg;
+  border: 1px solid var(--af-hot);
+  border-radius: 14px;
+  background: #330d19;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--af-wine) 45%, transparent);
+}
+
+.af-diamond__inner {
+  width: 6.6rem;
+  rotate: -45deg;
+  text-align: center;
+}
+
+.af-diamond__inner p {
+  margin: 0;
+  color: var(--af-ink);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.af-diamond__inner span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--af-muted);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.af-split {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.af-split__arm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.af-split__label {
+  margin: 0.15rem 0 0.55rem;
+  color: var(--af-hot);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.af-node--side {
+  width: 100%;
+  max-width: 18.5rem;
+}
+
+.af-join {
+  width: min(100%, 42rem);
+  height: 3rem;
+  margin: 0.35rem 0 0.15rem;
+}
+
+.af-join path {
+  fill: none;
+  stroke: var(--af-line);
+  stroke-width: 2;
+}
+
+.af-join polygon {
+  fill: var(--af-hot);
+}
+
+@media (min-width: 720px) {
+  .af-split {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .af-split__arm--no {
+    padding-top: 0.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .approach-flow__track-dot {
+    box-shadow: none;
+  }
+}
