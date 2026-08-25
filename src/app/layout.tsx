@@ -49,14 +49,6 @@ const boxing = localFont({
   display: "swap",
 });
 
-/* Gambarino — service card body copy */
-const gambarino = localFont({
-  src: "../../public/Gambarino_Complete/Fonts/WEB/fonts/Gambarino-Regular.woff2",
-  weight: "400",
-  variable: "--font-gambarino",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Doom Studio",
   description: "We DOOM the bottlenecks.",
@@ -66,7 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${clashDisplay.variable} ${boxing.variable} ${gambarino.variable} h-full antialiased`}
+      className={`${clashDisplay.variable} ${boxing.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
