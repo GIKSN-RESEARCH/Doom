@@ -2,6 +2,7 @@ import { Hero3 } from "@/components/ui/hero-3";
 import AccordionGallery from "@/components/AccordionGallery";
 import { ModalCards } from "@/components/ModalCards";
 import ApproachFlow from "@/components/ApproachFlow";
+import Pricing from "@/components/Pricing";
 
 export default function Home() {
   return (
@@ -67,7 +68,7 @@ export default function Home() {
       {/* Approach — flowchart. Design only for now. */}
       <section
         id="approach"
-        className="flex w-full flex-col items-center px-5 py-16 sm:px-6 sm:py-24"
+        className="flex w-full flex-col items-center px-5 pb-5 pt-16 sm:px-6 sm:pb-6 sm:pt-24"
       >
         <div className="mb-12 max-w-3xl text-center sm:mb-16">
           <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.35em] text-[#4b1426]">
@@ -82,6 +83,13 @@ export default function Home() {
           </p>
         </div>
         <ApproachFlow />
+      </section>
+
+      <section
+        id="pricing"
+        className="flex w-full flex-col items-center px-5 py-16 sm:px-6 sm:py-24"
+      >
+        <Pricing />
       </section>
     </main>
   );
