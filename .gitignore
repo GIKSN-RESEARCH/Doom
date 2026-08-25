@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.gstack/
+
+# Desktop / unused webfont kit files (app loads woff2 via next/font)
+public/**/Fonts/OTF/
+public/**/Fonts/TTF/
+public/**/*.eot
+public/**/*.ttf
+public/**/*.otf
+public/**/*.woff
+public/**/Fonts/WEB/css/
+public/**/Fonts/WEB/README.md
+public/**/*-Variable.woff2
