@@ -83,7 +83,6 @@ const AccordionGallery = ({
   parallax = 0.5,
   trigger = 'hover',
   showLabels = true,
-  grayscale = true,
   className = ''
 }) => {
   const rootRef = useRef(null);
@@ -116,13 +115,17 @@ const AccordionGallery = ({
     const el = rootRef.current;
     if (!el) return;
 
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      const total = vertical ? rect.height : rect.width;
+    const measure = (entries) => {
+      let total = 0;
+      if (entries && entries[0]) {
+        total = vertical ? entries[0].contentRect.height : entries[0].contentRect.width;
+      } else {
+        total = vertical ? el.clientHeight : el.clientWidth;
+      }
       const usable = Math.max(total - gap * (count - 1), 120);
-      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22);
+      const size = Math.max(680, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.35);
       mediaSizeRef.current = size;
-      el.style.setProperty('--ag-media-size', `${size}px`);
+      el.style.setProperty('--ag-media-size', `${Math.round(size)}px`);
     };
 
     measure();
@@ -168,21 +171,25 @@ const AccordionGallery = ({
         height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`
       }}
       role="list"
-      aria-label="Image accordion gallery"
+      aria-label="Services accordion"
     >
       {items.map((item, i) => {
         const isActive = i === active;
-        const Tag = item.link ? 'a' : 'div';
+        const Tag = item.link && item.link !== '#' ? 'a' : 'div';
         const ExtraBg = item.Background;
+        const numStr = `0${i + 1}`;
+        const hotColor = TUNNEL_COLORS[item.background]?.hotColor || '#e879f9';
+
         return (
           <Tag
             key={i}
             className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
             style={{
               borderRadius: `${radius}px`,
-              flexGrow: isActive ? growValue : 1
+              flexGrow: isActive ? growValue : 1,
+              '--panel-hot': hotColor
             }}
-            href={item.link || undefined}
+            href={item.link && item.link !== '#' ? item.link : undefined}
             onClick={e => handleClick(i, e)}
             onMouseEnter={() => handleEnter(i)}
             onFocus={() => setActive(i)}
@@ -192,6 +199,7 @@ const AccordionGallery = ({
             aria-current={isActive ? 'true' : undefined}
             aria-label={item.label}
           >
+            {/* Background & Shader Layer */}
             <span className="ag-panel__frame">
               {ExtraBg && (
                 <ExtraBg
@@ -204,8 +212,9 @@ const AccordionGallery = ({
               {TUNNEL_COLORS[item.background] && (
                 <NeuralTunnel
                   className="ag-panel__fx"
+                  active={isActive}
                   paused={prefersReduced}
-                  cursorInteraction={!prefersReduced}
+                  cursorInteraction={isActive && !prefersReduced}
                   {...TUNNEL_COLORS[item.background]}
                 />
               )}
@@ -219,25 +228,66 @@ const AccordionGallery = ({
               )}
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
+
+            {/* Inactive vertical text indicator */}
             {showLabels && (
               <span className="ag-panel__vtext" aria-hidden="true">
+                <span className="ag-panel__vtext-num">{numStr}</span>
                 <span className="ag-panel__vtext-inner">{item.label}</span>
               </span>
             )}
-            {showLabels && (
-              <span className="ag-panel__label" aria-hidden="true">
-                <span className="ag-panel__text">{item.label}</span>
-              </span>
-            )}
-            {item.copy?.length > 0 && (
-              <div className="ag-panel__copy" aria-hidden="true">
-                {item.copy.map((para, pi) => (
-                  <p key={pi} className={pi === 0 ? 'ag-panel__lede' : undefined}>
-                    {para}
-                  </p>
-                ))}
+
+            {/* Active Content Shell */}
+            <div className="ag-panel__content" aria-hidden={!isActive}>
+              <div className="ag-panel__content-inner">
+                {/* Category / Index Badge */}
+                <div className="ag-panel__header">
+                  <div className="ag-panel__badge">
+                    <span className="ag-panel__badge-num">{numStr}</span>
+                    <span className="ag-panel__badge-dot" aria-hidden="true" />
+                    <span className="ag-panel__badge-title">SERVICE</span>
+                  </div>
+
+                  {/* Kinetic Character-Split Headline */}
+                  <h3 className="ag-panel__text" aria-label={item.label}>
+                    <span className="ag-panel__text-mask">
+                      {item.label.split(' ').map((word, wi, arr) => (
+                        <span key={wi} className="ag-panel__word-wrap">
+                          {word.split('').map((char, ci) => (
+                            <span
+                              key={ci}
+                              className="ag-panel__char"
+                              style={{ '--char-idx': wi * 6 + ci }}
+                            >
+                              {char}
+                            </span>
+                          ))}
+                          {wi < arr.length - 1 && (
+                            <span className="ag-panel__space">&nbsp;</span>
+                          )}
+                        </span>
+                      ))}
+                    </span>
+                  </h3>
+                </div>
+
+                {/* Body Paragraphs with staggered reveal */}
+                {item.copy?.length > 0 && (
+                  <div className="ag-panel__copy">
+                    {item.copy.map((para, pi) => (
+                      <div key={pi} className="ag-panel__para-mask">
+                        <p
+                          className={pi === 0 ? 'ag-panel__lede' : undefined}
+                          style={{ '--para-idx': pi }}
+                        >
+                          {para}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </Tag>
         );
       })}
