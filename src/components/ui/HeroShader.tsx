@@ -298,13 +298,17 @@ export default function HeroShader({ className = "" }: HeroShaderProps) {
     // Handle canvas resizing
     let width = 0;
     let height = 0;
-    const resize = () => {
-      const rect = container.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
+    const resize = (entries?: ResizeObserverEntry[]) => {
+      if (entries && entries[0]) {
+        width = entries[0].contentRect.width;
+        height = entries[0].contentRect.height;
+      } else {
+        width = container.clientWidth;
+        height = container.clientHeight;
+      }
       if (width === 0 || height === 0) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const displayWidth = Math.round(width * dpr);
       const displayHeight = Math.round(height * dpr);
 
@@ -315,8 +319,8 @@ export default function HeroShader({ className = "" }: HeroShaderProps) {
       }
     };
 
-    const resizeObserver = new ResizeObserver(() => {
-      resize();
+    const resizeObserver = new ResizeObserver((entries) => {
+      resize(entries);
     });
     resizeObserver.observe(container);
     resize();
