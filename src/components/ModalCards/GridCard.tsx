@@ -36,59 +36,67 @@ export function GridCard({
     <motion.div
       ref={cardRef}
       layoutId={isScale ? `card-${card.id}` : undefined}
-      transition={transition}
+      transition={{
+        type: "spring",
+        stiffness: 350,
+        damping: 24,
+        mass: 0.5,
+      }}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
       aria-haspopup="dialog"
-      aria-label={`View details for ${card.title}`}
-      className="group relative aspect-[4/3] sm:aspect-[16/11] w-full cursor-pointer overflow-hidden rounded-2xl bg-neutral-900 shadow-lg transition-shadow duration-300 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+      aria-label={`View details for ${card.id}`}
+      style={{ backgroundColor: "#4B1426" }}
+      className="group relative flex flex-col w-full cursor-pointer overflow-hidden rounded-3xl border border-[#4B1426] bg-[#4B1426] p-3 sm:p-4 shadow-xl transition-colors duration-200 hover:bg-[#330d19] hover:border-[#6E2740] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
     >
-      {/* Background Image */}
-      <motion.img
-        layoutId={isScale ? `card-${card.id}-image` : undefined}
-        transition={transition}
-        src={card.imageUrl}
-        alt={card.title}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105"
-      />
-
-      {/* Scrim Overlay & Title */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col justify-end bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 sm:p-5">
-        <motion.h3
-          layoutId={isScale ? `card-${card.id}-title` : undefined}
+      {/* Screenshot Image Frame with maroon border */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#4B1426] bg-neutral-950">
+        <motion.img
+          layoutId={isScale ? `card-${card.id}-image` : undefined}
           transition={transition}
-          className="font-heading text-lg font-bold tracking-tight text-white sm:text-xl"
+          src={card.imageUrl}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
+        />
+
+        {/* Action / Expand Button */}
+        <motion.button
+          layoutId={isScale ? `card-${card.id}-button` : undefined}
+          transition={transition}
+          whileHover={{ scale: 1.12 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen(card, cardRef.current);
+          }}
+          tabIndex={-1}
+          aria-hidden="true"
+          className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
         >
-          {card.title}
-        </motion.h3>
+          <motion.span
+            initial={{ rotate: 45 }}
+            animate={{ rotate: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            className="flex items-center justify-center"
+          >
+            <Plus size={16} strokeWidth={2.5} />
+          </motion.span>
+        </motion.button>
       </div>
 
-      {/* Action / Expand Button */}
-      <motion.button
-        layoutId={isScale ? `card-${card.id}-button` : undefined}
-        transition={transition}
-        whileHover={{ scale: 1.12 }}
-        whileTap={{ scale: 0.92 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          onOpen(card, cardRef.current);
-        }}
-        tabIndex={-1}
-        aria-hidden="true"
-        className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
-      >
-        <motion.span
-          initial={{ rotate: 45 }}
-          animate={{ rotate: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          className="flex items-center justify-center"
-        >
-          <Plus size={16} strokeWidth={2.5} />
-        </motion.span>
-      </motion.button>
+      {/* Bottom Product Explanation */}
+      {card.description && (
+        <div className="pt-3.5 sm:pt-4 px-1 sm:px-2 text-left">
+          <p className="font-heading text-sm sm:text-base font-medium leading-relaxed text-[#fff2f2]">
+            {card.description}
+          </p>
+        </div>
+      )}
     </motion.div>
   );
 }
