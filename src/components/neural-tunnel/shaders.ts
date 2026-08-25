@@ -53,10 +53,10 @@ uniform vec3 uBgColor;
 uniform float uOpacity;
 uniform float uBgAlpha;
 
-#define MAX_LAYERS 34
+#define MAX_LAYERS 4
 #define PI  3.14159265359
 #define TAU 6.28318530718
-#define MARCH_STEPS 56
+#define MARCH_STEPS 16
 #define MARCH_DIST  8.0
 
 vec3 linearToSrgb(vec3 c) {
