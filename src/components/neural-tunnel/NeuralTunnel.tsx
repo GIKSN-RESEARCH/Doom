@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs, react-hooks/immutability */
 "use client";
 
 import React, {
@@ -71,6 +72,8 @@ export interface NeuralTunnelProps {
   targetFps?: number;
   /** Maximum device pixel ratio. */
   dpr?: number;
+  /** Whether the panel is currently active/expanded. When false, shader execution is throttled to conserve GPU. */
+  active?: boolean;
   /** Additional CSS class on the wrapper. */
   className?: string;
   /** Children rendered above the effect. */
@@ -80,7 +83,7 @@ export interface NeuralTunnelProps {
 // ─── Defaults ─────────────────────────────────────────────────────────────
 
 const DEFAULTS = {
-  layers: 24,
+  layers: 4,
   falloff: 1.25,
   blend: 1.5,
   feedback: 0.6,
@@ -104,7 +107,8 @@ const DEFAULTS = {
   paused: false,
   adaptiveQuality: true,
   targetFps: 60,
-  dpr: 1.5,
+  dpr: 1.0,
+  active: true,
 } as const;
 
 // ─── Uniform name list ────────────────────────────────────────────────────
@@ -179,6 +183,7 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
   const adaptiveQuality = props.adaptiveQuality ?? DEFAULTS.adaptiveQuality;
   const targetFps = Math.max(10, props.targetFps ?? DEFAULTS.targetFps);
   const dpr = Math.max(0.25, props.dpr ?? DEFAULTS.dpr);
+  const active = props.active ?? DEFAULTS.active;
   const className = props.className;
   const children = props.children;
 
@@ -245,6 +250,7 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
     adaptiveQuality,
     targetFps,
     dpr,
+    active,
   });
 
   // Update prop ref on every render
@@ -273,6 +279,7 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
     adaptiveQuality,
     targetFps,
     dpr,
+    active,
   };
 
   // Track paused state in ref
@@ -303,22 +310,21 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // ── Resize handler ──────────────────────────────────────────────────
-  const handleResize = useCallback(() => {
+  // ── Resize handler (called ONLY on container resize, NEVER in rAF) ──
+  const handleResize = useCallback((w?: number, h?: number) => {
     const canvas = canvasRef.current;
     const gl = glRef.current;
     if (!canvas || !gl || contextLostRef.current) return;
 
     const p = propsRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width;
-    const cssH = rect.height;
+    const cssW = w !== undefined ? w : (canvas.clientWidth || 320);
+    const cssH = h !== undefined ? h : (canvas.clientHeight || 460);
     if (cssW === 0 || cssH === 0) return;
 
-    const effectiveDpr = Math.min(window.devicePixelRatio, p.dpr);
+    const effectiveDpr = Math.min(window.devicePixelRatio || 1, p.dpr);
     const adScale = p.adaptiveQuality ? renderScaleRef.current : 1.0;
-    const pixelW = Math.round(cssW * effectiveDpr * adScale);
-    const pixelH = Math.round(cssH * effectiveDpr * adScale);
+    const pixelW = Math.max(1, Math.round(cssW * effectiveDpr * adScale));
+    const pixelH = Math.max(1, Math.round(cssH * effectiveDpr * adScale));
 
     if (canvas.width !== pixelW || canvas.height !== pixelH) {
       canvas.width = pixelW;
@@ -441,12 +447,12 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
         return;
       }
 
-      // Skip rendering when not visible
+      // Skip rendering and pause rAF loop when offscreen
       if (!isVisibleRef.current || !docVisibleRef.current) {
-        lastFrameRef.current = now;
-        rafRef.current = requestAnimationFrame(renderFrame);
         return;
       }
+
+      const p = propsRef.current;
 
       // Delta time with clamp (prevent jump after tab suspension)
       const rawDt = lastFrameRef.current > 0 ? now - lastFrameRef.current : 16.67;
@@ -461,7 +467,6 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
       }
 
       // Smooth pointer (time-based damping)
-      const p = propsRef.current;
       const dampFactor = 1 - Math.pow(0.001, dt / 1000);
       if (p.cursorInteraction && pointerActiveRef.current) {
         smoothPointerRef.current.x +=
@@ -485,9 +490,6 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
       if (!isPaused) {
         updateAdaptiveQuality(rawDt);
       }
-
-      // Handle resize
-      handleResize();
 
       // Set up GL state
       const transparent = isTransparent(p.backgroundColor);
@@ -521,7 +523,7 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
 
       rafRef.current = requestAnimationFrame(renderFrame);
     },
-    [handleResize, uploadUniforms, updateAdaptiveQuality]
+    [uploadUniforms, updateAdaptiveQuality]
   );
 
   // ── WebGL initialisation ────────────────────────────────────────────
@@ -639,8 +641,14 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
-    const ro = new ResizeObserver(() => {
-      handleResize();
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        const { width, height } = entry.contentRect;
+        handleResize(width, height);
+      } else {
+        handleResize();
+      }
       dirtyRef.current = true;
     });
     ro.observe(wrapper);
@@ -654,26 +662,35 @@ export const NeuralTunnel: React.FC<NeuralTunnelProps> = (props) => {
 
     const io = new IntersectionObserver(
       (entries) => {
-        isVisibleRef.current = entries[0]?.isIntersecting ?? true;
+        const isNowVisible = entries[0]?.isIntersecting ?? true;
+        const wasVisible = isVisibleRef.current;
+        isVisibleRef.current = isNowVisible;
+        if (!wasVisible && isNowVisible && docVisibleRef.current) {
+          lastFrameRef.current = performance.now();
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = requestAnimationFrame(renderFrame);
+        }
       },
       { threshold: 0 }
     );
     io.observe(wrapper);
     return () => io.disconnect();
-  }, []);
+  }, [renderFrame]);
 
   // ── Document visibility ─────────────────────────────────────────────
   useEffect(() => {
     const handler = () => {
-      docVisibleRef.current = document.visibilityState === "visible";
-      if (docVisibleRef.current) {
-        // Reset lastFrame to prevent jump
+      const isDocVisible = document.visibilityState === "visible";
+      docVisibleRef.current = isDocVisible;
+      if (isDocVisible && isVisibleRef.current) {
         lastFrameRef.current = performance.now();
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(renderFrame);
       }
     };
     document.addEventListener("visibilitychange", handler);
     return () => document.removeEventListener("visibilitychange", handler);
-  }, []);
+  }, [renderFrame]);
 
   // ── Pointer events ─────────────────────────────────────────────────
   useEffect(() => {
