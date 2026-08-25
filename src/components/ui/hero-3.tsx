@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import HeroShader from "./HeroShader";
@@ -124,6 +125,19 @@ export function Hero3({
 }: Hero3Props) {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [clip, setClip] = React.useState<{ d: string; supported: boolean } | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   // Recompute the notch clip-path whenever the panel resizes.
   React.useEffect(() => {
@@ -131,10 +145,18 @@ export function Hero3({
     if (!panel) return;
     const supported =
       typeof CSS !== "undefined" && CSS.supports("clip-path", 'path("M0 0H1V1Z")');
-    const update = () => {
-      const rect = panel.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        setClip({ d: getHero3ClipPath(rect.width, rect.height), supported });
+    const update = (entries?: ResizeObserverEntry[]) => {
+      let width = 0;
+      let height = 0;
+      if (entries && entries[0]) {
+        width = entries[0].contentRect.width;
+        height = entries[0].contentRect.height;
+      } else {
+        width = panel.clientWidth;
+        height = panel.clientHeight;
+      }
+      if (width > 0 && height > 0) {
+        setClip({ d: getHero3ClipPath(width, height), supported });
       }
     };
     update();
@@ -148,7 +170,7 @@ export function Hero3({
       className={cn("relative flex min-h-svh flex-col bg-background p-5 sm:p-6", className)}
     >
       {/* Panel */}
-      <div ref={panelRef} className="relative w-full flex-1 min-h-[70svh]">
+      <div ref={panelRef} className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh]">
         {/* Clipped shader layer */}
         <div
           className={cn(
@@ -167,8 +189,9 @@ export function Hero3({
         </div>
 
         {/* Content */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-7 sm:p-10 lg:p-12">
-          <div className="flex items-start justify-between gap-4">
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10 lg:p-12">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
               className="pointer-events-auto font-logo leading-none text-[#fff2f2]"
@@ -180,10 +203,12 @@ export function Hero3({
                 {logoSubtext}
               </span>
             </Link>
+
+            {/* Desktop "Get Started" CTA */}
             <a
               href={ctaHref}
               className={cn(
-                "pointer-events-auto rounded-xl border border-white/30 bg-white/10",
+                "pointer-events-auto hidden sm:inline-flex items-center justify-center rounded-xl border border-white/30 bg-white/10",
                 "px-5 py-2.5 text-sm font-semibold text-white",
                 "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.28),0_8px_32px_rgba(0,0,0,0.35)]",
                 "backdrop-blur-md backdrop-saturate-150",
@@ -192,38 +217,148 @@ export function Hero3({
             >
               {ctaLabel}
             </a>
+
+            {/* Mobile Animated Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+              className="pointer-events-auto relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border border-white/25 bg-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.28),0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all active:scale-95 sm:hidden"
+            >
+              <div className="flex h-4 w-5 flex-col items-center justify-between">
+                <span
+                  className={cn(
+                    "h-0.5 w-5 rounded-full bg-white transition-all duration-300 ease-out origin-center",
+                    mobileMenuOpen && "translate-y-[7px] rotate-45"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "h-0.5 w-5 rounded-full bg-white transition-all duration-200 ease-out",
+                    mobileMenuOpen && "opacity-0 scale-x-0"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "h-0.5 w-5 rounded-full bg-white transition-all duration-300 ease-out origin-center",
+                    mobileMenuOpen && "-translate-y-[7px] -rotate-45"
+                  )}
+                />
+              </div>
+            </button>
           </div>
 
-          <h1 className="text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white">
-            {headline}
-            <br />
-            {headlineLine2}
-          </h1>
+          {/* Headline + Mobile in-panel CTA */}
+          <div className="flex flex-col items-start gap-6 sm:gap-0">
+            <h1 className="text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white">
+              {headline}
+              <br />
+              {headlineLine2}
+            </h1>
+
+            {/* In-Panel "Get Started" CTA on Mobile */}
+            <a
+              href={ctaHref}
+              className="pointer-events-auto inline-flex items-center gap-2 rounded-xl border border-white/35 bg-white/15 px-6 py-3.5 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 active:scale-95 hover:bg-white/25 hover:border-white/50 sm:hidden"
+            >
+              <span>{ctaLabel}</span>
+              <ArrowUpRight className="size-4" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Links — 2×3 grid inside the notch on sm+, in flow below the panel on mobile */}
+      {/* Desktop Links — 2×3 grid inside the notch on sm+ */}
       <nav
         className={cn(
-          "mt-5 flex flex-wrap items-center gap-x-7 gap-y-3",
-          "sm:absolute sm:bottom-6 sm:right-6 sm:mt-0 sm:grid sm:grid-cols-3 sm:grid-rows-2 sm:gap-x-8",
+          "hidden sm:grid sm:absolute sm:bottom-6 sm:right-6 sm:mt-0 sm:grid-cols-3 sm:grid-rows-2 sm:gap-x-8",
           "sm:w-[calc((100%-3rem)*0.38)] sm:h-[calc((100%-3rem)*0.3)]",
-          "sm:p-10 lg:p-12"
+          "sm:p-10 lg:p-12 sm:justify-items-stretch"
         )}
       >
         {links.map((link) => (
           <a
             key={link.label}
             href={link.href}
-            className="group flex items-center gap-1.5 whitespace-nowrap font-medium text-black transition-colors hover:text-[#4b1426] sm:h-full sm:w-full sm:justify-center"
+            className="group flex items-center justify-center gap-1.5 whitespace-nowrap font-medium text-black transition-colors hover:text-[#4b1426] sm:h-full sm:w-full"
           >
-            <span className="text-base transition-[font-size] duration-200 group-hover:text-lg sm:text-xl sm:group-hover:text-2xl">
+            <span className="text-xl transition-[font-size] duration-200 sm:group-hover:text-2xl">
               {link.label}
             </span>
-            <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:size-5" />
+            <ArrowUpRight className="size-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         ))}
       </nav>
+
+      {/* Full-Screen Animated Mobile Menu Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 flex flex-col justify-between p-6 pt-24 backdrop-blur-2xl sm:hidden"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 25%, rgba(75, 20, 38, 0.55) 0%, rgba(16, 3, 7, 0.98) 75%)",
+            }}
+          >
+            {/* Staggered Navigation Links */}
+            <div className="my-auto flex flex-col gap-2">
+              <p className="mb-2 px-3 text-[0.68rem] font-semibold uppercase tracking-[0.35em] text-[#e07a93]">
+                Navigation
+              </p>
+              {links.map((link, idx) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 0.08 + idx * 0.05,
+                    duration: 0.35,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="group flex items-center justify-between rounded-xl px-3 py-3 transition-colors hover:bg-white/5 active:bg-white/10"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="font-heading text-xs font-semibold tracking-widest text-white/40">
+                      0{idx + 1}
+                    </span>
+                    <span className="font-heading text-2xl font-semibold tracking-tight text-white transition-colors group-hover:text-[#e07a93]">
+                      {link.label}
+                    </span>
+                  </div>
+                  <ArrowUpRight className="size-5 text-white/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+                </motion.a>
+              ))}
+            </div>
+
+            {/* Mobile Menu Footer */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 + links.length * 0.05, duration: 0.35 }}
+              className="flex flex-col gap-3.5 border-t border-white/10 pt-4"
+            >
+              <a
+                href={ctaHref}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/25 bg-gradient-to-r from-[#4b1426] to-[#781836] px-6 py-3.5 text-base font-semibold text-white shadow-xl transition-transform active:scale-98"
+              >
+                <span>{ctaLabel}</span>
+                <ArrowUpRight className="size-4" />
+              </a>
+              <p className="text-center text-xs uppercase tracking-widest text-white/40">
+                {logoText} {logoSubtext} — {headline} {headlineLine2}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
