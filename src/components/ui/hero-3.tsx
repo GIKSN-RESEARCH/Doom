@@ -3,13 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import HeroShader from "./HeroShader";
 
 /**
- * Hero3 — rounded WebGL gradient hero with a squircle-notched panel.
+ * Hero3 — rounded WebGL gradient hero with a squircle-notched panel and multi-layered parallax scrolling.
  *
  * Usage:
  *   import { Hero3 } from "@/components/ui/hero-3";
@@ -123,9 +123,33 @@ export function Hero3({
   links = [],
   className,
 }: Hero3Props) {
+  const sectionRef = React.useRef<HTMLElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [clip, setClip] = React.useState<{ d: string; supported: boolean } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Parallax Scroll Tracking
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Layered Parallax Transformations (Calibrated for zero overflow on mobile & desktop)
+  // 1. Background shader depth parallax
+  const shaderY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const shaderScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+
+  // 2. Headline & mobile CTA parallax (floats upward gracefully as user scrolls down, zero spillover)
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.65, 1], [1, 0.35, 0]);
+
+  // 3. Top header parallax
+  const headerY = useTransform(scrollYProgress, [0, 1], [0, -20]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 0.5, 0]);
+
+  // 4. Desktop notch navigation parallax
+  const navY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  const navOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.5, 0]);
 
   // Recompute the notch clip-path whenever the panel resizes.
   React.useEffect(() => {
@@ -155,10 +179,17 @@ export function Hero3({
 
   return (
     <section
-      className={cn("relative flex min-h-svh flex-col bg-background p-5 sm:p-6", className)}
+      ref={sectionRef}
+      className={cn(
+        "relative flex min-h-svh flex-col bg-background p-5 sm:p-6 overflow-x-clip",
+        className
+      )}
     >
       {/* Panel */}
-      <div ref={panelRef} className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh]">
+      <div
+        ref={panelRef}
+        className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh] rounded-[28px] sm:rounded-none overflow-hidden"
+      >
         {/* Clipped shader layer */}
         <div
           className={cn(
@@ -167,19 +198,28 @@ export function Hero3({
           )}
           style={clip?.supported ? { clipPath: `path("${clip.d}")` } : undefined}
         >
-          {/* Shader layer — self-contained WebGL component with CSS fallback */}
-          <HeroShader />
-          {/* Extra vignette for legibility */}
-          <div
-            className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_50%,transparent_55%,rgba(0,0,0,0.5)_100%)]"
-            aria-hidden
-          />
+          {/* Animated parallax container for shader */}
+          <motion.div
+            style={{ y: shaderY, scale: shaderScale }}
+            className="absolute inset-0 w-full h-full"
+          >
+            {/* Shader layer — self-contained WebGL component with CSS fallback */}
+            <HeroShader />
+            {/* Extra vignette for legibility */}
+            <div
+              className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_50%,transparent_55%,rgba(0,0,0,0.5)_100%)]"
+              aria-hidden
+            />
+          </motion.div>
         </div>
 
         {/* Content */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10 lg:p-12">
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10 lg:p-12 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between gap-4">
+          <motion.div
+            style={{ y: headerY, opacity: headerOpacity }}
+            className="flex items-center justify-between gap-4"
+          >
             <Link
               href="/"
               className="pointer-events-auto font-logo leading-none text-[#fff2f2]"
@@ -238,10 +278,13 @@ export function Hero3({
                 />
               </div>
             </button>
-          </div>
+          </motion.div>
 
           {/* Headline + Mobile in-panel CTA */}
-          <div className="flex flex-col items-start gap-6 sm:gap-0">
+          <motion.div
+            style={{ y: headlineY, opacity: headlineOpacity }}
+            className="flex flex-col items-start gap-6 sm:gap-0"
+          >
             <h1 className="text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white">
               {headline}
               <br />
@@ -256,12 +299,13 @@ export function Hero3({
               <span>{ctaLabel}</span>
               <ArrowUpRight className="size-4" />
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Desktop Links — 2×3 grid inside the notch on sm+ */}
-      <nav
+      <motion.nav
+        style={{ y: navY, opacity: navOpacity }}
         className={cn(
           "hidden sm:grid sm:absolute sm:bottom-6 sm:right-6 sm:mt-0 sm:grid-cols-3 sm:grid-rows-2 sm:gap-x-8",
           "sm:w-[calc((100%-3rem)*0.38)] sm:h-[calc((100%-3rem)*0.3)]",
@@ -280,7 +324,7 @@ export function Hero3({
             <ArrowUpRight className="size-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         ))}
-      </nav>
+      </motion.nav>
 
       {/* Full-Screen Animated Mobile Menu Drawer */}
       <AnimatePresence>
