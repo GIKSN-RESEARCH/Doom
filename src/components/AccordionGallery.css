@@ -37,9 +37,11 @@
   box-shadow: 0 12px 36px -18px rgba(0, 0, 0, 0.85);
   transition:
     flex-grow 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    min-height 0.75s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.4s ease,
     box-shadow 0.5s ease;
-  will-change: flex-grow;
+  will-change: flex-grow, height, min-height;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -395,9 +397,18 @@
   }
   .ag-panel {
     min-height: 84px;
+    height: 84px;
+    transition:
+      height 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      min-height 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      flex-grow 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.4s ease,
+      box-shadow 0.5s ease;
+    will-change: height, min-height;
   }
   .ag-panel--active {
-    min-height: 420px;
+    min-height: 440px;
+    height: 440px;
   }
   .ag-panel__content {
     padding: 24px;
