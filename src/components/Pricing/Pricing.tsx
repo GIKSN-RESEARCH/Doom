@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "motion/react";
-import { Check, Minus, ArrowUpRight, ChevronDown } from "lucide-react";
-import HeroShader from "@/components/ui/HeroShader";
+import React, { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { Check, Minus, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
 import "./Pricing.css";
 
 interface PricingTier {
@@ -117,6 +118,15 @@ const TIERS: PricingTier[] = [
 
 export default function Pricing() {
   const [expandedTiers, setExpandedTiers] = useState<Record<string, boolean>>({});
+  const pricingRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: pricingRef,
+    offset: ["start end", "end start"],
+  });
+
+  const shaderY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const shaderScale = useTransform(scrollYProgress, [0, 1], [1.06, 1.0]);
 
   const toggleTier = (id: string) => {
     setExpandedTiers((prev) => ({
@@ -126,11 +136,19 @@ export default function Pricing() {
   };
 
   return (
-    <div className="pricing">
+    <div ref={pricingRef} className="pricing">
       <div className="pricing__panel">
-        {/* Living Shader Background */}
         <div className="pricing__shader">
-          <HeroShader />
+          <motion.div style={{ y: shaderY, scale: shaderScale }} className="pricing__shader-media">
+            <Image
+              src="/dreamor-Image 37.png"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority={false}
+            />
+          </motion.div>
         </div>
 
         {/* Ambient Vignette & Diffusion Material */}
@@ -143,13 +161,17 @@ export default function Pricing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="pricing__intro"
+            className="pricing__intro mb-12 w-full max-w-3xl text-center sm:mb-16"
           >
-            <p className="pricing__eyebrow">How we charge</p>
-            <h2 className="pricing__title">Pricing</h2>
-            <div className="pricing__lead">
-              <p>A complete technical team shipping end-to-end technical products</p>
-            </div>
+            <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.35em] text-[#e07a93]">
+              How we charge
+            </p>
+            <h2 className="font-heading text-5xl font-semibold tracking-tight text-[#fff2f2] sm:text-6xl lg:text-7xl">
+              Pricing
+            </h2>
+            <p className="mt-6 w-full text-base leading-relaxed text-[#fff2f2]/70 sm:text-lg">
+              A complete technical team shipping end-to-end technical products
+            </p>
           </motion.header>
 
           {/* Pricing Grid */}
@@ -205,14 +227,50 @@ export default function Pricing() {
                   </div>
 
                   {/* CTA Action */}
-                  <a
-                    href={tier.ctaHref}
-                    onClick={(e) => e.stopPropagation()}
-                    className="pricing-card__cta"
-                  >
-                    <span>{tier.ctaText}</span>
-                    <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </a>
+                  <div className="w-full" onClick={(e) => e.stopPropagation()}>
+                    <ScanGridButton
+                      link={tier.ctaHref}
+                      label={tier.ctaText}
+                      className="pricing-card__cta"
+                      borderRadius={0}
+                      addIcon={true}
+                      icon={{
+                        symbol: "↗",
+                        size: 16,
+                        color: "#120408",
+                        hoverColor: "#4b1426",
+                        side: "right",
+                      }}
+                      padding="14px 24px"
+                      font={{
+                        fontFamily: "var(--font-clash-display)",
+                        fontWeight: 600,
+                        fontSize: "0.95rem",
+                        letterSpacing: "0.01em",
+                      }}
+                      colors={{
+                        fill: "#fff2f2",
+                        textColor: "#120408",
+                        hoverFill: "#ffffff",
+                        hoverTextColor: "#4b1426",
+                        boxShadow: "0 8px 24px -4px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 242, 242, 0.25)",
+                        hoverBoxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 242, 242, 0.4)",
+                      }}
+                      border={{
+                        borderWidth: 1,
+                        borderStyle: "solid",
+                        borderColor: "#ffffff",
+                      }}
+                      scan={{
+                        color: "#4b1426",
+                        speed: 50,
+                      }}
+                      glitchIntensity={0}
+                      style={{
+                        width: "100%",
+                      }}
+                    />
+                  </div>
 
                   {/* Features Checklist (Collapsible on mobile, always open on desktop) */}
                   <div
