@@ -76,7 +76,7 @@ export function GridCard({
           }}
           tabIndex={-1}
           aria-hidden="true"
-          className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
+          className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-none bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
         >
           <motion.span
             initial={{ rotate: 45 }}
