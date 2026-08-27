@@ -242,7 +242,7 @@ export function Modal({
               whileTap={{ scale: 0.92 }}
               onClick={onClose}
               aria-label="Close modal dialog"
-              className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-none bg-black/60 text-white backdrop-blur-md hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <motion.span
                 initial={{ rotate: 0 }}
