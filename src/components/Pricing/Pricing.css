@@ -23,6 +23,12 @@
   pointer-events: none;
 }
 
+.pricing__shader-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .pricing__vignette {
   position: absolute;
   inset: 0;
@@ -53,53 +59,7 @@
 /* ──────────────── Header ──────────────── */
 
 .pricing__intro {
-  max-width: 42rem;
-  margin-bottom: 3rem;
-  text-align: center;
   color: #fff2f2;
-}
-
-@media (min-width: 640px) {
-  .pricing__intro {
-    margin-bottom: 3.75rem;
-  }
-}
-
-.pricing__eyebrow {
-  margin: 0 0 0.85rem;
-  color: #e07a93;
-  font-family: var(--font-clash-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-}
-
-.pricing__title {
-  margin: 0;
-  color: #fff2f2;
-  font-family: var(--font-clash-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2.75rem, 6vw, 4.5rem);
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
-}
-
-.pricing__lead {
-  margin: 1.35rem auto 0;
-  color: rgba(255, 242, 242, 0.78);
-  font-family: var(--font-clash-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1rem, 1.3vw, 1.125rem);
-  font-weight: 400;
-  line-height: 1.55;
-}
-
-.pricing__lead p {
-  margin: 0;
-}
-
-.pricing__lead p + p {
-  margin-top: 0.35rem;
 }
 
 /* ──────────────── Pricing Grid (4 Tiers) ──────────────── */
@@ -257,43 +217,11 @@
 /* ──────────────── Frosted Glass CTA Buttons ──────────────── */
 
 .pricing-card__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 0.9rem 1.4rem;
+  display: flex !important;
+  width: 100% !important;
   margin-bottom: 0;
-  border-radius: 14px;
-  background: #fff2f2;
-  border: 1px solid #ffffff;
-  color: #120408;
-  box-shadow:
-    0 8px 24px -4px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(255, 242, 242, 0.25);
-  font-family: var(--font-clash-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
   text-decoration: none;
-  cursor: pointer;
-  transition:
-    background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    margin-bottom 0.35s ease,
-    color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.pricing-card__cta:hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
-  transform: translateY(-2px);
-  box-shadow:
-    0 12px 30px -4px rgba(0, 0, 0, 0.5),
-    0 0 28px rgba(255, 242, 242, 0.4);
+  transition: margin-bottom 0.35s ease;
 }
 
 .pricing-card--expanded .pricing-card__cta {
