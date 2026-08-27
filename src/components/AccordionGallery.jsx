@@ -70,7 +70,7 @@ const TUNNEL_COLORS = {
 
 const AccordionGallery = ({
   items = DEFAULT_ITEMS,
-  defaultIndex = 2,
+  defaultIndex = 0,
   accentColor = '#ffffff',
   overlayColor = '#060010',
   textColor = '#ffffff',
@@ -214,7 +214,7 @@ const AccordionGallery = ({
                 <NeuralTunnel
                   className="ag-panel__fx"
                   active={isActive}
-                  paused={prefersReduced}
+                  paused={prefersReduced || !isActive}
                   cursorInteraction={isActive && !prefersReduced}
                   {...TUNNEL_COLORS[item.background]}
                 />
