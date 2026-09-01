@@ -6,9 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^13.1.1",
@@ -33,11 +38,18 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
+    "prisma": "6",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
   "trustedDependencies": [
-    "unrs-resolver"
+    "unrs-resolver",
+    "prisma",
+    "@prisma/client"
   ],
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "bun prisma/seed.ts"
+  },
   "packageManager": "bun@1.2.23"
 }
