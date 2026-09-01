@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { motion, type Transition } from "motion/react";
-import { Plus, ArrowUpRight } from "lucide-react";
+import { Plus } from "lucide-react";
+import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
 import type { CardData, AnimationVariant } from "./types";
 
 interface ModalProps {
@@ -34,7 +35,6 @@ export function Modal({
 }: ModalProps) {
   const isScale = animationVariant === "scale";
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [isLinkHovered, setIsLinkHovered] = React.useState(false);
 
   const tint = activeCard.gradientColor ?? gradientColorFallback;
 
@@ -129,16 +129,9 @@ export function Modal({
         </motion.div>
       )}
 
-      {/* Floating Platform Link in Far Bottom-Right Empty Space (Hover: White Background + Background Accent Color Font) */}
+      {/* Floating Platform Link in Far Bottom-Right Empty Space */}
       {activeCard.linkUrl && (
-        <motion.a
-          href={activeCard.linkUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onMouseEnter={() => setIsLinkHovered(true)}
-          onMouseLeave={() => setIsLinkHovered(false)}
-          onFocus={() => setIsLinkHovered(true)}
-          onBlur={() => setIsLinkHovered(false)}
+        <motion.div
           initial={{
             x: "calc(-50vw + clamp(1.5rem, 5vw, 4.5rem) + 50%)",
             y: "calc(-50vh + clamp(2rem, 5.5vh, 4.5rem) + 50%)",
@@ -168,38 +161,46 @@ export function Modal({
             damping: 20,
             mass: 0.85,
           }}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          aria-label={`Visit ${activeCard.linkUrl}`}
-          className="group pointer-events-auto fixed bottom-[clamp(2rem,5.5vh,4.5rem)] right-[clamp(1.5rem,5vw,4.5rem)] z-50 flex items-center justify-center rounded-2xl sm:rounded-3xl border px-5 py-3 sm:px-6 sm:py-4 shadow-2xl backdrop-blur-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          style={{
-            backgroundColor: isLinkHovered ? "#ffffff" : "rgba(0, 0, 0, 0.75)",
-            borderColor: isLinkHovered
-              ? "#ffffff"
-              : `color-mix(in srgb, ${tint} 45%, rgba(255, 255, 255, 0.2))`,
-            boxShadow: isLinkHovered
-              ? `0 25px 60px rgba(0, 0, 0, 0.9), 0 0 50px ${tint}`
-              : `0 25px 60px rgba(0, 0, 0, 0.9), 0 0 45px color-mix(in srgb, ${tint} 35%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.25)`,
-          }}
+          className="pointer-events-auto fixed bottom-[clamp(2rem,5.5vh,4.5rem)] right-[clamp(1.5rem,5vw,4.5rem)] z-50 flex items-center justify-center"
         >
-          <div className="flex items-center gap-2.5 sm:gap-3.5">
-            <span
-              className="font-heading text-base sm:text-lg md:text-xl font-bold tracking-tight transition-colors duration-300"
-              style={{
-                color: isLinkHovered ? tint : "#ffffff",
-              }}
-            >
-              {activeCard.linkUrl}
-            </span>
-            <ArrowUpRight
-              className="size-5 sm:size-6 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              style={{
-                color: isLinkHovered ? tint : "rgba(255, 255, 255, 0.8)",
-              }}
-              strokeWidth={2.5}
-            />
-          </div>
-        </motion.a>
+          <ScanGridButton
+            link={activeCard.linkUrl}
+            newTab={true}
+            label={activeCard.linkUrl.replace(/^https?:\/\//, "")}
+            borderRadius={0}
+            addIcon={false}
+            padding="12px 26px"
+            font={{
+              fontFamily: "var(--font-clash-display)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              letterSpacing: "-0.01em",
+            }}
+            colors={{
+              fill: tint,
+              textColor: "#FFFFFF",
+              hoverFill: "#FFFFFF",
+              hoverTextColor: tint,
+              boxShadow: `0 10px 30px -4px rgba(0, 0, 0, 0.5), 0 0 35px ${tint}`,
+              hoverBoxShadow: `0 14px 40px -4px rgba(0, 0, 0, 0.6), 0 0 50px ${tint}`,
+            }}
+            border={{
+              borderWidth: 1,
+              borderStyle: "solid",
+              borderColor: tint,
+            }}
+            scan={{
+              color: "#FFFFFF",
+              hoverColor: tint,
+              speed: 50,
+            }}
+            glitchIntensity={0}
+            style={{
+              backdropFilter: "blur(14px) saturate(150%)",
+              WebkitBackdropFilter: "blur(14px) saturate(150%)",
+            }}
+          />
+        </motion.div>
       )}
 
       {/* Floating Centered Modal Card (Consistently maintains maroon #4B1426 background) */}
