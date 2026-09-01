@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, type Transition } from "motion/react";
 import type { CardData, ModalCardsProps } from "./types";
 import { defaultCards, SPEED_PRESETS } from "./types";
@@ -40,6 +41,11 @@ export function ModalCards({
   backdropClassName = "",
 }: ModalCardsProps) {
   const [activeCard, setActiveCard] = useState<CardData | null>(null);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const triggerRef = useRef<HTMLElement | null>(null);
 
   // Check prefers-reduced-motion via external store subscriber
@@ -81,6 +87,8 @@ export function ModalCards({
   useEffect(() => {
     if (!activeCard) return;
 
+    window.dispatchEvent(new CustomEvent("lenis:stop"));
+
     // Lock body scroll and compensate scrollbar width to prevent layout shift
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
@@ -105,6 +113,7 @@ export function ModalCards({
       document.body.style.overflow = originalOverflow;
       document.body.style.paddingRight = originalPaddingRight;
       window.removeEventListener("keydown", handleKeyDown);
+      window.dispatchEvent(new CustomEvent("lenis:start"));
     };
   }, [activeCard, closeOnEscape, handleClose]);
 
@@ -131,25 +140,29 @@ export function ModalCards({
         ))}
       </div>
 
-      {/* Expanded Modal Dialog */}
-      <AnimatePresence>
-        {activeCard && (
-          <Modal
-            key={`modal-container-${activeCard.id}`}
-            activeCard={activeCard}
-            onClose={handleClose}
-            gradientColorFallback={gradientColor}
-            backdropGradientPosition={backdropGradientPosition}
-            backdropClassName={backdropClassName}
-            modalClassName={modalClassName}
-            animationVariant={animationVariant}
-            transition={transition}
-            closeOnBackdropClick={closeOnBackdropClick}
-            showCloseButton={showCloseButton}
-            ariaLabel={ariaLabel}
-          />
+      {/* Expanded Modal Dialog rendered at document root via Portal */}
+      {isClient &&
+        createPortal(
+          <AnimatePresence>
+            {activeCard && (
+              <Modal
+                key={`modal-container-${activeCard.id}`}
+                activeCard={activeCard}
+                onClose={handleClose}
+                gradientColorFallback={gradientColor}
+                backdropGradientPosition={backdropGradientPosition}
+                backdropClassName={backdropClassName}
+                modalClassName={modalClassName}
+                animationVariant={animationVariant}
+                transition={transition}
+                closeOnBackdropClick={closeOnBackdropClick}
+                showCloseButton={showCloseButton}
+                ariaLabel={ariaLabel}
+              />
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 }
