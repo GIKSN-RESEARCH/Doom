@@ -46,7 +46,7 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
     links: [
       { text: "Services", href: "#services" },
       { text: "Work", href: "#work" },
-      { text: "Case Studies", href: "#case-studies" },
+      { text: "Readings", href: "/reading" },
       { text: "Approach", href: "#approach" },
       { text: "Pricing", href: "#pricing" },
       { text: "Updates", href: "#updates" },
@@ -460,10 +460,10 @@ export default function Footer({
                 delay: 0.32,
               },
             })}
-        className="relative w-full overflow-hidden flex justify-center items-start pt-[0.04em] pointer-events-none select-none"
+        className="relative w-full overflow-hidden flex justify-center items-start pt-[0.05em] pointer-events-none select-none px-2 sm:px-4"
         style={{
-          fontSize: "clamp(6.5rem, 26vw, 22rem)",
-          height: "0.55em",
+          fontSize: "clamp(4rem, 21.5vw, 22rem)",
+          height: "0.58em",
         }}
       >
         <span
