@@ -233,14 +233,7 @@ export default function Pricing() {
                       label={tier.ctaText}
                       className="pricing-card__cta"
                       borderRadius={0}
-                      addIcon={true}
-                      icon={{
-                        symbol: "↗",
-                        size: 16,
-                        color: "#120408",
-                        hoverColor: "#4b1426",
-                        side: "right",
-                      }}
+                      addIcon={false}
                       padding="14px 24px"
                       font={{
                         fontFamily: "var(--font-clash-display)",
