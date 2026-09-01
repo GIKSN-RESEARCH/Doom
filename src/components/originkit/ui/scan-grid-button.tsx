@@ -39,6 +39,7 @@ export type IconConfig = {
 
 type ScanConfig = {
     color?: string;
+    hoverColor?: string;
     speed?: number;
 };
 
@@ -189,8 +190,12 @@ export default function ScanGridButton(props: Props) {
     const textColor = colors?.textColor ?? "#FFFFFF";
     const hoverFill = colors?.hoverFill ?? "#000000";
     const hoverTextColor = colors?.hoverTextColor ?? "#FFFFFF";
-
-    const { color: scanColor = "#4b1426", speed: speedPctProp } = scan;
+    const {
+        color: scanColor = "#4b1426",
+        hoverColor: scanHoverColorProp,
+        speed: speedPctProp,
+    } = scan;
+    const scanHoverColor = scanHoverColorProp ?? hoverTextColor ?? scanColor;
 
     const speedPct = speedPctProp ?? 50;
     const speed = 5 * (Math.max(0, Math.min(100, Math.round(speedPct))) / 50);
@@ -306,10 +311,10 @@ export default function ScanGridButton(props: Props) {
             armFor(IDLE_BRACKET, dim.w, dim.h)
         );
         const filter = `drop-shadow(0px 0px 0px ${scanColor})`;
-        animate(".bracket-tl", { d: idlePaths.tl, filter }, { duration: 0 });
-        animate(".bracket-tr", { d: idlePaths.tr, filter }, { duration: 0 });
-        animate(".bracket-br", { d: idlePaths.br, filter }, { duration: 0 });
-        animate(".bracket-bl", { d: idlePaths.bl, filter }, { duration: 0 });
+        animate(".bracket-tl", { d: idlePaths.tl, stroke: scanColor, filter }, { duration: 0.2 });
+        animate(".bracket-tr", { d: idlePaths.tr, stroke: scanColor, filter }, { duration: 0.2 });
+        animate(".bracket-br", { d: idlePaths.br, stroke: scanColor, filter }, { duration: 0.2 });
+        animate(".bracket-bl", { d: idlePaths.bl, stroke: scanColor, filter }, { duration: 0.2 });
 
         animate(".scanline", { y: SCAN_FROM, opacity: 0 }, { duration: 0 });
         if (showText)
@@ -359,11 +364,11 @@ export default function ScanGridButton(props: Props) {
             bracketRadius,
             armFor(HOVER_BRACKET, dim.w, dim.h)
         );
-        const filter = `drop-shadow(0px 0px 4px ${scanColor})`;
-        animate(".bracket-tl", { d: hoverPaths.tl, filter } as any, transition as any);
-        animate(".bracket-tr", { d: hoverPaths.tr, filter } as any, transition as any);
-        animate(".bracket-br", { d: hoverPaths.br, filter } as any, transition as any);
-        animate(".bracket-bl", { d: hoverPaths.bl, filter } as any, transition as any);
+        const filter = `drop-shadow(0px 0px 4px ${scanHoverColor})`;
+        animate(".bracket-tl", { d: hoverPaths.tl, stroke: scanHoverColor, filter } as any, transition as any);
+        animate(".bracket-tr", { d: hoverPaths.tr, stroke: scanHoverColor, filter } as any, transition as any);
+        animate(".bracket-br", { d: hoverPaths.br, stroke: scanHoverColor, filter } as any, transition as any);
+        animate(".bracket-bl", { d: hoverPaths.bl, stroke: scanHoverColor, filter } as any, transition as any);
 
         scanLoopRef.current?.stop();
         animate(".scanline", { opacity: 1 }, { duration: 0.15 });
@@ -398,7 +403,7 @@ export default function ScanGridButton(props: Props) {
         hoverFill,
         hoverTextColor,
         iconHoverColor,
-        scanColor,
+        scanHoverColor,
         glitchIntensity,
         speed,
         transition,
@@ -437,10 +442,10 @@ export default function ScanGridButton(props: Props) {
             armFor(IDLE_BRACKET, dim.w, dim.h)
         );
         const filter = `drop-shadow(0px 0px 0px ${scanColor})`;
-        animate(".bracket-tl", { d: idlePaths2.tl, filter } as any, transition as any);
-        animate(".bracket-tr", { d: idlePaths2.tr, filter } as any, transition as any);
-        animate(".bracket-br", { d: idlePaths2.br, filter } as any, transition as any);
-        animate(".bracket-bl", { d: idlePaths2.bl, filter } as any, transition as any);
+        animate(".bracket-tl", { d: idlePaths2.tl, stroke: scanColor, filter } as any, transition as any);
+        animate(".bracket-tr", { d: idlePaths2.tr, stroke: scanColor, filter } as any, transition as any);
+        animate(".bracket-br", { d: idlePaths2.br, stroke: scanColor, filter } as any, transition as any);
+        animate(".bracket-bl", { d: idlePaths2.bl, stroke: scanColor, filter } as any, transition as any);
 
         const loop = scanLoopRef.current;
         const fade = animate(".scanline", { opacity: 0 }, { duration: 0.2 });
