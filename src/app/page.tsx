@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
 import { Hero3 } from "@/components/ui/hero-3";
 import AccordionGallery from "@/components/AccordionGallery";
 import { ModalCards } from "@/components/ModalCards";
@@ -24,14 +23,21 @@ export default function Home() {
       )}
 
       {/* Main Page: connected directly to bottom of intro section */}
-      <motion.main
-        initial={{ y: "100svh" }}
-        animate={{ y: introStarted ? "0svh" : "100svh" }}
-        transition={{
-          duration: 1.35,
-          ease: [0.76, 0, 0.24, 1],
-        }}
+      <main
         className="w-full relative"
+        style={
+          introMounted
+            ? {
+                transform: introStarted
+                  ? "translateY(0svh)"
+                  : "translateY(100svh)",
+                transition: introStarted
+                  ? "transform 1.35s cubic-bezier(0.76, 0, 0.24, 1)"
+                  : "none",
+                willChange: "transform",
+              }
+            : undefined
+        }
       >
         <Hero3
         logoText="Doom"
@@ -43,7 +49,7 @@ export default function Home() {
         links={[
           { label: "Services", href: "#services" },
           { label: "Work", href: "#work" },
-          { label: "Case Studies", href: "#case-studies" },
+          { label: "Readings", href: "/reading" },
           { label: "Approach", href: "#approach" },
           { label: "Pricing", href: "#pricing" },
           { label: "Updates", href: "#updates" },
@@ -118,7 +124,7 @@ export default function Home() {
 
       {/* Footer — maximal dark sitemap footer */}
       <Footer wordmark="DOOM" />
-      </motion.main>
+      </main>
     </>
   );
 }
