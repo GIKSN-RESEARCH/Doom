@@ -8,8 +8,8 @@ import "lenis/dist/lenis.css";
  * Desktop inertial scrolling. Wheel input is eased through a lerp loop while
  * mobile and coarse-pointer devices keep reliable native scrolling.
  *
- * - Anchor links (#services, #pricing …) are intercepted and scrolled to
- *   smoothly via Lenis's built-in `anchors` option.
+ * - Same-page hashes (#services, #pricing …) scroll through Lenis only when
+ *   the target id exists. Missing hashes are ignored (no "Target not found").
  * - Disabled for mobile and prefers-reduced-motion users (native scroll kept).
  */
 export default function SmoothScroll() {
@@ -19,8 +19,10 @@ export default function SmoothScroll() {
     // and reset again on the next frame after layout has been measured.
     window.history.scrollRestoration = "manual";
 
-    // Strip hash on reload so browser doesn't anchor-jump down the page
-    if (window.location.hash) {
+    // Homepage only: strip hash on reload so the browser doesn't jump past the hero.
+    // Other routes (e.g. /reading) may use hashes as in-page tabs.
+    const isHome = window.location.pathname === "/";
+    if (isHome && window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
     }
 
@@ -72,8 +74,31 @@ export default function SmoothScroll() {
       wheelMultiplier: 1.0,
       touchMultiplier: 1.0,
       syncTouch: false,
-      anchors: true,
+      // Handle same-page hashes ourselves so missing targets (stale nav
+      // hashes) do not warn "Lenis: Target not found".
+      anchors: false,
     });
+
+    const onAnchorClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const link = (event.target as Element | null)?.closest("a[href]");
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const url = new URL(link.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname !== window.location.pathname) return;
+      if (!url.hash || url.hash === "#") return;
+
+      const id = decodeURIComponent(url.hash.slice(1));
+      const node = document.getElementById(id);
+      if (!node) return;
+
+      event.preventDefault();
+      lenis.scrollTo(node);
+    };
+    window.addEventListener("click", onAnchorClick);
     lenis.scrollTo(0, { immediate: true });
 
     let raf = 0;
@@ -91,6 +116,7 @@ export default function SmoothScroll() {
     return () => {
       cleanupScrollReset();
       cancelAnimationFrame(raf);
+      window.removeEventListener("click", onAnchorClick);
       window.removeEventListener("lenis:stop", handleStop);
       window.removeEventListener("lenis:start", handleStart);
       lenis.destroy();
