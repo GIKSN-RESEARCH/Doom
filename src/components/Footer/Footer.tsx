@@ -49,7 +49,7 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
       { text: "Readings", href: "/reading" },
       { text: "Approach", href: "#approach" },
       { text: "Pricing", href: "#pricing" },
-      { text: "Updates", href: "#updates" },
+      { text: "Updates", href: "/reading" },
     ],
   },
   {
