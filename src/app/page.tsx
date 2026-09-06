@@ -52,7 +52,7 @@ export default function Home() {
           { label: "Readings", href: "/reading" },
           { label: "Approach", href: "#approach" },
           { label: "Pricing", href: "#pricing" },
-          { label: "Updates", href: "#updates" },
+          { label: "Updates", href: "/reading" },
         ]}
       />
 
