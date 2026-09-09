@@ -161,9 +161,11 @@
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 31px,
-    rgba(75, 20, 38, 0.08) 31px,
-    rgba(75, 20, 38, 0.08) 32px
+    transparent 23px,
+    rgba(75, 20, 38, 0.11) 23px,
+    rgba(75, 20, 38, 0.11) 24px,
+    transparent 24px,
+    transparent 32px
   );
   background-size: 100% 32px;
 }
@@ -174,50 +176,4 @@
     linear-gradient(to right, rgba(75, 20, 38, 0.07) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(75, 20, 38, 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
-}
-
-/* ── Snapped Baseline Ruled Lines for Handwritten Text ── */
-.handwriting-lined {
-  line-height: 32px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 26px,
-    rgba(75, 20, 38, 0.12) 26px,
-    rgba(75, 20, 38, 0.12) 27px,
-    transparent 27px,
-    transparent 32px
-  );
-  background-size: 100% 32px;
-  background-position: 0 0px;
-}
-
-.handwriting-lined-dense {
-  line-height: 28px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 22px,
-    rgba(75, 20, 38, 0.12) 22px,
-    rgba(75, 20, 38, 0.12) 23px,
-    transparent 23px,
-    transparent 28px
-  );
-  background-size: 100% 28px;
-  background-position: 0 0px;
-}
-
-.handwriting-lined-large {
-  line-height: 38px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 31px,
-    rgba(75, 20, 38, 0.14) 31px,
-    rgba(75, 20, 38, 0.14) 32px,
-    transparent 32px,
-    transparent 38px
-  );
-  background-size: 100% 38px;
-  background-position: 0 0px;
 }
