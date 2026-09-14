@@ -40,12 +40,13 @@ export default function Home() {
         }
       >
         <Hero3
-        logoText="Doom"
-        logoSubtext="Studio"
-        ctaLabel="Get Started"
-        ctaHref="#pricing"
-        headline="We DOOM"
-        headlineLine2="the bottlenecks."
+          logoText="Doom"
+          logoSubtext="Studio"
+          ctaLabel="Get Started"
+          ctaHref="#pricing"
+          description="Doom Studio is a design and engineering team for founders who need the work shipped, not another deck. We take the unclear page, the half-built product or the messy workflow and turn it into something people can actually use."
+          headline="We DOOM"
+          headlineLine2="the bottlenecks."
         links={[
           { label: "Services", href: "#services" },
           { label: "Work", href: "#work" },
