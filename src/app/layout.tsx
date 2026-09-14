@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import SmoothScroll from "@/components/SmoothScroll";
+import NavigationLoader from "@/components/NavigationLoader";
 import "./globals.css";
 
 /* Clash Display — body + headings across the whole site (200–700) */
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
+        <NavigationLoader />
         {children}
       </body>
     </html>
