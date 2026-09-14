@@ -7,6 +7,8 @@ import Image from "next/image";
 import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
 import "./Pricing.css";
 
+const BOOKING_URL = "https://cal.com/siddharth-manjul";
+
 interface PricingTier {
   id: string;
   name: string;
@@ -32,7 +34,7 @@ const TIERS: PricingTier[] = [
     priceNote: "Starting base. Scales with brief scope & depth.",
     desc: "Design or engineering. One focused discipline built to eliminate a specific bottleneck.",
     ctaText: "Start Standalone",
-    ctaHref: "#get-started",
+    ctaHref: BOOKING_URL,
     included: [
       "Dedicated design OR engineering",
       "Tailored strictly around your brief",
@@ -56,7 +58,7 @@ const TIERS: PricingTier[] = [
     priceNote: "Starting base. Scales with product requirements.",
     desc: "Design and engineering as one complete team. From UI to shipped code.",
     ctaText: "Build Full Product",
-    ctaHref: "#get-started",
+    ctaHref: BOOKING_URL,
     included: [
       "Complete UI/UX design & interactive prototypes",
       "Full-stack production-grade engineering",
@@ -79,7 +81,7 @@ const TIERS: PricingTier[] = [
     priceNote: "Starting base. Dedicated monthly capacity.",
     desc: "Full design and engineering team operating as your dedicated internal product squad.",
     ctaText: "Subscribe to Capacity",
-    ctaHref: "#get-started",
+    ctaHref: BOOKING_URL,
     included: [
       "Continuous full-stack design & engineering",
       "Dedicated sprint capacity for multiple tools",
@@ -101,7 +103,7 @@ const TIERS: PricingTier[] = [
     priceNote: "Tell us about your project brief. We will evaluate and tailor the exact fit.",
     desc: "Bespoke roadmaps, specialized AI tool harnesses, and dedicated multi-disciplinary squads.",
     ctaText: "Talk about your project",
-    ctaHref: "#get-started",
+    ctaHref: BOOKING_URL,
     included: [
       "Tailored multi-disciplinary design & engineering",
       "Specialized AI tooling, harnesses & model APIs",
@@ -231,6 +233,7 @@ export default function Pricing() {
                     <ScanGridButton
                       link={tier.ctaHref}
                       label={tier.ctaText}
+                      newTab
                       className="pricing-card__cta"
                       borderRadius={0}
                       addIcon={false}
