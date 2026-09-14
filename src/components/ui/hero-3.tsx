@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import HeroShader from "./HeroShader";
 import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
+import { SpinningText } from "@/components/magicui/spinning-text";
 
 /**
  * Hero3 — rounded WebGL gradient hero with a squircle-notched panel and multi-layered parallax scrolling.
@@ -100,6 +101,8 @@ export interface Hero3Props {
   logoSubtext?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  /** Description text displayed above the tagline. */
+  description?: string;
   /** First headline line. */
   headline?: string;
   /** Second headline line. */
@@ -113,6 +116,7 @@ export function Hero3({
   logoSubtext = "Studio",
   ctaLabel = "Get Started",
   ctaHref = "#get-started",
+  description = "Doom Studio is a design and engineering team for founders who need the work shipped, not another deck. We take the unclear page, the half-built product or the messy workflow and turn it into something people can actually use.",
   headline = "We DOOM",
   headlineLine2 = "the bottlenecks.",
   links = [],
@@ -120,9 +124,35 @@ export function Hero3({
 }: Hero3Props) {
   const sectionRef = React.useRef<HTMLElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
+  const taglineRef = React.useRef<HTMLHeadingElement>(null);
+  const [taglineWidth, setTaglineWidth] = React.useState<number | null>(null);
   const [clip, setClip] = React.useState<{ d: string; supported: boolean } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const prefersReducedMotion = useReducedMotion();
+
+  // Measure the rendered width of the tagline so the description width matches it exactly.
+  React.useEffect(() => {
+    const el = taglineRef.current;
+    if (!el) return;
+
+    const updateWidth = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0) {
+        setTaglineWidth(Math.round(rect.width));
+      }
+    };
+
+    updateWidth();
+
+    const ro = new ResizeObserver(updateWidth);
+    ro.observe(el);
+
+    if (typeof document !== "undefined" && "fonts" in document) {
+      document.fonts.ready.then(updateWidth);
+    }
+
+    return () => ro.disconnect();
+  }, [headline, headlineLine2]);
 
   // Parallax Scroll Tracking
   const { scrollYProgress } = useScroll({
@@ -218,7 +248,7 @@ export function Hero3({
         initial={{ scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-        className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh] rounded-[28px] sm:rounded-none overflow-hidden"
+        className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh] sm:min-h-[660px] rounded-[28px] sm:rounded-none overflow-hidden"
       >
         {/* Clipped shader layer */}
         <div
@@ -251,32 +281,88 @@ export function Hero3({
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
             style={{ y: headerY, opacity: headerOpacity }}
-            className="flex items-center justify-between gap-4"
+            className="flex items-start justify-between gap-4"
           >
             <Link
               href="/"
-              className="pointer-events-auto font-logo leading-none text-[#fff2f2]"
+              className="pointer-events-auto group relative flex items-center justify-center font-logo leading-none text-[#fff2f2] outline-none transition-transform duration-300 hover:scale-105 active:scale-95"
+              aria-label={`${logoText} ${logoSubtext} Home`}
             >
-              <span className="block text-lg tracking-[0.18em] uppercase sm:text-xl">
-                {logoText}
-              </span>
-              <span className="mt-1.5 block text-[0.625rem] tracking-[0.5em] uppercase text-[#fff2f2] sm:text-xs">
-                {logoSubtext}
-              </span>
+              <SpinningText
+                className="font-logo text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#fff2f2] transition-colors group-hover:text-[#e07a93] select-none size-[76px] sm:size-[88px]"
+                duration={prefersReducedMotion ? 0 : 12}
+                radius={4.5}
+              >
+                {`${logoText} ${logoSubtext} • ${logoText} ${logoSubtext} •`}
+              </SpinningText>
             </Link>
 
-            {/* Desktop "Get Started" CTA */}
-            <div className="pointer-events-auto hidden sm:inline-flex">
+            {/* Spacer so the header layout stays balanced on mobile */}
+            <div className="h-11 w-11 sm:hidden" aria-hidden />
+          </motion.div>
+
+          {/* Desktop Navigation & "Get Started" CTA (Vertically stacked with equal top and bottom gaps) */}
+          <motion.div
+            initial={{ y: -25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+            style={{ y: headerY, opacity: headerOpacity }}
+            className="pointer-events-auto hidden sm:flex sm:flex-col sm:items-end sm:justify-between sm:absolute sm:top-10 sm:right-10 sm:bottom-[calc(30%+2.5rem)] lg:top-12 lg:right-12 lg:bottom-[calc(30%+3rem)] sm:z-20"
+          >
+            <ScanGridButton
+              link={ctaHref}
+              label={ctaLabel}
+              borderRadius={0}
+              padding="11px 24px"
+              font={{
+                fontFamily: "var(--font-clash-display)",
+                fontWeight: 600,
+                fontSize: "1.0625rem",
+                letterSpacing: "-0.01em",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+              }}
+              colors={{
+                fill: "rgba(255, 255, 255, 0.1)",
+                textColor: "#FFFFFF",
+                hoverFill: "rgba(255, 255, 255, 0.2)",
+                hoverTextColor: "#FFFFFF",
+                boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.28), 0 8px 32px rgba(0,0,0,0.35)",
+                hoverBoxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.45), 0 12px 36px rgba(0,0,0,0.45)",
+              }}
+              border={{
+                borderWidth: 1,
+                borderStyle: "solid",
+                borderColor: "rgba(255, 255, 255, 0.3)",
+              }}
+              scan={{
+                color: "#FFFFFF",
+                speed: 50,
+              }}
+              glitchIntensity={0}
+              style={{
+                width: "180px",
+                flexShrink: 0,
+                backdropFilter: "blur(12px) saturate(150%)",
+                WebkitBackdropFilter: "blur(12px) saturate(150%)",
+              }}
+            />
+
+            {/* Vertically stacked links with identical size & UI as Get Started button */}
+            {links.map((link) => (
               <ScanGridButton
-                link={ctaHref}
-                label={ctaLabel}
+                key={link.label}
+                link={link.href}
+                label={link.label}
                 borderRadius={0}
-                padding="10px 24px"
+                padding="11px 24px"
                 font={{
                   fontFamily: "var(--font-clash-display)",
                   fontWeight: 600,
-                  fontSize: "0.875rem",
+                  fontSize: "1.0625rem",
                   letterSpacing: "-0.01em",
+                  textAlign: "center",
+                  whiteSpace: "nowrap",
                 }}
                 colors={{
                   fill: "rgba(255, 255, 255, 0.1)",
@@ -297,22 +383,45 @@ export function Hero3({
                 }}
                 glitchIntensity={0}
                 style={{
+                  width: "180px",
+                  flexShrink: 0,
                   backdropFilter: "blur(12px) saturate(150%)",
                   WebkitBackdropFilter: "blur(12px) saturate(150%)",
                 }}
               />
-            </div>
-
-            {/* Spacer so the header layout stays balanced */}
-            <div className="h-11 w-11 sm:hidden" aria-hidden />
+            ))}
           </motion.div>
 
-          {/* Headline + Mobile in-panel CTA */}
+          {/* Description + Headline + Mobile in-panel CTA */}
           <motion.div
             style={{ y: headlineY, opacity: headlineOpacity }}
-            className="flex flex-col items-start gap-6 sm:gap-0"
+            className="flex flex-col items-start"
           >
-            <h1 className="text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white">
+            {/* In-Panel Description for mobile view only (on desktop, description is in the notch) */}
+            {description && (
+              <div
+                className="w-full max-w-2xl sm:hidden mb-4"
+                style={
+                  taglineWidth
+                    ? { width: `${taglineWidth}px`, maxWidth: "100%" }
+                    : undefined
+                }
+              >
+                <motion.p
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
+                  className="text-base font-normal leading-relaxed text-[#fff2f2]/85 tracking-normal [text-wrap:pretty]"
+                >
+                  {description}
+                </motion.p>
+              </div>
+            )}
+
+            <h1
+              ref={taglineRef}
+              className="w-fit text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white"
+            >
               <span className="block overflow-hidden pb-1">
                 <motion.span
                   initial={{ y: "110%", opacity: 0 }}
@@ -341,7 +450,7 @@ export function Hero3({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
               href={ctaHref}
-              className="pointer-events-auto inline-flex items-center gap-2 rounded-none border border-white/35 bg-white/15 px-6 py-3.5 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 active:scale-95 hover:bg-white/25 hover:border-white/50 sm:hidden"
+              className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-none border border-white/35 bg-white/15 px-6 py-3.5 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 active:scale-95 hover:bg-white/25 hover:border-white/50 sm:hidden"
             >
               <span>{ctaLabel}</span>
               <ArrowUpRight className="size-4" />
@@ -382,31 +491,24 @@ export function Hero3({
         </AnimatePresence>
       </button>
 
-      {/* Desktop Links — 2×3 grid inside the notch on sm+ */}
-      <motion.nav
-        initial={{ y: 30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.75 }}
-        style={{ y: navY, opacity: navOpacity }}
-        className={cn(
-          "hidden sm:grid sm:absolute sm:bottom-6 sm:right-6 sm:mt-0 sm:grid-cols-3 sm:grid-rows-2 sm:gap-x-8",
-          "sm:w-[calc((100%-3rem)*0.38)] sm:h-[calc((100%-3rem)*0.3)]",
-          "sm:p-10 lg:p-12 sm:justify-items-stretch"
-        )}
-      >
-        {links.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            className="group flex items-center justify-center gap-1.5 whitespace-nowrap font-medium text-black transition-colors hover:text-[#4b1426] sm:h-full sm:w-full"
-          >
-            <span className="text-xl transition-[font-size] duration-200 sm:group-hover:text-2xl">
-              {link.label}
-            </span>
-            <ArrowUpRight className="size-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
-        ))}
-      </motion.nav>
+      {/* Desktop Description — inside the notch on sm+ (in place of links) */}
+      {description && (
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.75 }}
+          style={{ y: navY, opacity: navOpacity }}
+          className={cn(
+            "hidden sm:flex sm:flex-col sm:justify-center sm:absolute sm:bottom-6 sm:right-6 sm:mt-0",
+            "sm:w-[calc((100%-3rem)*0.38)] sm:h-[calc((100%-3rem)*0.3)]",
+            "sm:p-8 md:p-10 lg:p-12"
+          )}
+        >
+          <p className="font-sans text-base sm:text-lg lg:text-xl font-normal leading-relaxed text-[#1c0810]/85 [text-wrap:pretty]">
+            {description}
+          </p>
+        </motion.div>
+      )}
 
       {/* Full-screen mobile menu expands from, and collapses into, the toggle. */}
       <AnimatePresence initial={false}>
