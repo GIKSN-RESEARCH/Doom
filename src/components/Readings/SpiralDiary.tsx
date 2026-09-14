@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -15,58 +15,6 @@ import {
   Tag,
 } from "lucide-react";
 import type { CaseStudyItem, ArticleItem, UpdateItem } from "@/lib/readings";
-
-const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
-/**
- * GridSnap wrapper ensures any non-line-height content (images, badges, cards)
- * occupies a total height + bottom margin that is an exact multiple of 32px (32k).
- * This guarantees the baseline grid never drifts.
- */
-function GridSnap({
-  children,
-  className = "",
-  blankLinesAfter = 1,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  blankLinesAfter?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [padBottom, setPadBottom] = useState<number>(0);
-
-  useIsomorphicLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const updatePadding = () => {
-      const height = el.getBoundingClientRect().height;
-      if (height === 0) return;
-      const remainder = Math.round(height) % 32;
-      const pad = remainder === 0 ? 0 : 32 - remainder;
-      setPadBottom(pad);
-    };
-
-    updatePadding();
-
-    const observer = new ResizeObserver(() => {
-      updatePadding();
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      style={{ marginBottom: `${padBottom + blankLinesAfter * 32}px` }}
-      className={className}
-    >
-      <div ref={ref}>{children}</div>
-    </div>
-  );
-}
 
 interface SpiralDiaryProps {
   caseStudies: CaseStudyItem[];
@@ -209,7 +157,7 @@ export function SpiralDiary({
 
         {/* ── The White Ruled Diary Page with Stacked Paper Thickness on Right & Bottom ── */}
         <div
-          className="relative w-full rounded-[22px] sm:rounded-[30px] border border-black/10 bg-white notebook-paper-lined-white text-[#1c0810] selection:bg-[#4b1426] selection:text-[#fff2f2] overflow-hidden"
+          className="relative w-full rounded-[22px] sm:rounded-[30px] border border-black/10 bg-white notebook-paper-plain text-[#1c0810] selection:bg-[#4b1426] selection:text-[#fff2f2] overflow-hidden"
           style={{
             boxShadow:
               "3px 3px 0px #f5efe6, 6px 6px 0px #ebe2d2, 9px 9px 0px #ded3bf, 12px 12px 0px #24060f",
@@ -281,56 +229,56 @@ export function SpiralDiary({
           </div>
 
           {/* ── Main Diary Content Area: Padded past left vertical spiral spine ── */}
-          <div className="relative pl-14 pr-4 pt-[64px] pb-[96px] sm:pl-20 sm:pr-8 md:pl-28 md:pr-10 lg:pr-12">
-        {/* ── Top Ribbon Controls: Font Switcher & Navigation (Locked to 32px rhythm) ── */}
-        <div className="relative h-[32px] mb-[64px] flex items-center justify-between gap-4">
-          {selectedEntryId ? (
-            <button
-              onClick={() => setSelectedEntryId(null)}
-              className="group inline-flex items-center gap-2 rounded-md border border-[#4b1426]/30 bg-[#4b1426] h-[32px] px-3 py-1 font-mono text-xs font-semibold text-white shadow-xs transition-all hover:bg-[#7e1c36]"
-            >
-              <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-1" />
-              <span>← Return to Table of Contents</span>
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 h-[32px]">
-              <span className="rounded bg-[#4b1426]/10 px-2.5 py-0.5 font-mono text-xs font-bold uppercase tracking-widest text-[#4b1426]">
-                DOOM ARCHIVE
-              </span>
-              <span className="font-mono text-xs text-black/50">
-                {`// ${filteredEntries.length} Recorded Entries`}
-              </span>
-            </div>
-          )}
+          <div className="relative pl-14 pr-4 pt-10 pb-16 sm:pl-20 sm:pr-8 md:pl-28 md:pr-10 lg:pr-12">
+            {/* ── Top Ribbon Controls: Font Switcher & Navigation ── */}
+            <div className="relative mb-8 sm:mb-10 flex items-center justify-between gap-4 pb-3 border-b border-black/10">
+              {selectedEntryId ? (
+                <button
+                  onClick={() => setSelectedEntryId(null)}
+                  className="group inline-flex items-center gap-2 rounded-md border border-[#4b1426]/30 bg-[#4b1426] px-3.5 py-1.5 font-mono text-xs font-semibold text-white shadow-xs transition-all hover:bg-[#7e1c36]"
+                >
+                  <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-1" />
+                  <span>← Return to Table of Contents</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="rounded bg-[#4b1426]/10 px-2.5 py-0.5 font-mono text-xs font-bold uppercase tracking-widest text-[#4b1426]">
+                    DOOM ARCHIVE
+                  </span>
+                  <span className="font-mono text-xs text-black/50">
+                    {`// ${filteredEntries.length} Recorded Entries`}
+                  </span>
+                </div>
+              )}
 
-          {/* Font Mode Switcher */}
-          <div className="flex items-center gap-1 rounded-full border border-black/15 bg-white/90 p-0.5 shadow-xs h-[32px]">
-            <button
-              onClick={() => setUseHandwriting(true)}
-              className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                useHandwriting
-                  ? "bg-[#4b1426] text-white shadow-xs"
-                  : "text-black/60 hover:text-black"
-              }`}
-              title="Handwritten Fountain Pen Ink font"
-            >
-              <PenTool className="size-3.5" />
-              <span>Fountain Pen</span>
-            </button>
-            <button
-              onClick={() => setUseHandwriting(false)}
-              className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                !useHandwriting
-                  ? "bg-[#4b1426] text-white shadow-xs"
-                  : "text-black/60 hover:text-black"
-              }`}
-              title="Clean Editorial Print font"
-            >
-              <Type className="size-3.5" />
-              <span>Clean Print</span>
-            </button>
-          </div>
-        </div>
+              {/* Font Mode Switcher */}
+              <div className="flex items-center gap-1 rounded-full border border-black/15 bg-white/90 p-0.5 shadow-xs">
+                <button
+                  onClick={() => setUseHandwriting(true)}
+                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                    useHandwriting
+                      ? "bg-[#4b1426] text-white shadow-xs"
+                      : "text-black/60 hover:text-black"
+                  }`}
+                  title="Handwritten Fountain Pen Ink font"
+                >
+                  <PenTool className="size-3.5" />
+                  <span>Fountain Pen</span>
+                </button>
+                <button
+                  onClick={() => setUseHandwriting(false)}
+                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                    !useHandwriting
+                      ? "bg-[#4b1426] text-white shadow-xs"
+                      : "text-black/60 hover:text-black"
+                  }`}
+                  title="Clean Editorial Print font"
+                >
+                  <Type className="size-3.5" />
+                  <span>Clean Print</span>
+                </button>
+              </div>
+            </div>
 
         {/* ── Multi-Column Grid Utilizing Gutter Space (Inspired by giksn.com) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_360px] gap-10 xl:gap-14 items-start">
@@ -349,16 +297,16 @@ export function SpiralDiary({
                   transition={{ duration: 0.25 }}
                 >
                   {/* Page Title & Description written directly on the white diary paper */}
-                  <div className="mb-[64px]">
-                    <div className="h-[32px] mb-[32px] flex items-center gap-2">
-                      <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#b32448] font-bold leading-[32px]">
+                  <div className="mb-10">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#b32448] font-bold">
                         Doom Studio Field Journal // Vol. 2026
                       </span>
                     </div>
 
-                    <div className="mb-[32px]">
+                    <div className="mb-4">
                       <h1
-                        className={`font-bold text-[#1c0810] leading-[64px] translate-y-[9px] break-words [text-wrap:balance] ${
+                        className={`font-bold text-[#1c0810] leading-tight break-words [text-wrap:balance] ${
                           useHandwriting
                             ? "font-handwriting text-5xl sm:text-7xl lg:text-8xl"
                             : "font-heading text-4xl sm:text-6xl lg:text-7xl"
@@ -369,7 +317,7 @@ export function SpiralDiary({
                     </div>
 
                     <p
-                      className={`max-w-3xl text-xl sm:text-2xl leading-[32px] text-[#360d19] mb-[64px] ${
+                      className={`max-w-3xl text-xl sm:text-2xl leading-relaxed text-[#360d19] mb-8 ${
                         useHandwriting ? "font-handwriting" : "font-sans text-base sm:text-lg text-black/75"
                       }`}
                     >
@@ -377,72 +325,70 @@ export function SpiralDiary({
                       Click any entry below to flip to its complete diary page.
                     </p>
 
-                    {/* Search slot on the white paper (snapped with 2 blank lines after) */}
-                    <GridSnap blankLinesAfter={2}>
-                      <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="relative flex-1 min-w-[240px] max-w-md h-[36px]">
-                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-[#7e1c36]" />
-                          <input
-                            type="text"
-                            placeholder="Search index by keyword, client, or bottleneck..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-[36px] rounded-full border border-black/20 bg-white pl-9 pr-8 text-xs text-[#1c0810] placeholder-black/40 shadow-xs outline-none transition-all focus:border-[#7e1c36]"
-                          />
-                          {searchQuery && (
-                            <button
-                              onClick={() => setSearchQuery("")}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-black/40 hover:text-black"
-                            >
-                              ✕
-                            </button>
-                          )}
-                        </div>
+                    {/* Search & Filter Bar */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-black/10">
+                      <div className="relative flex-1 min-w-[240px] max-w-md h-[38px]">
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-3.5 text-[#7e1c36]" />
+                        <input
+                          type="text"
+                          placeholder="Search index by keyword, client, or bottleneck..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full h-[38px] rounded-full border border-black/20 bg-white pl-9 pr-8 text-xs text-[#1c0810] placeholder-black/40 shadow-xs outline-none transition-all focus:border-[#7e1c36]"
+                        />
+                        {searchQuery && (
+                          <button
+                            onClick={() => setSearchQuery("")}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-black/40 hover:text-black"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
 
-                        {/* Section tabs styled like sticky page index divider flags */}
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {[
-                            { id: "all", label: "All Dispatches", count: allEntries.length },
-                            { id: "case-studies", label: "Case Studies", count: caseStudies.length },
-                            { id: "articles", label: "Studio Essays", count: articles.length },
-                            { id: "updates", label: "Changelog", count: updates.length },
-                          ].map((tab) => {
-                            const isActive = activeTab === tab.id;
-                            return (
-                              <button
-                                key={tab.id}
-                                onClick={() => {
-                                  setActiveTab(tab.id as TabType);
-                                  setSelectedTag(null);
-                                }}
-                                className={`flex h-[32px] items-center gap-1.5 rounded-full px-3 text-xs font-mono font-semibold transition-all ${
-                                  isActive
-                                    ? "bg-[#4b1426] text-white shadow-xs"
-                                    : "border border-black/15 bg-white text-black/70 hover:bg-black/5 hover:text-black"
+                      {/* Section tabs styled like sticky page index divider flags */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {[
+                          { id: "all", label: "All Dispatches", count: allEntries.length },
+                          { id: "case-studies", label: "Case Studies", count: caseStudies.length },
+                          { id: "articles", label: "Studio Essays", count: articles.length },
+                          { id: "updates", label: "Changelog", count: updates.length },
+                        ].map((tab) => {
+                          const isActive = activeTab === tab.id;
+                          return (
+                            <button
+                              key={tab.id}
+                              onClick={() => {
+                                setActiveTab(tab.id as TabType);
+                                setSelectedTag(null);
+                              }}
+                              className={`flex h-[32px] items-center gap-1.5 rounded-full px-3 text-xs font-mono font-semibold transition-all ${
+                                isActive
+                                  ? "bg-[#4b1426] text-white shadow-xs"
+                                  : "border border-black/15 bg-white text-black/70 hover:bg-black/5 hover:text-black"
+                              }`}
+                            >
+                              <span>{tab.label}</span>
+                              <span
+                                className={`rounded-full px-1.5 text-[10px] ${
+                                  isActive ? "bg-white/20 text-white" : "bg-black/10 text-black/60"
                                 }`}
                               >
-                                <span>{tab.label}</span>
-                                <span
-                                  className={`rounded-full px-1.5 text-[10px] ${
-                                    isActive ? "bg-white/20 text-white" : "bg-black/10 text-black/60"
-                                  }`}
-                                >
-                                  {tab.count}
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
+                                {tab.count}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
-                    </GridSnap>
+                    </div>
                   </div>
 
-                  {/* ── Table of Contents Index Entries List (Zero-padding, mathematically locked) ── */}
-                  <div className="mb-[64px]">
-                    {/* Table Header Row (Exact 32px height + 32px margin) */}
-                    <div className="hidden sm:flex h-[32px] mb-[32px] items-baseline justify-between text-xs font-mono font-bold uppercase tracking-widest text-black/50">
-                      <div className="leading-[32px]">Date // Category // Title</div>
-                      <div className="text-right leading-[32px]">Dispatch Ref</div>
+                  {/* ── Table of Contents Index Entries List (Airy, Natural Plain Paper Spacing) ── */}
+                  <div className="space-y-6 mb-12">
+                    {/* Table Header Row */}
+                    <div className="hidden sm:flex pb-3 items-center justify-between text-xs font-mono font-bold uppercase tracking-widest text-black/40 border-b border-black/5">
+                      <div>Date // Category // Title</div>
+                      <div className="text-right">Dispatch Ref</div>
                     </div>
 
                     {filteredEntries.map((entry) => {
@@ -473,12 +419,12 @@ export function SpiralDiary({
                         <div
                           key={entryKey}
                           onClick={() => setSelectedEntryId(entryKey)}
-                          className="group cursor-pointer mb-[64px]"
+                          className="group cursor-pointer pb-6 border-b border-black/5 last:border-0 hover:bg-black/[0.015] -mx-2 px-2 rounded-xl transition-all"
                         >
-                          {/* Line 1: Date + Category Badge + Page Reference */}
-                          <div className="flex h-[32px] items-baseline justify-between gap-4">
-                            <div className="flex items-baseline gap-2.5">
-                              <span className="font-mono text-xs text-black/50 leading-[32px] shrink-0">
+                          {/* Top Row: Date + Category Badge + Page Reference */}
+                          <div className="flex items-center justify-between gap-4 mb-2">
+                            <div className="flex items-center gap-2.5">
+                              <span className="font-mono text-xs text-black/50 shrink-0">
                                 {monthStr} {dayStr}, {yearStr}
                               </span>
                               <span className="rounded bg-[#4b1426]/10 px-2 py-0.5 font-mono text-[10px] font-bold text-[#4b1426] leading-none shrink-0">
@@ -486,15 +432,15 @@ export function SpiralDiary({
                               </span>
                             </div>
 
-                            <span className="shrink-0 font-mono text-xs font-bold text-[#7e1c36] leading-[32px]">
+                            <span className="shrink-0 font-mono text-xs font-bold text-[#7e1c36] group-hover:translate-x-0.5 transition-transform">
                               p. {entry.pageNum} →
                             </span>
                           </div>
 
-                          {/* Line 2: Full Title without truncation, with ample right padding for italic flourishes */}
-                          <div className="min-h-[32px]">
+                          {/* Full Title without truncation, ample padding */}
+                          <div>
                             <h3
-                              className={`font-bold tracking-normal text-[#1c0810] group-hover:text-[#7e1c36] transition-colors leading-[32px] pr-8 break-words ${
+                              className={`font-bold tracking-normal text-[#1c0810] group-hover:text-[#7e1c36] transition-colors leading-snug pr-8 break-words ${
                                 useHandwriting
                                   ? "font-handwriting text-2xl sm:text-[28px]"
                                   : "font-heading text-lg sm:text-xl"
@@ -504,10 +450,10 @@ export function SpiralDiary({
                             </h3>
                           </div>
 
-                          {/* Line 3: Summary handwritten note */}
-                          <div className="min-h-[32px]">
+                          {/* Summary handwritten note */}
+                          <div className="mt-1.5">
                             <p
-                              className={`leading-[32px] text-black/70 pr-8 break-words ${
+                              className={`leading-relaxed text-black/70 pr-8 break-words ${
                                 useHandwriting ? "font-handwriting text-xl sm:text-2xl" : "font-sans text-sm text-black/60"
                               }`}
                             >
@@ -548,57 +494,55 @@ export function SpiralDiary({
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {/* Hanging Date Tab on Top Margin (snapped with 2 blank lines after) */}
-                  <GridSnap blankLinesAfter={2}>
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center rounded-md border border-[#4b1426]/30 bg-[#4b1426] px-3 py-1 text-center shadow-md">
-                          <span className="font-mono text-[10px] uppercase font-bold text-[#fcf9f2]">
-                            {currentEntry.date.toLocaleDateString("en-US", { month: "short" })}
-                          </span>
-                          <span className="font-marker text-lg leading-none text-[#fff2f2]">
-                            {currentEntry.date.toLocaleDateString("en-US", { day: "numeric" })}
-                          </span>
-                          <span className="font-mono text-[9px] text-[#e07a93]">
-                            {currentEntry.date.getFullYear()}
-                          </span>
-                        </div>
-
-                        <div>
-                          <span className="rounded bg-[#4b1426]/10 px-2.5 py-0.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#4b1426]">
-                            {currentEntry.kind === "case-study"
-                              ? "CASE STUDY DISPATCH"
-                              : currentEntry.kind === "article"
-                              ? currentEntry.item.articleType || "STUDIO ESSAY"
-                              : "CHANGELOG RECORD"}
-                          </span>
-                          <div className="mt-1 font-mono text-xs text-black/50">
-                            {`Page ${currentEntry.pageNum} // Written by Doom Studio ✍`}
-                          </div>
-                        </div>
+                  {/* Hanging Date Tab on Top Margin */}
+                  <div className="mb-6 flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-black/10">
+                    <div className="flex items-center gap-3">
+                      <div className="flex flex-col items-center rounded-md border border-[#4b1426]/30 bg-[#4b1426] px-3 py-1 text-center shadow-md">
+                        <span className="font-mono text-[10px] uppercase font-bold text-[#fcf9f2]">
+                          {currentEntry.date.toLocaleDateString("en-US", { month: "short" })}
+                        </span>
+                        <span className="font-marker text-lg leading-none text-[#fff2f2]">
+                          {currentEntry.date.toLocaleDateString("en-US", { day: "numeric" })}
+                        </span>
+                        <span className="font-mono text-[9px] text-[#e07a93]">
+                          {currentEntry.date.getFullYear()}
+                        </span>
                       </div>
 
-                      {currentEntry.kind === "case-study" && currentEntry.item.liveUrl && (
-                        <a
-                          href={currentEntry.item.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-white px-3.5 py-1.5 text-xs font-mono font-semibold text-black shadow-xs hover:bg-black/5"
-                        >
-                          <span>Visit Live {currentEntry.item.title}</span>
-                          <ExternalLink className="size-3.5" />
-                        </a>
-                      )}
+                      <div>
+                        <span className="rounded bg-[#4b1426]/10 px-2.5 py-0.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#4b1426]">
+                          {currentEntry.kind === "case-study"
+                            ? "CASE STUDY DISPATCH"
+                            : currentEntry.kind === "article"
+                            ? currentEntry.item.articleType || "STUDIO ESSAY"
+                            : "CHANGELOG RECORD"}
+                        </span>
+                        <div className="mt-1 font-mono text-xs text-black/50">
+                          {`Page ${currentEntry.pageNum} // Written by Doom Studio ✍`}
+                        </div>
+                      </div>
                     </div>
-                  </GridSnap>
+
+                    {currentEntry.kind === "case-study" && currentEntry.item.liveUrl && (
+                      <a
+                        href={currentEntry.item.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-white px-3.5 py-1.5 text-xs font-mono font-semibold text-black shadow-xs hover:bg-black/5"
+                      >
+                        <span>Visit Live {currentEntry.item.title}</span>
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    )}
+                  </div>
 
                   {/* Complete Title written on white paper (Fully responsive, balanced, never clipped) */}
-                  <div className="mb-[64px] max-w-4xl">
+                  <div className="mb-6 max-w-4xl">
                     <h1
-                      className={`font-bold text-[#1c0810] leading-[64px] translate-y-[9px] break-words pr-8 [overflow-wrap:anywhere] [text-wrap:balance] ${
+                      className={`font-bold text-[#1c0810] leading-tight break-words pr-8 [overflow-wrap:anywhere] [text-wrap:balance] ${
                         useHandwriting
-                          ? "font-handwriting text-3xl sm:text-4xl md:text-5xl lg:text-[50px]"
-                          : "font-heading text-2xl sm:text-3xl md:text-4xl lg:text-[42px]"
+                          ? "font-handwriting text-3xl sm:text-4xl md:text-5xl lg:text-[52px]"
+                          : "font-heading text-2xl sm:text-3xl md:text-4xl lg:text-[44px]"
                       }`}
                     >
                       {currentEntry.item.title}
@@ -609,15 +553,15 @@ export function SpiralDiary({
                   {currentEntry.kind === "case-study" && (
                     <div>
                       <p
-                        className={`text-2xl sm:text-3xl leading-[32px] text-[#4b1426] font-semibold mb-[64px] ${
+                        className={`text-2xl sm:text-3xl leading-snug text-[#4b1426] font-semibold mb-8 ${
                           useHandwriting ? "font-handwriting" : "font-heading"
                         }`}
                       >
                         {currentEntry.item.outcomeLine}
                       </p>
 
-                      {/* Polaroid Screenshot Taped to the ruled page with frosted washi tape */}
-                      <GridSnap blankLinesAfter={2} className="max-w-2xl">
+                      {/* Polaroid Screenshot Taped to the page with frosted washi tape */}
+                      <div className="mb-8 max-w-2xl">
                         <div className="relative rounded-2xl border border-black/15 bg-white p-3 sm:p-4 shadow-xl -rotate-0.5 transition-transform hover:rotate-0">
                           {/* Top frosted washi tape */}
                           <div
@@ -644,10 +588,10 @@ export function SpiralDiary({
                             </span>
                           </div>
                         </div>
-                      </GridSnap>
+                      </div>
 
                       {/* Notes Grid: Bottleneck & Context */}
-                      <GridSnap blankLinesAfter={2}>
+                      <div className="mb-8">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                           {currentEntry.item.bottleneck && (
                             <div className="relative rounded-2xl border-2 border-dashed border-red-400/70 bg-[#fff5f6] p-5 shadow-sm">
@@ -655,7 +599,7 @@ export function SpiralDiary({
                                 ⚠ The Critical Bottleneck:
                               </span>
                               <p
-                                className={`mt-2 text-xl sm:text-2xl leading-[32px] text-red-950 ${
+                                className={`mt-2 text-xl sm:text-2xl leading-relaxed text-red-950 ${
                                   useHandwriting ? "font-handwriting" : "font-sans text-base leading-relaxed"
                                 }`}
                               >
@@ -670,7 +614,7 @@ export function SpiralDiary({
                                 The Context:
                               </span>
                               <p
-                                className={`mt-2 text-xl sm:text-2xl leading-[32px] text-black/90 ${
+                                className={`mt-2 text-xl sm:text-2xl leading-relaxed text-black/90 ${
                                   useHandwriting ? "font-handwriting" : "font-sans text-base leading-relaxed"
                                 }`}
                               >
@@ -679,46 +623,46 @@ export function SpiralDiary({
                             </div>
                           )}
                         </div>
-                      </GridSnap>
+                      </div>
 
                       {/* What We Did & What Changed */}
                       {currentEntry.item.whatWeDid && (
-                        <GridSnap blankLinesAfter={2}>
+                        <div className="mb-8">
                           <div className="rounded-2xl border border-black/15 bg-white p-6 sm:p-7 shadow-sm">
                             <span className="font-marker text-xs uppercase tracking-wider text-[#7e1c36]">
                               What We Built & Shipped:
                             </span>
                             <p
-                              className={`mt-3 text-xl sm:text-2xl leading-[32px] text-black/95 ${
+                              className={`mt-3 text-xl sm:text-2xl leading-relaxed text-black/95 ${
                                 useHandwriting ? "font-handwriting" : "font-sans text-base sm:text-lg leading-relaxed"
                               }`}
                             >
                               {currentEntry.item.whatWeDid}
                             </p>
                           </div>
-                        </GridSnap>
+                        </div>
                       )}
 
                       {currentEntry.item.whatChanged && (
-                        <GridSnap blankLinesAfter={2}>
+                        <div className="mb-8">
                           <div className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-50/50 p-6 sm:p-7 shadow-sm">
                             <span className="font-marker text-xs uppercase tracking-wider text-emerald-800">
                               The Measured Outcome & Impact:
                             </span>
                             <p
-                              className={`mt-3 text-xl sm:text-2xl leading-[32px] text-emerald-950 ${
+                              className={`mt-3 text-xl sm:text-2xl leading-relaxed text-emerald-950 ${
                                 useHandwriting ? "font-handwriting" : "font-sans text-base sm:text-lg leading-relaxed"
                               }`}
                             >
                               {currentEntry.item.whatChanged}
                             </p>
                           </div>
-                        </GridSnap>
+                        </div>
                       )}
 
                       {/* Gallery Artifacts */}
                       {currentEntry.item.galleryUrls.length > 0 && (
-                        <GridSnap blankLinesAfter={2}>
+                        <div className="mb-8">
                           <div className="pt-2">
                             <span className="font-marker text-sm uppercase tracking-wider text-black/60 block mb-3">
                               Field Artifacts & Snapshots:
@@ -744,7 +688,7 @@ export function SpiralDiary({
                               ))}
                             </div>
                           </div>
-                        </GridSnap>
+                        </div>
                       )}
                     </div>
                   )}
@@ -753,7 +697,7 @@ export function SpiralDiary({
                   {currentEntry.kind === "article" && (
                     <div className="max-w-3xl">
                       <p
-                        className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-[32px] mb-[64px] break-words ${
+                        className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-relaxed mb-8 break-words ${
                           useHandwriting ? "font-handwriting" : "font-heading text-lg"
                         }`}
                       >
@@ -766,7 +710,7 @@ export function SpiralDiary({
                             return (
                               <h3
                                 key={i}
-                                className={`font-bold text-[#7e1c36] leading-[64px] translate-y-[9px] mt-[64px] mb-[32px] break-words ${
+                                className={`font-bold text-[#7e1c36] leading-snug mt-8 mb-3 break-words ${
                                   useHandwriting
                                     ? "font-handwriting text-3xl sm:text-4xl"
                                     : "font-heading text-2xl sm:text-3xl"
@@ -779,10 +723,10 @@ export function SpiralDiary({
                           return (
                             <p
                               key={i}
-                              className={`text-xl sm:text-2xl text-[#1c0810] leading-[32px] mb-[32px] break-words ${
+                              className={`text-xl sm:text-2xl text-[#1c0810] leading-relaxed mb-6 break-words ${
                                 useHandwriting
                                   ? "font-handwriting"
-                                  : "font-sans text-base sm:text-lg leading-[32px] text-black/85"
+                                  : "font-sans text-base sm:text-lg leading-relaxed text-black/85"
                               }`}
                             >
                               {para}
@@ -797,7 +741,7 @@ export function SpiralDiary({
                   {currentEntry.kind === "update" && (
                     <div className="max-w-3xl">
                       <p
-                        className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-[32px] mb-[64px] break-words ${
+                        className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-relaxed mb-6 break-words ${
                           useHandwriting ? "font-handwriting" : "font-sans text-base"
                         }`}
                       >
@@ -806,10 +750,10 @@ export function SpiralDiary({
 
                       {currentEntry.item.body && (
                         <p
-                          className={`text-xl sm:text-2xl text-[#1c0810] leading-[32px] mb-[32px] break-words ${
+                          className={`text-xl sm:text-2xl text-[#1c0810] leading-relaxed mb-6 break-words ${
                             useHandwriting
                               ? "font-handwriting"
-                              : "font-sans text-base sm:text-lg leading-[32px] text-black/85"
+                              : "font-sans text-base sm:text-lg leading-relaxed text-black/85"
                           }`}
                         >
                           {currentEntry.item.body}
@@ -819,7 +763,7 @@ export function SpiralDiary({
                   )}
 
                   {/* Entry Footer with Prev/Next Navigation */}
-                  <GridSnap blankLinesAfter={1} className="mt-[64px]">
+                  <div className="mt-12 pt-8 border-t border-black/10">
                     <div className="space-y-6">
                       <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex flex-wrap items-center gap-1.5">
@@ -872,7 +816,7 @@ export function SpiralDiary({
                         )}
                       </div>
                     </div>
-                  </GridSnap>
+                  </div>
                 </motion.article>
               )}
             </AnimatePresence>
