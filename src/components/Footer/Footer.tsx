@@ -3,6 +3,18 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView, type Transition } from "motion/react";
 
+const KIT_SUBSCRIBE_URL = "https://app.kit.com/forms/9920520/subscriptions";
+const KIT_FORM_UID = "96ae44c95b";
+
+type SubscribeStatus = "idle" | "submitting" | "success" | "error";
+
+interface KitSubscriptionResponse {
+  status?: string;
+  errors?: {
+    messages?: string[];
+  };
+}
+
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -44,20 +56,20 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
   {
     label: "Navigation",
     links: [
-      { text: "Services", href: "#services" },
-      { text: "Work", href: "#work" },
+      { text: "Services", href: "/#services" },
+      { text: "Work", href: "/#work" },
       { text: "Readings", href: "/reading" },
-      { text: "Approach", href: "#approach" },
-      { text: "Pricing", href: "#pricing" },
+      { text: "Approach", href: "/#approach" },
+      { text: "Pricing", href: "/#pricing" },
       { text: "Updates", href: "/reading" },
     ],
   },
   {
     label: "Company",
     links: [
-      { text: "Privacy Policy", href: "#privacy" },
-      { text: "Terms of Service", href: "#terms" },
-      { text: "About", href: "#about" },
+      { text: "About Doom", href: "/" },
+      { text: "Start a project", href: "/#pricing" },
+      { text: "Studio notes", href: "/reading" },
     ],
   },
 ];
@@ -67,7 +79,7 @@ const DEFAULT_NEWSLETTER = {
   body: "Engineering notes, product tear-downs, and high-velocity workflow frameworks delivered every Tuesday.",
 };
 
-const DEFAULT_SOCIALS: FooterSocial[] = [
+export const DEFAULT_SOCIALS: FooterSocial[] = [
   {
     label: "X (Twitter)",
     href: "https://x.com",
@@ -235,26 +247,76 @@ function usePrefersReducedMotion() {
 export default function Footer({
   columns = DEFAULT_COLUMNS,
   newsletter = DEFAULT_NEWSLETTER,
-  socials = DEFAULT_SOCIALS,
+  socials,
   wordmark = "DOOM",
   className = "",
 }: FooterProps) {
   const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [subscribeStatus, setSubscribeStatus] =
+    useState<SubscribeStatus>("idle");
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.12 });
   const reducedMotion = usePrefersReducedMotion();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email.trim()) {
-      if (newsletter.onSubscribe) {
-        newsletter.onSubscribe(email.trim());
+
+    const normalizedEmail = email.trim();
+    if (!normalizedEmail || subscribeStatus === "submitting") return;
+
+    setSubscribeStatus("submitting");
+
+    const formData = new FormData();
+    formData.append("email_address", normalizedEmail);
+    formData.append("referrer", document.referrer);
+    formData.append("host", window.location.href);
+    formData.append("search", window.location.search);
+    formData.append("ckjs_version", "6");
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 12_000);
+
+    try {
+      const response = await fetch(KIT_SUBSCRIBE_URL, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+          "X-CKJS-Version": "6",
+        },
+        signal: controller.signal,
+      });
+      const result = (await response.json()) as KitSubscriptionResponse;
+
+      if (!response.ok || result.status !== "success") {
+        throw new Error(
+          result.errors?.messages?.[0] ?? "Unable to subscribe right now."
+        );
       }
-      setSubscribed(true);
+
+      if (newsletter.onSubscribe) {
+        newsletter.onSubscribe(normalizedEmail);
+      }
+
+      setSubscribeStatus("success");
       setEmail("");
+    } catch {
+      setSubscribeStatus("error");
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   };
+
+  const isSubmitting = subscribeStatus === "submitting";
+  const isSubscribed = subscribeStatus === "success";
+  const subscribeLabel =
+    subscribeStatus === "submitting"
+      ? "Joining…"
+      : subscribeStatus === "success"
+        ? "Check inbox"
+        : subscribeStatus === "error"
+          ? "Try again"
+          : "Subscribe";
 
   const easeOut = [0.16, 1, 0.3, 1] as const;
 
@@ -310,11 +372,11 @@ export default function Footer({
 
       <div className="mx-auto max-w-[1400px] px-5 pt-16 pb-0 sm:px-8 md:px-12 lg:px-16 sm:pt-20">
         {/* ── Main Layout:
-            Left Side: Double-column Newsletter Section + Social Strip
-            Right Side (Third Column Area): Link Columns (Navigation & Company)
+            Left Side: Double-column Newsletter Section
+            Right Side: Link Columns (Navigation & Company)
         ── */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.38fr_1fr] lg:gap-14 xl:grid-cols-[1.48fr_1fr] xl:gap-16 items-start">
-          {/* ── Left Section: Double Column Newsletter Card + Social Strip ── */}
+          {/* ── Left Section: Double Column Newsletter Card ── */}
           <div className="flex flex-col gap-4">
             {/* Newsletter Card with 2-column internal layout */}
             <motion.div
@@ -341,24 +403,55 @@ export default function Footer({
                   {/* Inline pill-shaped input + subscribe button */}
                   <form
                     onSubmit={handleSubmit}
+                    action={KIT_SUBSCRIBE_URL}
+                    method="post"
+                    data-sv-form="9920520"
+                    data-uid={KIT_FORM_UID}
                     className="flex w-full items-center rounded-full border border-white/20 bg-[#20060e]/80 p-1 pl-4 transition-all duration-200 focus-within:border-white/40 focus-within:ring-1 focus-within:ring-white/20"
                   >
                     <input
                       type="email"
+                      name="email_address"
                       placeholder="your@email.com"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (subscribeStatus === "error") {
+                          setSubscribeStatus("idle");
+                        }
+                      }}
                       required
+                      autoComplete="email"
+                      disabled={isSubmitting || isSubscribed}
                       className="min-w-0 flex-1 bg-transparent py-2 text-sm text-[#fff2f2] placeholder:text-[#fff2f2]/40 outline-none"
                       aria-label="Email address"
                     />
                     <button
                       type="submit"
-                      className="shrink-0 rounded-full bg-[#fff2f2] px-5 py-2.5 text-sm font-semibold text-[#4b1426] transition-all duration-200 hover:bg-white hover:shadow-[0_0_24px_rgba(255,242,242,0.4)] active:scale-95 cursor-pointer"
+                      disabled={isSubmitting || isSubscribed}
+                      className="min-w-[102px] shrink-0 rounded-full bg-[#fff2f2] px-5 py-2.5 text-sm font-semibold text-[#4b1426] transition-all duration-200 hover:bg-white hover:shadow-[0_0_24px_rgba(255,242,242,0.4)] active:scale-95 cursor-pointer disabled:cursor-default disabled:hover:bg-[#fff2f2] disabled:hover:shadow-none"
                     >
-                      {subscribed ? "Joined" : "Subscribe"}
+                      {subscribeLabel}
                     </button>
                   </form>
+
+                  <div className="flex min-h-4 items-center justify-between gap-3 px-1 text-[10px] leading-none text-[#fff2f2]/40">
+                    <span role="status" aria-live="polite">
+                      {subscribeStatus === "success"
+                        ? "Confirm your subscription by email."
+                        : subscribeStatus === "error"
+                          ? "Something went wrong. Please try again."
+                          : ""}
+                    </span>
+                    <a
+                      href="https://kit.com/features/forms?utm_campaign=poweredby&utm_content=form&utm_medium=referral&utm_source=dynamic"
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="shrink-0 transition-colors duration-200 hover:text-[#fff2f2]/70"
+                    >
+                      Built with Kit
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -380,7 +473,7 @@ export default function Footer({
                       aria-label={social.label}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#fff2f2]/60 transition-all duration-200 hover:scale-110 hover:text-white"
+                      className="inline-flex size-11 items-center justify-center rounded-full text-[#fff2f2]/60 transition-all duration-200 hover:scale-110 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fff2f2]"
                     >
                       {social.icon}
                     </a>
