@@ -10,6 +10,20 @@ import {
 } from "@/lib/site";
 import { ReadingsView } from "@/components/Readings/ReadingsView";
 
+type DiaryTab = "all" | "case-studies" | "articles" | "updates";
+
+function parseTab(value: string | undefined): DiaryTab {
+  if (
+    value === "case-studies" ||
+    value === "articles" ||
+    value === "updates" ||
+    value === "all"
+  ) {
+    return value;
+  }
+  return "all";
+}
+
 const READING_TITLE = "Readings & Case Studies";
 const READING_DESCRIPTION =
   "Deep product breakdowns, engineering notes, design systems, and studio essays on eliminating bottlenecks and shipping better products.";
@@ -46,7 +60,12 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function ReadingPage() {
+export default async function ReadingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const params = await searchParams;
   const [caseStudies, articles, updates] = await Promise.all([
     getAllCaseStudies(),
     getAllArticles(),
@@ -54,20 +73,11 @@ export default async function ReadingPage() {
   ]);
 
   return (
-    <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      {/* Intentionally route-scoped: these display fonts are unused by the landing page. */}
-      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Permanent+Marker&display=swap"
-      />
-      <ReadingsView
-        caseStudies={caseStudies}
-        articles={articles}
-        updates={updates}
-      />
-    </>
+    <ReadingsView
+      caseStudies={caseStudies}
+      articles={articles}
+      updates={updates}
+      initialTab={parseTab(params.tab)}
+    />
   );
 }
