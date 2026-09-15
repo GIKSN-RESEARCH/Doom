@@ -1,4 +1,5 @@
 import type { ArticleType, Prisma } from "@prisma/client";
+import { slugifyTitle } from "@/lib/slug";
 import {
   applyPublishedAt,
   assertCanPublishArticle,
@@ -13,22 +14,20 @@ import {
   optionalStringArray,
   optionalYear,
   requireTitle,
-  ValidationError,
 } from "@/lib/validation";
 
-function requireSlug(body: Record<string, unknown>): string {
-  const slug = optionalSlug(body);
-  if (!slug) {
-    throw new ValidationError("slug is required");
-  }
-  return slug;
+function resolveCreateSlug(
+  body: Record<string, unknown>,
+  title: string,
+): string {
+  return optionalSlug(body) || slugifyTitle(title);
 }
 
 export function parseCaseStudyCreateInput(
   body: Record<string, unknown>,
 ): Prisma.CaseStudyCreateInput {
   const title = requireTitle(body, true)!;
-  const slug = requireSlug(body);
+  const slug = resolveCreateSlug(body, title);
 
   const data: Prisma.CaseStudyCreateInput = {
     title,
@@ -131,7 +130,7 @@ export function parseUpdateCreateInput(
   body: Record<string, unknown>,
 ): Prisma.UpdatePostCreateInput {
   const title = requireTitle(body, true)!;
-  const slug = requireSlug(body);
+  const slug = resolveCreateSlug(body, title);
 
   const data: Prisma.UpdatePostCreateInput = {
     title,
@@ -206,7 +205,7 @@ export function parseArticleCreateInput(
   body: Record<string, unknown>,
 ): Prisma.ArticleCreateInput {
   const title = requireTitle(body, true)!;
-  const slug = requireSlug(body);
+  const slug = resolveCreateSlug(body, title);
   const articleType = optionalArticleType(body);
   const bottleneckTag = optionalBottleneckTag(body);
 
