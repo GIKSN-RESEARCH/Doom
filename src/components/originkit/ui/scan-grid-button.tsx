@@ -540,7 +540,7 @@ export default function ScanGridButton(props: Props) {
                 viewBox={`0 0 ${dim.w} ${dim.h}`}
                 preserveAspectRatio="none"
             >
-                <motion.path
+                <path
                     className="bracket-tl"
                     d={initialPaths.tl}
                     stroke={scanColor}
@@ -549,7 +549,7 @@ export default function ScanGridButton(props: Props) {
                     strokeLinejoin="round"
                     fill="none"
                 />
-                <motion.path
+                <path
                     className="bracket-tr"
                     d={initialPaths.tr}
                     stroke={scanColor}
@@ -558,7 +558,7 @@ export default function ScanGridButton(props: Props) {
                     strokeLinejoin="round"
                     fill="none"
                 />
-                <motion.path
+                <path
                     className="bracket-br"
                     d={initialPaths.br}
                     stroke={scanColor}
@@ -567,7 +567,7 @@ export default function ScanGridButton(props: Props) {
                     strokeLinejoin="round"
                     fill="none"
                 />
-                <motion.path
+                <path
                     className="bracket-bl"
                     d={initialPaths.bl}
                     stroke={scanColor}
