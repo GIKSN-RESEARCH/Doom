@@ -188,7 +188,8 @@ const AccordionGallery = ({
             style={{
               borderRadius: `${radius}px`,
               flexGrow: isActive ? growValue : 1,
-              '--panel-hot': hotColor
+              '--panel-hot': hotColor,
+              '--panel-base': TUNNEL_COLORS[item.background]?.color || '#120408'
             }}
             href={item.link && item.link !== '#' ? item.link : undefined}
             onClick={e => handleClick(i, e)}
@@ -211,13 +212,18 @@ const AccordionGallery = ({
                 />
               )}
               {TUNNEL_COLORS[item.background] && (
-                <NeuralTunnel
-                  className="ag-panel__fx"
-                  active={isActive}
-                  paused={prefersReduced || !isActive}
-                  cursorInteraction={isActive && !prefersReduced}
-                  {...TUNNEL_COLORS[item.background]}
-                />
+                <>
+                  <span className="ag-panel__shader-fallback" aria-hidden="true" />
+                  {isActive && (
+                    <NeuralTunnel
+                      className="ag-panel__fx"
+                      active
+                      paused={prefersReduced}
+                      cursorInteraction={!prefersReduced}
+                      {...TUNNEL_COLORS[item.background]}
+                    />
+                  )}
+                </>
               )}
               {!item.background && !item.Background && (
                 <span
