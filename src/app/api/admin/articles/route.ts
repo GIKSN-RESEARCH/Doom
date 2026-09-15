@@ -10,9 +10,11 @@ import {
   parseOptionalBoolean,
   parseOptionalPublished,
   parseOptionalTag,
+  ADMIN_MAX_LIMIT,
   parsePagination,
 } from "@/lib/pagination";
 import { prisma } from "@/lib/prisma";
+import { uniqueSlug } from "@/lib/slug";
 import { articleDetailSelect, articleListSelect } from "@/lib/selects";
 
 export const runtime = "nodejs";
@@ -24,7 +26,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const searchParams = request.nextUrl.searchParams;
-    const { page, limit, skip, take } = parsePagination(searchParams);
+    const { page, limit, skip, take } = parsePagination(
+      searchParams,
+      ADMIN_MAX_LIMIT,
+    );
     const tag = parseOptionalTag(searchParams.get("tag"));
     const featured = parseOptionalBoolean(searchParams.get("featured"));
     const published = parseOptionalPublished(searchParams.get("published"));
@@ -78,6 +83,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await readJsonBody(request);
     const data = parseArticleCreateInput(body);
+    data.slug = await uniqueSlug("article", data.slug);
 
     const item = await prisma.article.create({
       data,
