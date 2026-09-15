@@ -8,10 +8,27 @@ import { updateDetailSelect } from "@/lib/selects";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+type RouteContext = { params: Promise<{ id: string }> };
+
+export async function GET(request: NextRequest, { params }: RouteContext) {
+  const unauthorized = requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const { id } = await params;
+    const item = await prisma.updatePost.findFirst({
+      where: { id },
+      select: updateDetailSelect,
+    });
+
+    if (!item) return jsonError("Not found", 404);
+    return json(item);
+  } catch (error) {
+    return handleRouteError(error);
+  }
+}
+
+export async function PATCH(request: NextRequest, { params }: RouteContext) {
   const unauthorized = requireAdmin(request);
   if (unauthorized) return unauthorized;
 
@@ -36,6 +53,26 @@ export async function PATCH(
     });
 
     return json(item);
+  } catch (error) {
+    return handleRouteError(error);
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: RouteContext) {
+  const unauthorized = requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const { id } = await params;
+    const existing = await prisma.updatePost.findFirst({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) return jsonError("Not found", 404);
+
+    await prisma.updatePost.delete({ where: { id } });
+    return json({ ok: true });
   } catch (error) {
     return handleRouteError(error);
   }
