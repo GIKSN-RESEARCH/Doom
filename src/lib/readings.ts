@@ -211,12 +211,11 @@ export const FALLBACK_UPDATES: UpdateItem[] = [
 export async function getAllCaseStudies(): Promise<CaseStudyItem[]> {
   try {
     if (!process.env.DATABASE_URL) return FALLBACK_CASE_STUDIES;
-    const items = await prisma.caseStudy.findMany({
+    return await prisma.caseStudy.findMany({
       where: { published: true },
       select: caseStudyDetailSelect,
       orderBy: { publishedAt: "desc" },
     });
-    return items.length > 0 ? items : FALLBACK_CASE_STUDIES;
   } catch {
     return FALLBACK_CASE_STUDIES;
   }
@@ -225,12 +224,11 @@ export async function getAllCaseStudies(): Promise<CaseStudyItem[]> {
 export async function getAllArticles(): Promise<ArticleItem[]> {
   try {
     if (!process.env.DATABASE_URL) return FALLBACK_ARTICLES;
-    const items = await prisma.article.findMany({
+    return await prisma.article.findMany({
       where: { published: true },
       select: articleDetailSelect,
       orderBy: { publishedAt: "desc" },
     });
-    return items.length > 0 ? items : FALLBACK_ARTICLES;
   } catch {
     return FALLBACK_ARTICLES;
   }
@@ -239,12 +237,11 @@ export async function getAllArticles(): Promise<ArticleItem[]> {
 export async function getAllUpdates(): Promise<UpdateItem[]> {
   try {
     if (!process.env.DATABASE_URL) return FALLBACK_UPDATES;
-    const items = await prisma.updatePost.findMany({
+    return await prisma.updatePost.findMany({
       where: { published: true },
       select: updateDetailSelect,
       orderBy: { publishedAt: "desc" },
     });
-    return items.length > 0 ? items : FALLBACK_UPDATES;
   } catch {
     return FALLBACK_UPDATES;
   }
