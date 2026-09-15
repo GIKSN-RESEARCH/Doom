@@ -109,6 +109,12 @@ export interface Hero3Props {
   headlineLine2?: string;
   links?: Hero3Link[];
   className?: string;
+  panelClassName?: string;
+  descriptionClassName?: string;
+  taglineClassName?: string;
+  descriptionTextClassName?: string;
+  hideLinks?: boolean;
+  isStatic?: boolean;
 }
 
 export function Hero3({
@@ -121,6 +127,12 @@ export function Hero3({
   headlineLine2 = "the bottlenecks.",
   links = [],
   className,
+  panelClassName,
+  descriptionClassName,
+  taglineClassName,
+  descriptionTextClassName,
+  hideLinks = false,
+  isStatic = false,
 }: Hero3Props) {
   const sectionRef = React.useRef<HTMLElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -245,10 +257,13 @@ export function Hero3({
       {/* Panel */}
       <motion.div
         ref={panelRef}
-        initial={{ scale: 0.98, opacity: 0 }}
+        initial={isStatic ? false : { scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-        className="relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh] sm:min-h-[660px] rounded-[28px] sm:rounded-none overflow-hidden"
+        transition={isStatic ? { duration: 0 } : { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+        className={cn(
+          "relative w-full flex-1 min-h-[82svh] sm:min-h-[70svh] sm:min-h-[660px] rounded-[28px] sm:rounded-none overflow-hidden",
+          panelClassName
+        )}
       >
         {/* Clipped shader layer */}
         <div
@@ -277,83 +292,57 @@ export function Hero3({
         <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-10 lg:p-12 overflow-hidden">
           {/* Header */}
           <motion.div
-            initial={{ y: -25, opacity: 0 }}
+            initial={isStatic ? false : { y: -25, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+            transition={isStatic ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
             style={{ y: headerY, opacity: headerOpacity }}
             className="flex items-start justify-between gap-4"
           >
-            <Link
-              href="/"
-              className="pointer-events-auto group relative flex items-center justify-center font-logo leading-none text-[#fff2f2] outline-none transition-transform duration-300 hover:scale-105 active:scale-95"
-              aria-label={`${logoText} ${logoSubtext} Home`}
-            >
-              <SpinningText
-                className="font-logo text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#fff2f2] transition-colors group-hover:text-[#e07a93] select-none size-[76px] sm:size-[88px]"
-                duration={prefersReducedMotion ? 0 : 12}
-                radius={4.5}
+            {hideLinks ? (
+              <div
+                className="pointer-events-none relative flex items-center justify-center font-logo leading-none text-[#fff2f2]"
+                aria-label={`${logoText} ${logoSubtext}`}
               >
-                {`${logoText} ${logoSubtext} • ${logoText} ${logoSubtext} •`}
-              </SpinningText>
-            </Link>
+                <SpinningText
+                  className="font-logo text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#fff2f2] select-none size-[76px] sm:size-[88px]"
+                  duration={prefersReducedMotion || isStatic ? 0 : 12}
+                  radius={4.5}
+                >
+                  {`${logoText} ${logoSubtext} • ${logoText} ${logoSubtext} •`}
+                </SpinningText>
+              </div>
+            ) : (
+              <Link
+                href="/"
+                className="pointer-events-auto group relative flex items-center justify-center font-logo leading-none text-[#fff2f2] outline-none transition-transform duration-300 hover:scale-105 active:scale-95"
+                aria-label={`${logoText} ${logoSubtext} Home`}
+              >
+                <SpinningText
+                  className="font-logo text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#fff2f2] transition-colors group-hover:text-[#e07a93] select-none size-[76px] sm:size-[88px]"
+                  duration={prefersReducedMotion ? 0 : 12}
+                  radius={4.5}
+                >
+                  {`${logoText} ${logoSubtext} • ${logoText} ${logoSubtext} •`}
+                </SpinningText>
+              </Link>
+            )}
 
             {/* Spacer so the header layout stays balanced on mobile */}
             <div className="h-11 w-11 sm:hidden" aria-hidden />
           </motion.div>
 
           {/* Desktop Navigation & "Get Started" CTA (Vertically stacked with equal top and bottom gaps) */}
-          <motion.div
-            initial={{ y: -25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-            style={{ y: headerY, opacity: headerOpacity }}
-            className="pointer-events-auto hidden sm:flex sm:flex-col sm:items-end sm:justify-between sm:absolute sm:top-10 sm:right-10 sm:bottom-[calc(30%+2.5rem)] lg:top-12 lg:right-12 lg:bottom-[calc(30%+3rem)] sm:z-20"
-          >
-            <ScanGridButton
-              link={ctaHref}
-              label={ctaLabel}
-              borderRadius={0}
-              padding="11px 24px"
-              font={{
-                fontFamily: "var(--font-clash-display)",
-                fontWeight: 600,
-                fontSize: "1.0625rem",
-                letterSpacing: "-0.01em",
-                textAlign: "center",
-                whiteSpace: "nowrap",
-              }}
-              colors={{
-                fill: "rgba(255, 255, 255, 0.1)",
-                textColor: "#FFFFFF",
-                hoverFill: "rgba(255, 255, 255, 0.2)",
-                hoverTextColor: "#FFFFFF",
-                boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.28), 0 8px 32px rgba(0,0,0,0.35)",
-                hoverBoxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.45), 0 12px 36px rgba(0,0,0,0.45)",
-              }}
-              border={{
-                borderWidth: 1,
-                borderStyle: "solid",
-                borderColor: "rgba(255, 255, 255, 0.3)",
-              }}
-              scan={{
-                color: "#FFFFFF",
-                speed: 50,
-              }}
-              glitchIntensity={0}
-              style={{
-                width: "180px",
-                flexShrink: 0,
-                backdropFilter: "blur(12px) saturate(150%)",
-                WebkitBackdropFilter: "blur(12px) saturate(150%)",
-              }}
-            />
-
-            {/* Vertically stacked links with identical size & UI as Get Started button */}
-            {links.map((link) => (
+          {!hideLinks && (
+            <motion.div
+              initial={isStatic ? false : { y: -25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={isStatic ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+              style={{ y: headerY, opacity: headerOpacity }}
+              className="pointer-events-auto hidden sm:flex sm:flex-col sm:items-end sm:justify-between sm:absolute sm:top-10 sm:right-10 sm:bottom-[calc(30%+2.5rem)] lg:top-12 lg:right-12 lg:bottom-[calc(30%+3rem)] sm:z-20"
+            >
               <ScanGridButton
-                key={link.label}
-                link={link.href}
-                label={link.label}
+                link={ctaHref}
+                label={ctaLabel}
                 borderRadius={0}
                 padding="11px 24px"
                 font={{
@@ -389,8 +378,51 @@ export function Hero3({
                   WebkitBackdropFilter: "blur(12px) saturate(150%)",
                 }}
               />
-            ))}
-          </motion.div>
+
+              {/* Vertically stacked links with identical size & UI as Get Started button */}
+              {links.map((link) => (
+                <ScanGridButton
+                  key={link.label}
+                  link={link.href}
+                  label={link.label}
+                  borderRadius={0}
+                  padding="11px 24px"
+                  font={{
+                    fontFamily: "var(--font-clash-display)",
+                    fontWeight: 600,
+                    fontSize: "1.0625rem",
+                    letterSpacing: "-0.01em",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                  }}
+                  colors={{
+                    fill: "rgba(255, 255, 255, 0.1)",
+                    textColor: "#FFFFFF",
+                    hoverFill: "rgba(255, 255, 255, 0.2)",
+                    hoverTextColor: "#FFFFFF",
+                    boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.28), 0 8px 32px rgba(0,0,0,0.35)",
+                    hoverBoxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.45), 0 12px 36px rgba(0,0,0,0.45)",
+                  }}
+                  border={{
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: "rgba(255, 255, 255, 0.3)",
+                  }}
+                  scan={{
+                    color: "#FFFFFF",
+                    speed: 50,
+                  }}
+                  glitchIntensity={0}
+                  style={{
+                    width: "180px",
+                    flexShrink: 0,
+                    backdropFilter: "blur(12px) saturate(150%)",
+                    WebkitBackdropFilter: "blur(12px) saturate(150%)",
+                  }}
+                />
+              ))}
+            </motion.div>
+          )}
 
           {/* Description + Headline + Mobile in-panel CTA */}
           <motion.div
@@ -408,9 +440,9 @@ export function Hero3({
                 }
               >
                 <motion.p
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 15 }}
+                  initial={isStatic || prefersReducedMotion ? false : { opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
+                  transition={isStatic ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
                   className="text-base font-normal leading-relaxed text-[#fff2f2]/85 tracking-normal [text-wrap:pretty]"
                 >
                   {description}
@@ -420,13 +452,16 @@ export function Hero3({
 
             <h1
               ref={taglineRef}
-              className="w-fit text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white"
+              className={cn(
+                "w-fit text-[clamp(2.75rem,7.5vw,6rem)] font-bold leading-[0.95] tracking-tight text-white",
+                taglineClassName
+              )}
             >
               <span className="block overflow-hidden pb-1">
                 <motion.span
-                  initial={{ y: "110%", opacity: 0 }}
+                  initial={isStatic ? false : { y: "110%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
+                  transition={isStatic ? { duration: 0 } : { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
                   className="block"
                 >
                   {headline}
@@ -434,9 +469,9 @@ export function Hero3({
               </span>
               <span className="block overflow-hidden pb-1">
                 <motion.span
-                  initial={{ y: "110%", opacity: 0 }}
+                  initial={isStatic ? false : { y: "110%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.68 }}
+                  transition={isStatic ? { duration: 0 } : { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.68 }}
                   className="block"
                 >
                   {headlineLine2}
@@ -445,75 +480,86 @@ export function Hero3({
             </h1>
 
             {/* In-Panel "Get Started" CTA on Mobile */}
-            <motion.a
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-              href={ctaHref}
-              className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-none border border-white/35 bg-white/15 px-6 py-3.5 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 active:scale-95 hover:bg-white/25 hover:border-white/50 sm:hidden"
-            >
-              <span>{ctaLabel}</span>
-              <ArrowUpRight className="size-4" />
-            </motion.a>
+            {!hideLinks && (
+              <motion.a
+                initial={isStatic ? false : { opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={isStatic ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+                href={ctaHref}
+                className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-none border border-white/35 bg-white/15 px-6 py-3.5 text-base font-semibold text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 active:scale-95 hover:bg-white/25 hover:border-white/50 sm:hidden"
+              >
+                <span>{ctaLabel}</span>
+                <ArrowUpRight className="size-4" />
+              </motion.a>
+            )}
           </motion.div>
         </div>
       </motion.div>
 
       {/* Mobile hamburger / cross toggle, kept outside the parallax header. */}
-      <button
-        type="button"
-        onClick={() => setMobileMenuOpen((prev) => !prev)}
-        aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={mobileMenuOpen}
-        aria-controls="mobile-navigation"
-        className={cn(
-          "pointer-events-auto flex h-11 w-11 appearance-none items-center justify-center border-0 bg-transparent p-2.5 text-white shadow-none transition-transform duration-150 active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:hidden",
-          mobileMenuOpen
-            ? "fixed right-[calc(env(safe-area-inset-right)+1.5rem)] top-[calc(env(safe-area-inset-top)+1.5rem)] z-[70]"
-            : "absolute right-[25px] top-[25px] z-30"
-        )}
-      >
-        <AnimatePresence initial={false} mode="wait">
-          <motion.span
-            key={mobileMenuOpen ? "close" : "menu"}
-            initial={prefersReducedMotion ? false : { opacity: 0, rotate: -45, scale: 0.7 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, rotate: 45, scale: 0.7 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: MOBILE_MENU_EASE }}
-            className="flex items-center justify-center"
-          >
-            {mobileMenuOpen ? (
-              <X className="size-6" strokeWidth={2} aria-hidden />
-            ) : (
-              <Menu className="size-6" strokeWidth={2} aria-hidden />
-            )}
-          </motion.span>
-        </AnimatePresence>
-      </button>
+      {!hideLinks && (
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+          className={cn(
+            "pointer-events-auto flex h-11 w-11 appearance-none items-center justify-center border-0 bg-transparent p-2.5 text-white shadow-none transition-transform duration-150 active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:hidden",
+            mobileMenuOpen
+              ? "fixed right-[calc(env(safe-area-inset-right)+1.5rem)] top-[calc(env(safe-area-inset-top)+1.5rem)] z-[70]"
+              : "absolute right-[25px] top-[25px] z-30"
+          )}
+        >
+          <AnimatePresence initial={false} mode="wait">
+            <motion.span
+              key={mobileMenuOpen ? "close" : "menu"}
+              initial={prefersReducedMotion ? false : { opacity: 0, rotate: -45, scale: 0.7 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, rotate: 45, scale: 0.7 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: MOBILE_MENU_EASE }}
+              className="flex items-center justify-center"
+            >
+              {mobileMenuOpen ? (
+                <X className="size-6" strokeWidth={2} aria-hidden />
+              ) : (
+                <Menu className="size-6" strokeWidth={2} aria-hidden />
+              )}
+            </motion.span>
+          </AnimatePresence>
+        </button>
+      )}
 
       {/* Desktop Description — inside the notch on sm+ (in place of links) */}
       {description && (
         <motion.div
-          initial={{ y: 30, opacity: 0 }}
+          initial={isStatic ? false : { y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.75 }}
+          transition={isStatic ? { duration: 0 } : { duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.75 }}
           style={{ y: navY, opacity: navOpacity }}
           className={cn(
             "hidden sm:flex sm:flex-col sm:justify-center sm:absolute sm:bottom-6 sm:right-6 sm:mt-0",
             "sm:w-[calc((100%-3rem)*0.38)] sm:h-[calc((100%-3rem)*0.3)]",
-            "sm:p-8 md:p-10 lg:p-12"
+            "sm:p-8 md:p-10 lg:p-12",
+            descriptionClassName
           )}
         >
-          <p className="font-sans text-base sm:text-lg lg:text-xl font-normal leading-relaxed text-[#1c0810]/85 [text-wrap:pretty]">
+          <p
+            className={cn(
+              "font-sans text-base sm:text-lg lg:text-xl font-normal leading-relaxed text-[#1c0810]/85 [text-wrap:pretty]",
+              descriptionTextClassName
+            )}
+          >
             {description}
           </p>
         </motion.div>
       )}
 
       {/* Full-screen mobile menu expands from, and collapses into, the toggle. */}
-      <AnimatePresence initial={false}>
-        {mobileMenuOpen && (
-          <motion.div
+      {!hideLinks && (
+        <AnimatePresence initial={false}>
+          {mobileMenuOpen && (
+            <motion.div
             key="mobile-navigation"
             id="mobile-navigation"
             role="dialog"
@@ -640,6 +686,7 @@ export function Hero3({
           </motion.div>
         )}
       </AnimatePresence>
+      )}
     </section>
   );
 }
