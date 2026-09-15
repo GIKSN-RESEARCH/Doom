@@ -61,7 +61,7 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
       { text: "Readings", href: "/reading" },
       { text: "Approach", href: "/#approach" },
       { text: "Pricing", href: "/#pricing" },
-      { text: "Updates", href: "/reading" },
+      { text: "Updates", href: "/updates" },
     ],
   },
   {
