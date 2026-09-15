@@ -118,6 +118,14 @@
   pointer-events: none;
 }
 
+.ag-panel__shader-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 55% 42%, color-mix(in srgb, var(--panel-hot) 36%, transparent) 0%, transparent 52%),
+    linear-gradient(145deg, var(--panel-base) 0%, #120408 100%);
+}
+
 .accordion-gallery--vertical .ag-panel__fx {
   width: 100%;
   height: var(--ag-media-size, 680px);
