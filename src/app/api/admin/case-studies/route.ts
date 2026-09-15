@@ -10,9 +10,11 @@ import {
   parseOptionalBoolean,
   parseOptionalPublished,
   parseOptionalTag,
+  ADMIN_MAX_LIMIT,
   parsePagination,
 } from "@/lib/pagination";
 import { prisma } from "@/lib/prisma";
+import { uniqueSlug } from "@/lib/slug";
 import { caseStudyDetailSelect, caseStudyListSelect } from "@/lib/selects";
 
 export const runtime = "nodejs";
@@ -25,6 +27,7 @@ export async function GET(request: NextRequest) {
   try {
     const { page, limit, skip, take } = parsePagination(
       request.nextUrl.searchParams,
+      ADMIN_MAX_LIMIT,
     );
     const tag = parseOptionalTag(request.nextUrl.searchParams.get("tag"));
     const featured = parseOptionalBoolean(
@@ -70,6 +73,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await readJsonBody(request);
     const data = parseCaseStudyCreateInput(body);
+    data.slug = await uniqueSlug("caseStudy", data.slug);
 
     const item = await prisma.caseStudy.create({
       data,
