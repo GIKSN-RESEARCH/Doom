@@ -71,7 +71,7 @@ export function SpinningText({
     <motion.div
       className={cn("relative", className)}
       style={{
-        animation: `spinning-text-rotate${reverse ? "-reverse" : ""} ${duration}s linear infinite`,
+        animation: duration === 0 ? "none" : `spinning-text-rotate${reverse ? "-reverse" : ""} ${duration}s linear infinite`,
         ...style,
       }}
       initial={{ rotate: 0 }}
