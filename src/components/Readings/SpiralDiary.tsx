@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ExternalLink,
@@ -16,13 +17,14 @@ import {
 } from "lucide-react";
 import type { CaseStudyItem, ArticleItem, UpdateItem } from "@/lib/readings";
 
+type TabType = "all" | "case-studies" | "articles" | "updates";
+
 interface SpiralDiaryProps {
   caseStudies: CaseStudyItem[];
   articles: ArticleItem[];
   updates: UpdateItem[];
+  initialTab?: TabType;
 }
-
-type TabType = "all" | "case-studies" | "articles" | "updates";
 
 export type DiaryEntry =
   | { kind: "case-study"; item: CaseStudyItem; date: Date; pageNum: string }
@@ -33,8 +35,24 @@ export function SpiralDiary({
   caseStudies,
   articles,
   updates,
+  initialTab = "all",
 }: SpiralDiaryProps) {
-  const [activeTab, setActiveTab] = useState<TabType>("all");
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
+
+  const goToTab = (tab: TabType) => {
+    setActiveTab(tab);
+    setSelectedTag(null);
+    if (tab === "updates") {
+      router.push("/updates");
+      return;
+    }
+    if (tab === "all") {
+      router.push("/reading");
+      return;
+    }
+    router.push(`/reading?tab=${tab}`);
+  };
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [useHandwriting, setUseHandwriting] = useState<boolean>(true);
@@ -359,8 +377,7 @@ export function SpiralDiary({
                             <button
                               key={tab.id}
                               onClick={() => {
-                                setActiveTab(tab.id as TabType);
-                                setSelectedTag(null);
+                                goToTab(tab.id as TabType);
                               }}
                               className={`flex h-[32px] items-center gap-1.5 rounded-full px-3 text-xs font-mono font-semibold transition-all ${
                                 isActive
@@ -471,9 +488,8 @@ export function SpiralDiary({
                         </p>
                         <button
                           onClick={() => {
-                            setActiveTab("all");
-                            setSelectedTag(null);
                             setSearchQuery("");
+                            goToTab("all");
                           }}
                           className="mt-3 font-marker text-xs text-[#7e1c36] underline"
                         >
@@ -561,6 +577,7 @@ export function SpiralDiary({
                       </p>
 
                       {/* Polaroid Screenshot Taped to the page with frosted washi tape */}
+                      {currentEntry.item.coverImageUrl ? (
                       <div className="mb-8 max-w-2xl">
                         <div className="relative rounded-2xl border border-black/15 bg-white p-3 sm:p-4 shadow-xl -rotate-0.5 transition-transform hover:rotate-0">
                           {/* Top frosted washi tape */}
@@ -589,6 +606,7 @@ export function SpiralDiary({
                           </div>
                         </div>
                       </div>
+                      ) : null}
 
                       {/* Notes Grid: Bottleneck & Context */}
                       <div className="mb-8">
@@ -696,6 +714,16 @@ export function SpiralDiary({
                   {/* Article specific content */}
                   {currentEntry.kind === "article" && (
                     <div className="max-w-3xl">
+                      {currentEntry.item.coverImageUrl ? (
+                        <div className="mb-8 overflow-hidden rounded-2xl border border-black/15 bg-white p-2 shadow-md">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={currentEntry.item.coverImageUrl}
+                            alt={currentEntry.item.title}
+                            className="h-auto w-full rounded-xl object-cover"
+                          />
+                        </div>
+                      ) : null}
                       <p
                         className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-relaxed mb-8 break-words ${
                           useHandwriting ? "font-handwriting" : "font-heading text-lg"
@@ -740,6 +768,16 @@ export function SpiralDiary({
                   {/* Update specific content */}
                   {currentEntry.kind === "update" && (
                     <div className="max-w-3xl">
+                      {currentEntry.item.coverImageUrl ? (
+                        <div className="mb-8 overflow-hidden rounded-2xl border border-black/15 bg-white p-2 shadow-md">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={currentEntry.item.coverImageUrl}
+                            alt={currentEntry.item.title}
+                            className="h-auto w-full rounded-xl object-cover"
+                          />
+                        </div>
+                      ) : null}
                       <p
                         className={`text-xl sm:text-2xl text-[#4b1426] font-semibold leading-relaxed mb-6 break-words ${
                           useHandwriting ? "font-handwriting" : "font-sans text-base"
