@@ -24,7 +24,7 @@ const DEFAULT_LINKS: NavLinkItem[] = [
   { label: "Readings", href: "/reading" },
   { label: "Approach", href: "/#approach" },
   { label: "Pricing", href: "/#pricing" },
-  { label: "Updates", href: "/reading" },
+  { label: "Updates", href: "/updates" },
 ];
 
 export function Navbar({
@@ -80,9 +80,12 @@ export function Navbar({
           aria-label="Main Navigation"
         >
           {links.map((link) => {
-            const isReadingLink = link.href === "/reading" || link.href === "/readings";
-            const isReadingActive = isReadingLink && (pathname === "/reading" || pathname?.startsWith("/reading"));
-            const isActive = isReadingActive;
+            const hrefPath = link.href.split("#")[0];
+            const isActive =
+              Boolean(hrefPath) &&
+              !hrefPath.includes("#") &&
+              hrefPath !== "/" &&
+              (pathname === hrefPath || pathname?.startsWith(`${hrefPath}/`));
 
             return (
               <Link
@@ -178,8 +181,12 @@ export function Navbar({
               </span>
 
               {links.map((link, idx) => {
-                const isReadingLink = link.href === "/reading" || link.href === "/readings";
-                const isActive = isReadingLink && pathname?.startsWith("/reading");
+                const hrefPath = link.href.split("#")[0];
+                const isActive =
+                  Boolean(hrefPath) &&
+                  !hrefPath.includes("#") &&
+                  hrefPath !== "/" &&
+                  (pathname === hrefPath || pathname?.startsWith(`${hrefPath}/`));
 
                 return (
                   <Link
