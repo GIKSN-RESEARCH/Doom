@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, type Transition } from "motion/react";
 import { Plus } from "lucide-react";
 import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
@@ -119,12 +120,25 @@ export function Modal({
               backgroundColor: activeCard.logoBg || "rgba(255, 255, 255, 0.06)",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={activeCard.logoUrl}
-              alt=""
-              className="h-full w-full object-contain"
-            />
+            {activeCard.logoUrl.startsWith("/") ? (
+              <Image
+                src={activeCard.logoUrl}
+                alt=""
+                width={96}
+                height={96}
+                sizes="96px"
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              // Custom card data may intentionally point at an unconfigured host.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={activeCard.logoUrl}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-contain"
+              />
+            )}
           </div>
         </motion.div>
       )}
@@ -225,13 +239,30 @@ export function Modal({
       >
         {/* Panoramic Image Frame with maroon border */}
         <div className="relative aspect-[16/9] sm:aspect-[2/1] w-full overflow-hidden rounded-2xl border border-[#4B1426] bg-neutral-950">
-          <motion.img
+          <motion.div
             layoutId={isScale ? `card-${activeCard.id}-image` : undefined}
             transition={transition}
-            src={activeCard.imageUrl}
-            alt=""
-            className="h-full w-full object-cover"
-          />
+            className="absolute inset-0"
+          >
+            {activeCard.imageUrl.startsWith("/") ? (
+              <Image
+                src={activeCard.imageUrl}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 92vw, 768px"
+                className="object-cover"
+              />
+            ) : (
+              // Custom card data may intentionally point at an unconfigured host.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={activeCard.imageUrl}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            )}
+          </motion.div>
 
           {/* Close Button (Explicit 0 -> 135deg spin converting + into ×) */}
           {showCloseButton && (
