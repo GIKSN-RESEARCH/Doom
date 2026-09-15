@@ -24,7 +24,7 @@ const DEFAULT_LINKS: NavLinkItem[] = [
   { label: "Readings", href: "/reading" },
   { label: "Approach", href: "/#approach" },
   { label: "Pricing", href: "/#pricing" },
-  { label: "Updates", href: "/#updates" },
+  { label: "Updates", href: "/reading" },
 ];
 
 export function Navbar({
