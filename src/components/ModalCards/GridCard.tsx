@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import { motion, type Transition } from "motion/react";
 import { Plus } from "lucide-react";
 import type { CardData, AnimationVariant } from "./types";
@@ -55,14 +56,30 @@ export function GridCard({
     >
       {/* Screenshot Image Frame with maroon border */}
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#4B1426] bg-neutral-950">
-        <motion.img
+        <motion.div
           layoutId={isScale ? `card-${card.id}-image` : undefined}
           transition={transition}
-          src={card.imageUrl}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
-        />
+          className="absolute inset-0"
+        >
+          {card.imageUrl.startsWith("/") ? (
+            <Image
+              src={card.imageUrl}
+              alt=""
+              fill
+              sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) calc(50vw - 40px), 560px"
+              className="object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
+            />
+          ) : (
+            // Custom card data may intentionally point at an unconfigured host.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={card.imageUrl}
+              alt=""
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
+            />
+          )}
+        </motion.div>
 
         {/* Action / Expand Button */}
         <motion.button
