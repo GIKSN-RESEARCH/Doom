@@ -2,6 +2,7 @@ import type { ArticleType, BottleneckTag } from "@prisma/client";
 
 export const DEFAULT_LIMIT = 12;
 export const MAX_LIMIT = 24;
+export const ADMIN_MAX_LIMIT = 100;
 
 export type Pagination = {
   page: number;
@@ -24,10 +25,13 @@ function parsePositiveInt(value: string | null, fallback: number): number {
   return parsed;
 }
 
-export function parsePagination(searchParams: URLSearchParams): Pagination {
+export function parsePagination(
+  searchParams: URLSearchParams,
+  maxLimit = MAX_LIMIT,
+): Pagination {
   const page = parsePositiveInt(searchParams.get("page"), 1);
   const requested = parsePositiveInt(searchParams.get("limit"), DEFAULT_LIMIT);
-  const limit = Math.min(MAX_LIMIT, requested);
+  const limit = Math.min(maxLimit, requested);
 
   return {
     page,
