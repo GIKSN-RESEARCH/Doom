@@ -53,3 +53,7 @@ public/**/Fonts/WEB/css/
 public/**/Fonts/WEB/README.md
 public/**/*-Variable.woff2
 .originkit/
+
+# Admin-uploaded images (runtime files)
+public/uploads/**
+!public/uploads/.gitkeep
