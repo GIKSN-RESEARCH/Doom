@@ -38,10 +38,8 @@ self-hosts them. The browser makes no Google Fonts requests.
 
 These are intentionally unchanged for the next content pass:
 
-- `[YOUR EMAIL]` in `src/content/site.json`. It becomes a `mailto:` link once filled.
-- `[24 hours]` in the process and contact copy.
+- `[24 hours]` in the process copy.
 - `[7] days` in the landing-page plan.
-- `[Photo: Brooklyn at the desk]` in the founder section.
 
 Selected Work is off for now. Its cards and artwork are kept for re-enabling.
 The supplied GitHub URL remains unchanged pending the owner's review.

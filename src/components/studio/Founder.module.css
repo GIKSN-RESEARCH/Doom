@@ -2,26 +2,18 @@
   align-items: center;
 }
 .photo {
+  position: relative;
   aspect-ratio: 4 / 5;
   max-height: 600px;
   width: 100%;
-  border-radius: 22px;
-  background: repeating-linear-gradient(
-    135deg,
-    #141415 0 14px,
-    #18181a 14px 28px
-  );
+  overflow: hidden;
+  border-radius: var(--r-card-lg);
+  background: var(--surface);
   border: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.photo span {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--smoke);
-  text-align: center;
-  padding: 16px;
+.portrait {
+  object-fit: cover;
+  object-position: 50% 76%;
 }
 .content {
   display: flex;
@@ -57,6 +49,10 @@
 }
 @media (max-width: 960px) {
   .photo {
-    max-height: 460px;
+    aspect-ratio: 4 / 3;
+    max-width: 600px;
+  }
+  .portrait {
+    object-position: 50% 64%;
   }
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { site } from "@/lib/content";
 import { Label } from "./ui";
 import styles from "./Founder.module.css";
@@ -5,14 +6,20 @@ import styles from "./Founder.module.css";
 export function Founder() {
   const { founder } = site;
   return (
-    <section className="section">
+    <section id="founder" className="section" aria-labelledby="founder-heading">
       <div className={`container two-column ${styles.grid}`}>
         <div className={styles.photo}>
-          <span>{founder.photo}</span>
+          <Image
+            className={styles.portrait}
+            src={founder.photo.src}
+            alt={founder.photo.alt}
+            fill
+            sizes="(max-width: 664px) calc(100vw - 64px), (max-width: 960px) 600px, (max-width: 1320px) calc(50vw - 72px), 588px"
+          />
         </div>
         <div className={styles.content}>
           <Label>{founder.label}</Label>
-          <h2 className={`lead ${styles.lead}`}>
+          <h2 id="founder-heading" className={`lead ${styles.lead}`}>
             {founder.lead} <span>{founder.leadMuted}</span>
           </h2>
           <p className="body-copy">{founder.body}</p>

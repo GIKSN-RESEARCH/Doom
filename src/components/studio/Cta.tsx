@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { bookingHref, emailHref, site } from "@/lib/content";
+import { bookingHref, site } from "@/lib/content";
 import { Label, SplitButton, StatusChip } from "./ui";
 import styles from "./Cta.module.css";
 
@@ -46,26 +46,36 @@ export function SprintCard({ compact = false }: { compact?: boolean }) {
 }
 
 export function Cta() {
-  const { cta, links } = site;
+  const { cta } = site;
   return (
-    <section id="contact">
-      <div className={`container ${styles.cta}`}>
-        <Label centered>{cta.label}</Label>
-        <h2 className={`section-heading ${styles.heading}`}>
-          <span>{cta.headlineMuted}</span>
-          <br />
-          {cta.headline}
-        </h2>
-        <p className={styles.description}>{cta.body}</p>
-        <SplitButton href={bookingHref} className={styles.button}>
-          {cta.button}
-        </SplitButton>
-        <span className={styles.mail}>
-          {cta.mailPrefix} <a href={emailHref}>{links.email}</a>
-        </span>
-      </div>
-      <div className={styles.panel}>
-        <Image src="/images/gradient-sunrise.jpg" alt="" fill sizes="100vw" />
+    <section
+      id="contact"
+      className={styles.panel}
+      aria-labelledby="contact-heading"
+    >
+      <Image
+        className={styles.background}
+        src="/images/gradient-sunrise.jpg"
+        alt=""
+        fill
+        sizes="(max-width: 640px) 960px, (max-width: 1360px) calc(100vw - 40px), 1320px"
+      />
+      <div className={styles.layout}>
+        <div className={styles.copy}>
+          <Label>{cta.label}</Label>
+          <h2
+            id="contact-heading"
+            className={`section-heading ${styles.heading}`}
+          >
+            <span>{cta.headlineMuted}</span>
+            <br />
+            {cta.headline}
+          </h2>
+          <p className={styles.description}>{cta.body}</p>
+          <SplitButton href={bookingHref} className={styles.button}>
+            {cta.button}
+          </SplitButton>
+        </div>
         <SprintCard />
       </div>
     </section>

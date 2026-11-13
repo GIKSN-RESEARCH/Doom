@@ -1,51 +1,65 @@
-.cta {
-  padding-top: 30px;
-  padding-bottom: 64px;
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  width: min(calc(100% - 40px), var(--container));
+  min-height: clamp(380px, 36vw, 510px);
+  margin-inline: auto;
+  border-radius: var(--r-card-lg);
+  overflow: hidden;
+  background: #633722;
+}
+.background {
+  z-index: -2;
+  object-fit: cover;
+}
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgb(30 16 13 / 0.76) 0%,
+    rgb(30 16 13 / 0.66) 47%,
+    rgb(30 16 13 / 0.18) 74%,
+    transparent 100%
+  );
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(36px, 6vw, 100px);
+  padding: clamp(32px, 5.4vw, 76px);
+}
+.layout > .card {
+  justify-self: end;
+}
+.copy {
+  --ash: #f6dfd3;
+  --smoke: #efc9b6;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   gap: 22px;
 }
 .heading {
-  font-size: var(--cta-h2);
+  font-size: clamp(42px, 5.4vw, 80px);
   line-height: 1;
 }
 .description {
   margin: 0;
-  max-width: 560px;
+  max-width: 38ch;
   font-size: 18px;
   line-height: 1.5;
   color: var(--ash);
 }
 .button {
-  align-self: center;
-  margin-top: 8px;
+  margin-top: 2px;
 }
-.mail {
-  font-size: 15px;
-  color: var(--ash);
-}
-.mail a {
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.panel {
-  position: relative;
-  margin: 0 20px;
-  height: clamp(380px, 42vw, 600px);
-  border-radius: 22px;
-  overflow: hidden;
-  background: #e9875b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.panel > img {
-  object-fit: cover;
-  display: block;
+.button:focus-visible {
+  outline-color: var(--white);
 }
 .card {
   position: relative;
@@ -154,9 +168,34 @@
   font-size: 9px;
   padding: 3px 7px;
 }
+@media (max-width: 960px) {
+  .panel::before {
+    background: linear-gradient(
+      180deg,
+      rgb(30 16 13 / 0.76) 0%,
+      rgb(30 16 13 / 0.65) 48%,
+      rgb(30 16 13 / 0.12) 78%,
+      transparent 100%
+    );
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    padding: 44px clamp(24px, 5.4vw, 52px);
+  }
+  .layout > .card {
+    justify-self: start;
+  }
+}
 @media (max-width: 640px) {
   .panel {
-    margin-inline: 12px;
+    width: calc(100% - 24px);
+  }
+  .copy {
+    gap: 18px;
+  }
+  .description {
+    font-size: 16px;
   }
 }
 @media (max-width: 380px) {
