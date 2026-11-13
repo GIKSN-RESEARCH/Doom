@@ -180,13 +180,35 @@
 }
 @media (max-width: 960px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .row {
-    min-height: 96px;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 20px;
+    flex: none;
+    gap: 12px;
+    padding: 20px 16px;
+  }
+  .number {
+    width: auto;
+    font-size: 32px;
+  }
+  .text {
+    gap: 6px;
+    overflow-wrap: anywhere;
+  }
+  .number,
+  .title {
+    line-height: 28px;
   }
 }
 @media (max-width: 640px) {
+  .row {
+    padding-block: 32px;
+  }
+  .arrow svg {
+    transform: rotate(90deg);
+  }
   .card {
     padding: 16px;
   }
@@ -208,5 +230,25 @@
   .header > span:first-child {
     flex-wrap: wrap;
     gap: 5px;
+  }
+}
+@media (max-width: 380px) {
+  .row {
+    grid-template-columns: 32px minmax(0, 1fr) 16px;
+    gap: 8px;
+  }
+  .number {
+    font-size: 28px;
+  }
+  .title {
+    font-size: 17px;
+  }
+  .number,
+  .title {
+    line-height: 26px;
+  }
+  .arrow svg {
+    width: 16px;
+    height: 16px;
   }
 }

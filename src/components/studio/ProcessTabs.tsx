@@ -35,6 +35,8 @@ export function ProcessTabs({
             className={`${styles.row} ${selected === i ? styles.selected : ""}`}
             key={item.num}
             id={`process-tab-${i}`}
+            aria-label={`${item.num} ${item.title}`}
+            aria-describedby={selected === i ? `process-desc-${i}` : undefined}
             aria-controls="process-log"
             aria-selected={selected === i}
             tabIndex={selected === i ? 0 : -1}
@@ -65,7 +67,9 @@ export function ProcessTabs({
             <span className={styles.number}>{item.num}</span>
             <span className={styles.text}>
               <span className={styles.title}>{item.title}</span>
-              <span className={styles.description}>{item.desc}</span>
+              <span id={`process-desc-${i}`} className={styles.description}>
+                {item.desc}
+              </span>
             </span>
             <span className={styles.arrow}>
               <Arrow direction="right" />
