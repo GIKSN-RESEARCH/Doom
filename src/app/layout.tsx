@@ -1,97 +1,68 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import SmoothScroll from "@/components/SmoothScroll";
-import NavigationLoader from "@/components/NavigationLoader";
-import {
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_OG_IMAGE,
-  SITE_TITLE,
-  SITE_URL,
-} from "@/lib/site";
+import type { Metadata, Viewport } from "next";
+import { Geist_Mono, Inter, Inter_Tight } from "next/font/google";
+import { site } from "@/lib/content";
 import "./globals.css";
 
-/* Clash Display — only the weights used by the rendered UI are preloaded. */
-const clashDisplay = localFont({
-  src: [
-    {
-      path: "../../public/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Semibold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../../public/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-clash-display",
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter-tight",
   display: "swap",
 });
-
-/* Boxing — logo wordmark only */
-const boxing = localFont({
-  src: "../../public/Boxing_Complete/Fonts/WEB/fonts/Boxing-Regular.woff2",
-  weight: "400",
-  variable: "--font-boxing",
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
   display: "swap",
+  preload: false,
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-geist-mono",
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
-  metadataBase: SITE_URL,
-  title: {
-    default: SITE_TITLE,
-    template: `%s — ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  applicationName: SITE_NAME,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
-  publisher: SITE_NAME,
-  category: "technology",
-  keywords: [
-    "product design",
-    "software engineering",
-    "digital product studio",
-    "product development",
-    "AI product development",
-  ],
-  alternates: {
-    canonical: "/",
-  },
+  metadataBase: new URL(site.meta.url),
+  title: { default: site.meta.title, template: "%s | Doom Studio" },
+  description: site.meta.description,
+  applicationName: "Doom Studio",
+  authors: [{ name: "Doom Studio", url: site.meta.url }],
+  creator: "Doom Studio",
+  publisher: "Doom Studio",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    siteName: "Doom Studio",
+    title: site.meta.title,
+    description: site.meta.description,
     images: [
       {
-        url: SITE_OG_IMAGE,
+        url: site.meta.ogImage,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — We DOOM the bottlenecks.`,
+        alt: "Doom Studio: we doom the bottlenecks here",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [SITE_OG_IMAGE],
+    title: site.meta.title,
+    description: site.meta.description,
+    images: [site.meta.ogImage],
   },
+  icons: {
+    icon: [
+      { url: "/brand/favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/brand/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/brand/site.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -105,24 +76,20 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: site.meta.themeColor,
+  colorScheme: "dark",
+};
+
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${clashDisplay.variable} ${boxing.variable} h-full antialiased`}
+      className={`${interTight.variable} ${inter.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-full flex flex-col">
-        <SmoothScroll />
-        <NavigationLoader />
-        {children}
-      </body>
-      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+      <body>{children}</body>
     </html>
   );
 }

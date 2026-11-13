@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Doom Studio
+
+Next.js implementation of the supplied Site v5 handoff and Doom Studio brand kit.
+The homepage and `/brand-kit` are static. Existing editorial pages, admin and
+content APIs are preserved. Their previous styles are isolated in `src/app/legacy.css`.
 
 ## Getting Started
 
@@ -6,14 +10,50 @@ First, run the development server:
 
 ```bash
 bun install
-bun dev
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design and content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/content/site.json`: website copy and the Cal.com booking destination.
+- `src/content/visibility.ts`: controls whether Selected Work and its links appear.
+- `src/design/tokens.css`: the supplied design tokens.
+- `src/components/studio/`: the new page sections and CSS Modules.
+- `src/lib/bottleneck-breaker.ts`: typed port of the supplied game.
+- `src/app/brand-kit/`: responsive reproduction of the supplied brand board.
+- `public/images/` and `public/brand/`: website artwork and identity assets.
+- `public/brand-kit/`: original assets, guidelines PDF and downloadable ZIP.
+
+The source handoff folders remain intact. The mobile menu expands from its
+control, supports keyboard navigation and closes with Escape. The homepage uses
+native scrolling and retains refresh-to-hero behavior.
+
+The repository keeps its existing Bun lockfile and package-manager configuration.
+`next/font/google` fetches Inter Tight, Inter and Geist Mono at build time and
+self-hosts them. The browser makes no Google Fonts requests.
+
+## Owner-supplied placeholders
+
+These are intentionally unchanged for the next content pass:
+
+- `[YOUR EMAIL]` in `src/content/site.json`. It becomes a `mailto:` link once filled.
+- `[24 hours]` in the process and contact copy.
+- `[7] days` in the landing-page plan.
+- `[Photo: Brooklyn at the desk]` in the founder section.
+
+Selected Work is off for now. Its cards and artwork are kept for re-enabling.
+The supplied GitHub URL remains unchanged pending the owner's review.
+
+## Checks and production preview
+
+```bash
+bun run lint
+bun run build
+node node_modules/typescript/bin/tsc --noEmit
+bun run start
+```
 
 ## Learn More
 

@@ -1,0 +1,106 @@
+{
+  "brand": [
+    {
+      "name": "Ink",
+      "hex": "#0B0B0C",
+      "rgb": [
+        11,
+        11,
+        12
+      ],
+      "role": "Base background for the site, social and decks. The brand lives on Ink."
+    },
+    {
+      "name": "Surface",
+      "hex": "#141415",
+      "rgb": [
+        20,
+        20,
+        21
+      ],
+      "role": "Cards, rows and panels on Ink."
+    },
+    {
+      "name": "Line",
+      "hex": "#252527",
+      "rgb": [
+        37,
+        37,
+        39
+      ],
+      "role": "Borders and dividers on Ink."
+    },
+    {
+      "name": "Bone",
+      "hex": "#F4F2EE",
+      "rgb": [
+        244,
+        242,
+        238
+      ],
+      "role": "Primary text on Ink. 17.6:1 on Ink."
+    },
+    {
+      "name": "Ash",
+      "hex": "#A6A29C",
+      "rgb": [
+        166,
+        162,
+        156
+      ],
+      "role": "Secondary text and labels. 7.8:1 on Ink."
+    },
+    {
+      "name": "Smoke",
+      "hex": "#7C7A77",
+      "rgb": [
+        124,
+        122,
+        119
+      ],
+      "role": "Muted half of two-tone headlines. 4.6:1 on Ink, large text only."
+    },
+    {
+      "name": "Paper",
+      "hex": "#F5F4F2",
+      "rgb": [
+        245,
+        244,
+        242
+      ],
+      "role": "Light cards and light-background documents."
+    },
+    {
+      "name": "Doom Orange",
+      "hex": "#FF5A1F",
+      "rgb": [
+        255,
+        90,
+        31
+      ],
+      "role": "The accent. Logo, primary actions, active states, small signals. 6.3:1 on Ink."
+    }
+  ],
+  "imageryTones": [
+    {
+      "name": "Sky Teal",
+      "hex": "#27444B"
+    },
+    {
+      "name": "Dusk Mauve",
+      "hex": "#8B6F66"
+    },
+    {
+      "name": "Dune Shadow",
+      "hex": "#1D1513"
+    },
+    {
+      "name": "Dune Light",
+      "hex": "#F58B40"
+    },
+    {
+      "name": "Ember",
+      "hex": "#C7481B"
+    }
+  ]
+}

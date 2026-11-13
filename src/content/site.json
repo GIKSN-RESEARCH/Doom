@@ -1,0 +1,430 @@
+{
+  "meta": {
+    "title": "Doom Studio: we doom the bottlenecks here",
+    "description": "Design and engineering for AI startups. We design and build the landing page, product or workflow that is stuck, for a fixed price.",
+    "url": "https://www.thedoomstudio.com",
+    "ogImage": "/brand/og-image-1200x630.jpg",
+    "themeColor": "#0B0B0C"
+  },
+  "links": {
+    "booking": "https://cal.com/siddharth-manjul",
+    "email": "[YOUR EMAIL]",
+    "x": "https://x.com/siddharthmanjul",
+    "github": "https://github.com/SiddharthManjul"
+  },
+  "nav": {
+    "items": [
+      {
+        "label": "Work",
+        "href": "#work"
+      },
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Process",
+        "href": "#process"
+      },
+      {
+        "label": "Pricing",
+        "href": "#pricing"
+      },
+      {
+        "label": "FAQ",
+        "href": "#faq"
+      }
+    ],
+    "cta": "Book a call"
+  },
+  "hero": {
+    "label": "Design and engineering for AI startups",
+    "headline": ["We doom the", "bottlenecks"],
+    "headlineMuted": "here.",
+    "body": "The page that won't convert, the product stuck at 70% or the workflow eating your week. We design it, build it and hand you the code. Fixed price.",
+    "primaryCta": "Book a call",
+    "secondaryCta": "See the work",
+    "game": {
+      "title": "Bottleneck Breaker",
+      "scoreLabel": "Doomed",
+      "modeAuto": "Auto-play",
+      "modeHuman": "You are playing",
+      "restart": "Restart",
+      "caption": "Hover the board to take the paddle. Real bottlenecks take a little longer.",
+      "bricks": [
+        "Unclear page",
+        "No signups",
+        "Stuck MVP",
+        "Manual ops",
+        "Slow handoffs",
+        "Off-brand UI",
+        "Missed launch",
+        "Weak copy",
+        "Messy onboarding",
+        "Laggy UI",
+        "Spaghetti code",
+        "Endless edits",
+        "No design system",
+        "Flaky deploys",
+        "No analytics",
+        "Clunky checkout",
+        "Stale brand",
+        "Bloated stack"
+      ]
+    },
+    "stripLabel": "Built and shipped in-house",
+    "strip": [
+      "Brier",
+      "AI Library",
+      "Trustload",
+      "Prometheus",
+      "Rinne",
+      "GIKSN"
+    ]
+  },
+  "about": {
+    "label": "The studio",
+    "headline": "One team.",
+    "headlineMuted": "No handoffs.",
+    "lead": "Doom Studio designs and builds the landing page, the product or the workflow that has been stuck for weeks.",
+    "leadMuted": "You get a fixed price, a live preview from day one and the code at the end.",
+    "stats": [
+      {
+        "value": "$799",
+        "label": "Starting price"
+      },
+      {
+        "value": "100%",
+        "label": "Code and files you own"
+      },
+      {
+        "value": "14 days",
+        "label": "Of fixes after launch"
+      }
+    ]
+  },
+  "work": {
+    "label": "Selected work",
+    "headline": "Shipped,",
+    "headlineMuted": "not pitched.",
+    "intro": "Our own products, designed and built in-house on the same process we sell. Client case studies join as they launch.",
+    "panelTag": "Example",
+    "items": [
+      {
+        "n": "01",
+        "name": "Brier",
+        "line": "CI for robotics teams, powered by a calibrated decision model and a world model.",
+        "tags": "Brand · Landing · Platform",
+        "image": "/images/work-brier.jpg",
+        "rows": [
+          ["sim / grasp-v4", "Pass", "ok"],
+          ["sim / nav-warehouse", "Pass", "ok"],
+          ["sim / stack-boxes", "Held", "wait"]
+        ]
+      },
+      {
+        "n": "02",
+        "name": "AI Library",
+        "line": "UI components, automation workflows and agents, sold as ready-made kits.",
+        "tags": "Brand · Website · Components",
+        "image": "/images/work-ai-library.jpg",
+        "rows": [
+          ["components/", "24 files", "nt"],
+          ["workflows/", "12 files", "nt"],
+          ["agents/", "6 files", "nt"]
+        ]
+      },
+      {
+        "n": "03",
+        "name": "Trustload",
+        "line": "A trust layer and verified marketplace for agent skills, MCPs and APIs.",
+        "tags": "Logo · Homepage · Assets",
+        "image": "/images/work-trustload.jpg",
+        "rows": [
+          ["skill / web-search", "Verified", "ok"],
+          ["mcp / github", "Verified", "ok"],
+          ["api / payments", "Verified", "ok"]
+        ]
+      },
+      {
+        "n": "04",
+        "name": "Prometheus",
+        "line": "A gated community for builders, with an identity system of cast sigils.",
+        "tags": "Identity · Sigils · Launch",
+        "image": "/images/work-prometheus.jpg",
+        "rows": [
+          ["identity system", "Done", "ok"],
+          ["sigil set", "Done", "ok"],
+          ["launch site", "In review", "wait"]
+        ]
+      }
+    ]
+  },
+  "services": {
+    "label": "Services",
+    "headline": "Everything between the idea",
+    "headlineMuted": "and the launch.",
+    "intro": "Brand, product UI and production code from one team, so nothing gets lost in a handoff.",
+    "items": [
+      {
+        "title": "Landing pages",
+        "body": "Pages that explain your product in one read and turn visitors into calls. Built in Next.js and ready for search.",
+        "style": "image",
+        "image": "/images/gradient-sunrise.jpg",
+        "span": 2,
+        "chips": ["Copy", "Design", "Next.js"]
+      },
+      {
+        "title": "Product UI",
+        "body": "Flows, screens and a design system your engineers can build without guessing.",
+        "style": "paper",
+        "span": 1
+      },
+      {
+        "title": "AI agents and automation",
+        "body": "Workflows, internal tools and agents that take repeat work off your team.",
+        "style": "image",
+        "image": "/images/gradient-satin.jpg",
+        "span": 1,
+        "list": [
+          "lead-capture.json",
+          "inbox-triage agent",
+          "weekly-report.json"
+        ]
+      },
+      {
+        "title": "Brand identity",
+        "body": "Logo, type and colour that hold up from favicon to billboard.",
+        "style": "paper",
+        "span": 1
+      },
+      {
+        "title": "Next.js builds",
+        "body": "Production code on Next.js and TypeScript. Swift and Rust when the product needs them.",
+        "style": "image",
+        "image": "/images/work-prometheus.jpg",
+        "span": 1
+      },
+      {
+        "title": "Design systems",
+        "body": "Tokens, components and docs, so the next screen ships in hours, not weeks.",
+        "style": "paper",
+        "span": 2
+      }
+    ]
+  },
+  "process": {
+    "label": "Process",
+    "headline": "Call to launch,",
+    "headlineMuted": "in the open.",
+    "intro": "Four steps and a live preview the whole way. Pick a step to see what happens in it.",
+    "logTitle": "Project log",
+    "logTag": "Example",
+    "defaultStep": 2,
+    "steps": [
+      {
+        "num": "01",
+        "title": "Intro call",
+        "name": "Call",
+        "desc": "You show us what is stuck. We tell you honestly whether we can fix it.",
+        "events": [
+          ["Mon 10:00", "Call booked", "Done", "ok"],
+          ["Mon 10:20", "What is stuck, written down", "Done", "ok"],
+          ["Mon 10:25", "Can we fix it?", "Go", "ok"]
+        ]
+      },
+      {
+        "num": "02",
+        "title": "Fixed quote",
+        "name": "Quote",
+        "desc": "Price, scope and launch date in writing within [24 hours].",
+        "events": [
+          ["Mon 16:00", "Scope and launch date", "Draft", "wait"],
+          ["Tue 09:30", "Fixed price in writing", "Sent", "wait"],
+          ["Tue 12:10", "Quote signed", "Signed", "ok"]
+        ]
+      },
+      {
+        "num": "03",
+        "title": "Build in the open",
+        "name": "Build",
+        "desc": "A live preview link that updates as we work. You comment, we change it.",
+        "events": [
+          ["Day 1", "Preview link live", "Live", "ok"],
+          ["Day 3", "Your comments on the hero", "Done", "ok"],
+          ["Day 5", "Pricing section v2", "Review", "wait"]
+        ]
+      },
+      {
+        "num": "04",
+        "title": "Launch and hand over",
+        "name": "Launch",
+        "desc": "Code, files and accounts move to you, with 14 days of fixes included.",
+        "events": [
+          ["Launch", "Deployed to your domain", "Live", "ok"],
+          ["Launch", "Code, files and accounts handed over", "Done", "ok"],
+          ["+14 days", "Fixes included", "Open", "wait"]
+        ]
+      }
+    ]
+  },
+  "pricing": {
+    "label": "Pricing",
+    "headline": "Fixed prices.",
+    "headlineMuted": "No surprises.",
+    "intro": "Price, scope and launch date agreed in writing before we start. You own the code and files at handover.",
+    "plans": [
+      {
+        "name": "Landing page sprint",
+        "price": "$799",
+        "unit": "/ project",
+        "time": "[7] days",
+        "desc": "A page that explains your product in one read and turns visitors into calls.",
+        "cta": "Start a sprint",
+        "items": [
+          "One landing page, designed and built",
+          "Copy written with you",
+          "Next.js, ready for search",
+          "Fixed price in writing",
+          "You own the code and files",
+          "14 days of fixes after launch"
+        ]
+      },
+      {
+        "name": "Product build",
+        "price": "$1,599",
+        "unit": "/ project",
+        "time": "3 to 5 weeks",
+        "desc": "Your MVP or next big feature: flows, a design system and production code.",
+        "cta": "Scope my build",
+        "featured": true,
+        "badge": "Most booked",
+        "items": [
+          "Flows, screens and a design system",
+          "Production code you can keep building on",
+          "Live preview link from week one",
+          "Fixed price in writing",
+          "You own the code and files",
+          "14 days of fixes after launch"
+        ]
+      },
+      {
+        "name": "Studio on call",
+        "price": "$2,999",
+        "unit": "/ month",
+        "time": "Monthly",
+        "desc": "Automation workflows, internal tools and AI agents that take repeat work off your team.",
+        "cta": "Talk capacity",
+        "items": [
+          "Workflows and internal tools",
+          "AI agents for repeat work",
+          "A weekly ship log",
+          "Pause or stop any month",
+          "You own the code and files",
+          "14 days of fixes after launch"
+        ]
+      }
+    ],
+    "fromLabel": "from"
+  },
+  "founder": {
+    "label": "The founder",
+    "lead": "You talk to the person who builds it.",
+    "leadMuted": "From the first call to the handover.",
+    "body": "I'm Brooklyn (Siddharth Manjul), a technical founder. I design interfaces and write production code in TypeScript, Rust and Swift, and I build my own products on the same stack I use for clients.",
+    "photo": "[Photo: Brooklyn at the desk]",
+    "links": [
+      {
+        "label": "@siddharthmanjul",
+        "href": "https://x.com/siddharthmanjul"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/SiddharthManjul"
+      }
+    ]
+  },
+  "faq": {
+    "label": "FAQ",
+    "headline": "Before you",
+    "headlineMuted": "book.",
+    "intro": "The questions founders ask on the first call, answered up front.",
+    "items": [
+      {
+        "q": "How fast can you start?",
+        "a": "Usually within a week. Book a call and we will confirm the start date on it."
+      },
+      {
+        "q": "Do I own the code and designs?",
+        "a": "Yes. Everything made for your product is yours at handover. We keep the right to reuse generic building blocks in AI Library, never your brand, content or product design."
+      },
+      {
+        "q": "Do you work with teams outside India?",
+        "a": "Yes. The studio is based in Bangalore and works with founders in any time zone, async first with calls when they help."
+      },
+      {
+        "q": "What do you build with?",
+        "a": "Next.js and TypeScript for the web, with Postgres and Vercel or Cloudflare behind it. Swift and Rust when the product needs them."
+      },
+      {
+        "q": "Can I hire you for design only?",
+        "a": "Yes. You get screens and a design system your engineers can build without guessing, and we stay on call while they do."
+      },
+      {
+        "q": "What happens after launch?",
+        "a": "You get 14 days of fixes included. After that you can keep us on call monthly or take it from there with the code and docs."
+      }
+    ]
+  },
+  "cta": {
+    "label": "Start a project",
+    "headlineMuted": "Got a bottleneck?",
+    "headline": "Let's doom it.",
+    "body": "Tell us what is stuck. You get a reply within [24 hours] and a fixed quote after one short call.",
+    "button": "Book a call",
+    "mailPrefix": "or write to",
+    "card": {
+      "title": "Landing page sprint",
+      "status": "Preview live",
+      "day": 4,
+      "of": 7,
+      "tag": "fixed price",
+      "left": "Wireframes, copy, hero",
+      "right": "Launch on day 7"
+    }
+  },
+  "footer": {
+    "tagline": "Design and engineering for AI startups. Based in Bangalore, working everywhere.",
+    "columns": [
+      {
+        "title": "Services",
+        "links": [
+          ["Landing pages", "#services"],
+          ["Product UI", "#services"],
+          ["Next.js builds", "#services"],
+          ["AI automation", "#services"]
+        ]
+      },
+      {
+        "title": "Work",
+        "links": [
+          ["Brier", "#work"],
+          ["AI Library", "#work"],
+          ["Trustload", "#work"],
+          ["Prometheus", "#work"]
+        ]
+      },
+      {
+        "title": "Studio",
+        "links": [
+          ["Process", "#process"],
+          ["Pricing", "#pricing"],
+          ["FAQ", "#faq"],
+          ["X", "https://x.com/siddharthmanjul"]
+        ]
+      }
+    ],
+    "wordmark": "DOOM STUDIO",
+    "legal": ["© 2026 Doom Studio", "thedoomstudio.com"]
+  }
+}

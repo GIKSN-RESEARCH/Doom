@@ -1,0 +1,74 @@
+/* Doom Studio design tokens, taken from the Site v5 reference. Import once in app/globals.css. */
+:root {
+  /* Colour: brand */
+  --ink: #0b0b0c; /* page background */
+  --surface: #141415; /* cards, rows, FAQ */
+  --surface-2: #19191b; /* open FAQ row */
+  --line: #252527; /* borders on ink */
+  --line-hover: #3a3a3d;
+  --bone: #f4f2ee; /* primary text */
+  --ash: #a6a29c; /* secondary text, labels */
+  --smoke: #7c7a77; /* muted half of two-tone headlines */
+  --paper: #f5f4f2; /* light cards in the bento */
+  --orange: #ff5a1f; /* accent: logo, dots, active step, badges */
+  --white: #ffffff;
+
+  /* Colour: status chips (always on light chips) */
+  --ok-bg: #e3f6ea;
+  --ok-fg: #17733f;
+  --wait-bg: #fff0d9;
+  --wait-fg: #8a5300;
+  --note-bg: #eceae7;
+  --note-fg: #4a4846;
+
+  /* Type */
+  --font-display: var(--font-inter-tight), "Inter Tight", Inter, sans-serif;
+  --font-text: var(--font-inter), Inter, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+  --h1: clamp(
+    44px,
+    6.7vw,
+    98px
+  ); /* line-height 0.98, tracking -0.036em, weight 500 */
+  --h2: clamp(
+    38px,
+    4.5vw,
+    64px
+  ); /* line-height 1.03, tracking -0.035em, weight 500 */
+  --lead: clamp(
+    24px,
+    2.5vw,
+    36px
+  ); /* line-height 1.16, tracking -0.025em, weight 500 */
+  --lead-big: clamp(30px, 3.4vw, 48px);
+  --cta-h2: clamp(42px, 6.2vw, 92px); /* line-height 1 */
+  --body: 16px;
+  --body-lg: 17px;
+  --small: 15px;
+  --micro: 13px;
+
+  /* Layout */
+  --container: 1320px;
+  --gutter: 32px;
+  --section-y: 130px; /* 96px under 960px */
+
+  /* Radius */
+  --r-button: 10px;
+  --r-nav: 14px;
+  --r-faq: 16px;
+  --r-card: 18px;
+  --r-card-lg: 22px;
+  --r-pill: 999px;
+
+  /* Elevation */
+  --shadow-glass: 0 30px 60px -30px rgba(11, 11, 12, 0.5);
+  --shadow-frame: 0 40px 80px -40px rgba(0, 0, 0, 0.6);
+  --shadow-featured: 0 30px 70px -30px rgba(255, 90, 31, 0.35);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 0.2s;
+  --t-base: 0.3s;
+  --t-slow: 0.9s;
+}
+/* Breakpoints used by the reference (max-width): 1100px, 960px, 640px */

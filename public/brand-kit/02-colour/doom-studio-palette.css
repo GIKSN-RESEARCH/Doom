@@ -1,0 +1,20 @@
+:root {
+  /* Doom Studio brand palette v1.0 */
+  --doom-ink: #0B0B0C;
+  --doom-surface: #141415;
+  --doom-line: #252527;
+  --doom-bone: #F4F2EE;
+  --doom-ash: #A6A29C;
+  --doom-smoke: #7C7A77;
+  --doom-paper: #F5F4F2;
+  --doom-doom-orange: #FF5A1F;
+  --doom-tone-sky-teal: #27444B;
+  --doom-tone-dusk-mauve: #8B6F66;
+  --doom-tone-dune-shadow: #1D1513;
+  --doom-tone-dune-light: #F58B40;
+  --doom-tone-ember: #C7481B;
+
+  --doom-font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --doom-font-text: 'Inter', system-ui, sans-serif;
+  --doom-font-mono: 'Geist Mono', ui-monospace, monospace;
+}

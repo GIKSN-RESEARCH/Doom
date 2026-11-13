@@ -1,0 +1,137 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  transition: border-color 0.3s;
+}
+.card:hover {
+  border-color: var(--line-hover);
+}
+.image {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+.image > img {
+  object-fit: cover;
+  display: block;
+  transition: transform 0.9s var(--ease-out);
+}
+.card:hover .image > img {
+  transform: scale(1.04);
+}
+.panel {
+  position: relative;
+  width: min(400px, 100%);
+  border-radius: 16px;
+  padding: 8px 18px 10px;
+}
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0 12px;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.09);
+  font-size: 14px;
+  color: #4a4846;
+}
+.panelHeader span:first-child {
+  font-weight: 600;
+  color: var(--ink);
+}
+.panelHeader span:last-child {
+  font-size: 12px;
+  color: #8e8c89;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.07);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #2a2826;
+}
+.row:last-child {
+  border-bottom: 0;
+}
+.row > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.body {
+  padding: 26px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--bone);
+}
+.number {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--smoke);
+}
+.line {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ash);
+  max-width: 480px;
+}
+.tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--smoke);
+}
+.arrow {
+  color: var(--ash);
+  transition:
+    transform 0.3s var(--ease-out),
+    color 0.3s;
+}
+.card:hover .arrow {
+  transform: translate(3px, -3px);
+  color: var(--orange);
+}
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .image {
+    height: 300px;
+    padding: 18px;
+  }
+}

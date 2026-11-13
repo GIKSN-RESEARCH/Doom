@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import ScanGridButton from "@/components/originkit/ui/scan-grid-button";
+import { showShippedWork } from "@/content/visibility";
 
 export interface NavLinkItem {
   label: string;
@@ -20,9 +21,9 @@ interface NavbarProps {
 
 const DEFAULT_LINKS: NavLinkItem[] = [
   { label: "Services", href: "/#services" },
-  { label: "Work", href: "/#work" },
+  ...(showShippedWork ? [{ label: "Work", href: "/#work" }] : []),
   { label: "Readings", href: "/reading" },
-  { label: "Approach", href: "/#approach" },
+  { label: "Approach", href: "/#process" },
   { label: "Pricing", href: "/#pricing" },
   { label: "Updates", href: "/updates" },
 ];

@@ -1,0 +1,109 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.frame {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(11, 11, 12, 0.08);
+  box-shadow: var(--shadow-frame);
+}
+.hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px 16px;
+  min-height: 54px;
+  padding: 8px 12px 8px 20px;
+  background: rgba(11, 11, 12, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 14px;
+  color: #edeae5;
+}
+.title {
+  font-weight: 500;
+}
+.score {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #c9c5bf;
+  white-space: nowrap;
+}
+.score b {
+  color: #fff;
+  font-weight: 500;
+}
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+.mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #dad7d2;
+  white-space: nowrap;
+}
+.mode i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  display: block;
+}
+.restart {
+  appearance: none;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.restart:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #fff;
+}
+.canvas {
+  display: block;
+  width: 100%;
+  touch-action: pan-y;
+  height: clamp(400px, 31vw, 460px);
+  cursor: crosshair;
+}
+.canvas:focus-visible {
+  outline-offset: -4px;
+}
+.caption {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .hud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 12px 10px 16px;
+  }
+  .right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

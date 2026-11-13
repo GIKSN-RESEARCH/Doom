@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, useInView, type Transition } from "motion/react";
+import { showShippedWork } from "@/content/visibility";
 
 const KIT_SUBSCRIBE_URL = "https://app.kit.com/forms/9920520/subscriptions";
 const KIT_FORM_UID = "96ae44c95b";
@@ -57,9 +58,9 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
     label: "Navigation",
     links: [
       { text: "Services", href: "/#services" },
-      { text: "Work", href: "/#work" },
+      ...(showShippedWork ? [{ text: "Work", href: "/#work" }] : []),
       { text: "Readings", href: "/reading" },
-      { text: "Approach", href: "/#approach" },
+      { text: "Approach", href: "/#process" },
       { text: "Pricing", href: "/#pricing" },
       { text: "Updates", href: "/updates" },
     ],
