@@ -6,7 +6,7 @@ import { brand } from "@/content/brand";
 import palette from "@/content/palette.json";
 import { bookingHref, navItems, secondaryCta, site } from "@/lib/content";
 import { Nav } from "@/components/studio/Nav";
-import { SprintCard } from "@/components/studio/Cta";
+import { CallPrepCard } from "@/components/studio/Cta";
 import {
   Arrow,
   DooGlyph,
@@ -398,9 +398,9 @@ export default function BrandKitPage() {
                   <small>400, 500 · Data, logs and URLs</small>
                 </div>
                 <p className={styles.monoSample}>
-                  Day 1&nbsp; Preview link live
+                  Scope&nbsp; Agreed in writing
                   <br />
-                  Day 5&nbsp; Pricing section v2
+                  Review&nbsp; Feedback and next steps
                   <br />
                   thedoomstudio.com
                 </p>
@@ -517,8 +517,8 @@ export default function BrandKitPage() {
                 <div className={styles.processExample}>
                   <span>03</span>
                   <div>
-                    <span>Build in the open</span>
-                    <p>A live preview link that updates as we work.</p>
+                    <span>{site.process.steps[2].title}</span>
+                    <p>{site.process.steps[2].desc}</p>
                   </div>
                 </div>
               </div>
@@ -531,7 +531,7 @@ export default function BrandKitPage() {
                     fill
                     sizes="(max-width: 640px) 100vw, 33vw"
                   />
-                  <SprintCard compact />
+                  <CallPrepCard compact />
                 </div>
               </div>
             </div>
