@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { site } from "@/lib/content";
 import { DooGlyph, SectionHead } from "./ui";
+import { StackMarquee } from "./StackMarquee";
 import styles from "./Services.module.css";
 
 const swatches = [
@@ -32,7 +33,7 @@ export function Services() {
         <div className={styles.grid}>
           {services.items.map((item, i) => (
             <div
-              className={`${styles.bento} ${item.style === "paper" ? styles.paper : styles.imageTile} ${item.span === 2 ? styles.wide : ""}`}
+              className={`${styles.bento} ${item.style === "surface" ? styles.surface : styles.imageTile} ${item.span === 2 ? styles.wide : ""}`}
               key={item.title}
             >
               {"image" in item && item.image && (
@@ -110,16 +111,16 @@ export function Services() {
                     <circle cx="58" cy="74" r="3" fill="white" />
                   </svg>
                 )}
-                <span
+                <h3
                   className={`${styles.title} ${i === 1 || i === 4 || i === 5 ? styles.push : ""}`}
                 >
                   {item.title}
-                </span>
-                <span
+                </h3>
+                <p
                   className={`${styles.description} ${i === 0 ? styles.landingCopy : ""} ${i === 5 ? styles.systemCopy : ""}`}
                 >
                   {item.body}
-                </span>
+                </p>
                 {"chips" in item && item.chips && (
                   <div className={styles.chips}>
                     {item.chips.map((chip) => (
@@ -147,6 +148,10 @@ export function Services() {
             </div>
           ))}
         </div>
+        <StackMarquee
+          label={services.stack.label}
+          items={services.stack.items}
+        />
       </div>
     </section>
   );
