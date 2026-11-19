@@ -3,11 +3,20 @@
 }
 .body {
   padding-top: 72px;
-  padding-bottom: 36px;
+  padding-bottom: 44px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: stretch;
+  text-align: left;
+}
+.top {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
+  align-items: start;
+  gap: clamp(36px, 5vw, 80px);
+}
+.brand {
+  min-width: 0;
 }
 .logo {
   display: flex;
@@ -16,28 +25,29 @@
 }
 .tagline {
   margin: 14px 0 0;
-  max-width: 420px;
+  max-width: 320px;
   font-size: 15px;
   line-height: 1.55;
   color: var(--ash);
 }
 .columns {
   width: 100%;
-  max-width: 780px;
-  margin-top: 56px;
+  min-width: 0;
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr)) max-content;
   gap: 36px 24px;
 }
 .column {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   font-size: 15px;
 }
 .column a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
   color: var(--ash);
   text-decoration: none;
   transition: color 0.2s;
@@ -54,21 +64,23 @@
   margin-bottom: 4px;
 }
 .wordmark {
-  width: 100%;
-  margin-top: 40px;
-  text-align: center;
+  display: block;
+  width: calc(100% - 48px);
+  height: auto;
+  margin-inline: 24px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(38px, 12.4vw, 186px);
-  line-height: 0.9;
-  letter-spacing: -0.045em;
   color: #1b1b1d;
-  white-space: nowrap;
+  fill: currentColor;
   overflow: hidden;
+}
+.wordmark text {
+  font-size: 1000px;
+  letter-spacing: -45px;
 }
 .legal {
   width: 100%;
-  margin-top: 28px;
+  margin-top: 48px;
   padding-top: 22px;
   border-top: 1px solid var(--line);
   display: flex;
@@ -91,9 +103,37 @@
   background: var(--smoke);
   display: block;
 }
+@media (max-width: 960px) {
+  .top {
+    grid-template-columns: minmax(190px, 1fr) minmax(0, 2fr);
+    gap: 32px;
+  }
+}
 @media (max-width: 640px) {
+  .body {
+    padding-top: 56px;
+    padding-bottom: 32px;
+  }
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
   .columns {
-    grid-auto-flow: row;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+    gap: 28px 16px;
+  }
+  .column {
+    font-size: 14px;
+  }
+  .legal {
+    margin-top: 36px;
+  }
+}
+@media (max-width: 360px) {
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .column:nth-child(2) {
+    justify-self: end;
   }
 }
