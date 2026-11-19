@@ -86,7 +86,7 @@
     "headline": "One team.",
     "headlineMuted": "No handoffs.",
     "lead": "Doom Studio designs and builds the landing page, the product or the workflow that has been stuck for weeks.",
-    "leadMuted": "You get a fixed price, a live preview from day one and the code at the end.",
+    "leadMuted": "You get a fixed price, clear progress updates and the code at the end.",
     "stats": [
       {
         "value": "$799",
@@ -176,7 +176,7 @@
       {
         "title": "Product UI",
         "body": "Flows, screens and a design system your engineers can build without guessing.",
-        "style": "paper",
+        "style": "surface",
         "span": 1
       },
       {
@@ -194,12 +194,12 @@
       {
         "title": "Brand identity",
         "body": "Logo, type and colour that hold up from favicon to billboard.",
-        "style": "paper",
+        "style": "surface",
         "span": 1
       },
       {
-        "title": "Next.js builds",
-        "body": "Production code on Next.js and TypeScript. Swift and Rust when the product needs them.",
+        "title": "Application development",
+        "body": "Web and mobile apps, APIs and backend systems. Built for production.",
         "style": "image",
         "image": "/images/work-prometheus.jpg",
         "span": 1
@@ -207,63 +207,82 @@
       {
         "title": "Design systems",
         "body": "Tokens, components and docs, so the next screen ships in hours, not weeks.",
-        "style": "paper",
+        "style": "surface",
         "span": 2
       }
-    ]
+    ],
+    "stack": {
+      "label": "Our stack",
+      "items": [
+        { "name": "Rust", "icon": "/stack/rust.svg" },
+        { "name": "TypeScript", "icon": "/stack/typescript.svg" },
+        { "name": "Erlang", "icon": "/stack/erlang.svg" },
+        { "name": "Swift", "icon": "/stack/swift.svg" },
+        { "name": "Kotlin", "icon": "/stack/kotlin.svg" },
+        { "name": "React", "icon": "/stack/react.svg" },
+        { "name": "Next.js", "icon": "/stack/nextdotjs.svg" },
+        { "name": "Docker", "icon": "/stack/docker.svg" },
+        { "name": "Cloudflare", "icon": "/stack/cloudflare.svg" },
+        { "name": "PostgreSQL", "icon": "/stack/postgresql.svg" }
+      ]
+    }
   },
   "process": {
     "label": "Process",
     "headline": "Call to launch,",
-    "headlineMuted": "in the open.",
-    "intro": "Four steps and a live preview the whole way. Pick a step to see what happens in it.",
-    "logTitle": "Project log",
-    "logTag": "Example",
-    "defaultStep": 2,
+    "headlineMuted": "one step at a time.",
+    "intro": "Scope agreed up front. Updates as we work. Reviews at the milestones we agree together.",
+    "detailLabel": "What to expect",
+    "outcomeLabel": "You get",
+    "defaultStep": 0,
     "steps": [
       {
         "num": "01",
         "title": "Intro call",
-        "name": "Call",
         "desc": "You show us what is stuck. We tell you honestly whether we can fix it.",
-        "events": [
-          ["Mon 10:00", "Call booked", "Done", "ok"],
-          ["Mon 10:20", "What is stuck, written down", "Done", "ok"],
-          ["Mon 10:25", "Can we fix it?", "Go", "ok"]
-        ]
+        "detailTitle": "Get clear on what's stuck.",
+        "details": [
+          "Your goals and current blockers",
+          "Your product and technical constraints",
+          "Where we can help"
+        ],
+        "outcome": "A shared understanding of the problem and a practical next step."
       },
       {
         "num": "02",
-        "title": "Fixed quote",
-        "name": "Quote",
-        "desc": "Price, scope and launch date in writing within [24 hours].",
-        "events": [
-          ["Mon 16:00", "Scope and launch date", "Draft", "wait"],
-          ["Tue 09:30", "Fixed price in writing", "Sent", "wait"],
-          ["Tue 12:10", "Quote signed", "Signed", "ok"]
-        ]
+        "title": "Scope and quote",
+        "desc": "We agree the deliverables, price and timeline before work begins.",
+        "detailTitle": "Agree the work before we start.",
+        "details": [
+          "Deliverables and project boundaries",
+          "Timeline and review points",
+          "Fixed price and payment terms"
+        ],
+        "outcome": "A written scope and quote to approve."
       },
       {
         "num": "03",
-        "title": "Build in the open",
-        "name": "Build",
-        "desc": "A live preview link that updates as we work. You comment, we change it.",
-        "events": [
-          ["Day 1", "Preview link live", "Live", "ok"],
-          ["Day 3", "Your comments on the hero", "Done", "ok"],
-          ["Day 5", "Pricing section v2", "Review", "wait"]
-        ]
+        "title": "Build and review",
+        "desc": "We share progress directly and review the work with you at agreed milestones.",
+        "detailTitle": "Build. Share. Refine.",
+        "details": [
+          "Design and development",
+          "Progress updates by email or call",
+          "Feedback at agreed review points"
+        ],
+        "outcome": "Work you can review, with clear next steps."
       },
       {
         "num": "04",
         "title": "Launch and hand over",
-        "name": "Launch",
-        "desc": "Code, files and accounts move to you, with 14 days of fixes included.",
-        "events": [
-          ["Launch", "Deployed to your domain", "Live", "ok"],
-          ["Launch", "Code, files and accounts handed over", "Done", "ok"],
-          ["+14 days", "Fixes included", "Open", "wait"]
-        ]
+        "desc": "We review the final work, help you launch and hand over the code and files.",
+        "detailTitle": "Ready for your team to own.",
+        "details": [
+          "Final checks and your sign-off",
+          "Launch on your infrastructure",
+          "Code, design files and handover notes"
+        ],
+        "outcome": "Your finished project and 14 days of fixes."
       }
     ]
   },
@@ -301,7 +320,7 @@
         "items": [
           "Flows, screens and a design system",
           "Production code you can keep building on",
-          "Live preview link from week one",
+          "Progress updates and milestone reviews",
           "Fixed price in writing",
           "You own the code and files",
           "14 days of fixes after launch"
@@ -317,7 +336,7 @@
         "items": [
           "Workflows and internal tools",
           "AI agents for repeat work",
-          "A weekly ship log",
+          "Weekly progress updates",
           "Pause or stop any month",
           "You own the code and files",
           "14 days of fixes after launch"
@@ -330,7 +349,7 @@
     "label": "The founder",
     "lead": "You talk to the person who builds it.",
     "leadMuted": "From the first call to the handover.",
-    "body": "I'm Brooklyn (Siddharth Manjul), a technical founder. I design interfaces and write production code in TypeScript, Rust and Swift, and I build my own products on the same stack I use for clients.",
+    "body": "I'm Siddharth Manjul, a technical founder. I design interfaces and write production code in TypeScript, Rust and Swift, and I build my own products on the same stack I use for clients.",
     "photo": {
       "src": "/images/founder-portrait.webp",
       "alt": "Siddharth Manjul, founder of Doom Studio"
@@ -366,7 +385,7 @@
       },
       {
         "q": "What do you build with?",
-        "a": "Next.js and TypeScript for the web, with Postgres and Vercel or Cloudflare behind it. Swift and Rust when the product needs them."
+        "a": "Rust, TypeScript, Erlang, Swift and Kotlin, alongside React, Next.js, Docker, Cloudflare and PostgreSQL. We choose the stack around your product, platform and workload."
       },
       {
         "q": "Can I hire you for design only?",
@@ -385,13 +404,13 @@
     "body": "Tell us what's stuck. We'll scope it on a short call and follow up with a fixed quote.",
     "button": "Book a call",
     "card": {
-      "title": "Landing page sprint",
-      "status": "Preview live",
-      "day": 4,
-      "of": 7,
-      "tag": "fixed price",
-      "left": "Wireframes, copy, hero",
-      "right": "Launch on day 7"
+      "title": "For our first call",
+      "items": [
+        "What you're building",
+        "What's holding you up",
+        "A link or brief, if you have one"
+      ],
+      "note": "A rough idea is enough."
     }
   },
   "footer": {
@@ -402,7 +421,7 @@
         "links": [
           ["Landing pages", "#services"],
           ["Product UI", "#services"],
-          ["Next.js builds", "#services"],
+          ["Application development", "#services"],
           ["AI automation", "#services"]
         ]
       },
@@ -420,8 +439,14 @@
         "links": [
           ["Process", "#process"],
           ["Pricing", "#pricing"],
-          ["FAQ", "#faq"],
-          ["X", "https://x.com/siddharthmanjul"]
+          ["FAQ", "#faq"]
+        ]
+      },
+      {
+        "title": "Socials",
+        "links": [
+          ["Founder's X", "https://x.com/siddharthmanjul"],
+          ["Studio's X", "https://x.com/thedoomstudio"]
         ]
       }
     ],
