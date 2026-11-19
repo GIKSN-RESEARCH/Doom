@@ -78,7 +78,7 @@ export function Logo({
 export function SplitButton({
   children,
   href,
-  size = 56,
+  size = 48,
   tone = "white",
   className = "",
   onClick,
