@@ -73,10 +73,7 @@
     },
     "stripLabel": "Built and shipped in-house",
     "strip": [
-      "Brier",
       "AI Library",
-      "Trustload",
-      "Prometheus",
       "Rinne",
       "GIKSN"
     ]
