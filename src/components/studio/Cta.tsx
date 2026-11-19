@@ -1,46 +1,22 @@
 import Image from "next/image";
 import { bookingHref, site } from "@/lib/content";
-import { Label, SplitButton, StatusChip } from "./ui";
+import { DooGlyph, Label, SplitButton } from "./ui";
 import styles from "./Cta.module.css";
 
-export function SprintCard({ compact = false }: { compact?: boolean }) {
+export function CallPrepCard({ compact = false }: { compact?: boolean }) {
   const { card } = site.cta;
   return (
-    <div className={`glass ${styles.card} ${compact ? styles.compact : ""}`}>
+    <div className={`${styles.card} ${compact ? styles.compact : ""}`}>
       <div className={styles.header}>
-        <span>{card.title}</span>
-        <StatusChip tone="ok" className={styles.live}>
-          <i />
-          {card.status}
-        </StatusChip>
+        <h3>{card.title}</h3>
+        <DooGlyph size={28} />
       </div>
-      <div className={styles.body}>
-        <div className={styles.dayRow}>
-          <span className={styles.day}>
-            Day {card.day}
-            <span> of {card.of}</span>
-          </span>
-          <span className={styles.fixed}>{card.tag}</span>
-        </div>
-        <div className={styles.segments} aria-hidden="true">
-          {Array.from({ length: card.of }, (_, i) => (
-            <i
-              className={
-                i < card.day - 1
-                  ? styles.done
-                  : i === card.day - 1
-                    ? styles.now
-                    : undefined
-              }
-              key={i}
-            />
-          ))}
-        </div>
-        <div className={styles.bottom}>
-          <span>{card.left}</span>
-          <span>{card.right}</span>
-        </div>
-      </div>
+      <ul className={styles.items}>
+        {card.items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      <p className={styles.note}>{card.note}</p>
     </div>
   );
 }
@@ -76,7 +52,7 @@ export function Cta() {
             {cta.button}
           </SplitButton>
         </div>
-        <SprintCard />
+        <CallPrepCard />
       </div>
     </section>
   );
