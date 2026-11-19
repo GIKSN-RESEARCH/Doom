@@ -127,7 +127,7 @@ export function Nav({
     <header className={`${styles.nav} ${innerPage ? styles.brandNav : ""}`}>
       <div className={`container ${styles.inner}`}>
         <a
-          className={`${styles.glassBox} ${styles.logo}`}
+          className={styles.logo}
           href={innerPage ? "/" : "#top"}
           aria-label="Doom Studio home"
         >
@@ -141,7 +141,7 @@ export function Nav({
           ) : (
             <>
               <nav
-                className={`${styles.glassBox} ${styles.segments}`}
+                className={styles.segments}
                 aria-label="Primary"
               >
                 {items.map((item) => (
@@ -155,7 +155,7 @@ export function Nav({
                   </a>
                 ))}
               </nav>
-              <SplitButton href={bookingHref} size={52}>
+              <SplitButton href={bookingHref}>
                 {cta}
               </SplitButton>
             </>
