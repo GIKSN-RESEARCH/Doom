@@ -64,6 +64,9 @@ svg {
 .section {
   padding-block: var(--section-y);
 }
+#main-content > .section + .section {
+  padding-block-start: 0;
+}
 .section-stack {
   display: flex;
   flex-direction: column;
@@ -162,8 +165,8 @@ svg {
   transform: translateY(0);
 }
 @media (max-width: 960px) {
-  .section {
-    padding-block: 96px;
+  :root {
+    --section-y: 96px;
   }
   .two-column {
     grid-template-columns: 1fr;
