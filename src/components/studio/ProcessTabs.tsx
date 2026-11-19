@@ -1,25 +1,43 @@
 "use client";
 
-import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import type { ProcessStep } from "@/lib/content";
-import { Arrow, DooGlyph, StatusChip } from "./ui";
+import { Arrow, DooGlyph } from "./ui";
 import styles from "./Process.module.css";
 
 export function ProcessTabs({
   steps,
   defaultStep,
-  logTitle,
-  logTag,
+  detailLabel,
+  outcomeLabel,
 }: {
   steps: ProcessStep[];
   defaultStep: number;
-  logTitle: string;
-  logTag: string;
+  detailLabel: string;
+  outcomeLabel: string;
 }) {
-  const [selected, setSelected] = useState(defaultStep);
+  const [active, setActive] = useState({
+    index: defaultStep,
+    rotation: -defaultStep * 90,
+  });
+  const selected = active.index;
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const step = steps[selected];
+
+  function selectStep(index: number) {
+    setActive((current) => {
+      let distance = index - current.index;
+
+      // Follow the shortest path around the four faces, including the wrap.
+      if (distance > steps.length / 2) distance -= steps.length;
+      if (distance < -steps.length / 2) distance += steps.length;
+
+      return {
+        index,
+        rotation: current.rotation - distance * 90,
+      };
+    });
+  }
+
   return (
     <div className={styles.grid}>
       <div
@@ -37,13 +55,13 @@ export function ProcessTabs({
             id={`process-tab-${i}`}
             aria-label={`${item.num} ${item.title}`}
             aria-describedby={selected === i ? `process-desc-${i}` : undefined}
-            aria-controls="process-log"
+            aria-controls={`process-detail-${i}`}
             aria-selected={selected === i}
             tabIndex={selected === i ? 0 : -1}
             ref={(element) => {
               tabs.current[i] = element;
             }}
-            onClick={() => setSelected(i)}
+            onClick={() => selectStep(i)}
             onKeyDown={(event) => {
               const direction =
                 event.key === "ArrowDown" || event.key === "ArrowRight"
@@ -60,15 +78,20 @@ export function ProcessTabs({
                   : event.key === "End"
                     ? steps.length - 1
                     : (i + direction + steps.length) % steps.length;
-              setSelected(next);
-              tabs.current[next]?.focus();
+              selectStep(next);
+              tabs.current[next]?.focus({ preventScroll: true });
             }}
           >
             <span className={styles.number}>{item.num}</span>
             <span className={styles.text}>
               <span className={styles.title}>{item.title}</span>
-              <span id={`process-desc-${i}`} className={styles.description}>
-                {item.desc}
+              <span
+                className={styles.descriptionWrap}
+                aria-hidden={selected !== i}
+              >
+                <span id={`process-desc-${i}`} className={styles.description}>
+                  {item.desc}
+                </span>
               </span>
             </span>
             <span className={styles.arrow}>
@@ -77,43 +100,41 @@ export function ProcessTabs({
           </button>
         ))}
       </div>
-      <div className={styles.panel}>
-        <Image
-          src="/images/gradient-process.jpg"
-          alt=""
-          fill
-          sizes="(max-width: 960px) 100vw, 50vw"
-        />
-        <div className={styles.card}>
-          <div className={styles.tile}>
-            <DooGlyph size={48} />
-          </div>
-          <div
-            className={styles.log}
-            id="process-log"
-            role="tabpanel"
-            aria-labelledby={`process-tab-${selected}`}
-            aria-live="polite"
-            tabIndex={0}
-          >
-            <div className={styles.header}>
-              <span>
-                <i />
-                {logTitle} ·{" "}
-                <span className={styles.stepName}>{step.name}</span>
-              </span>
-              <span className={styles.example}>{logTag}</span>
+      <div className={styles.scene}>
+        <div
+          className={styles.cube}
+          style={{ "--cube-rotation": `${active.rotation}deg` } as CSSProperties}
+        >
+          {steps.map((step, i) => (
+            <div
+              key={step.num}
+              className={styles.panel}
+              id={`process-detail-${i}`}
+              role="tabpanel"
+              aria-labelledby={`process-tab-${i}`}
+              aria-hidden={selected !== i}
+              inert={selected !== i}
+              tabIndex={selected === i ? 0 : -1}
+              style={{ "--face-rotation": `${i * 90}deg` } as CSSProperties}
+            >
+              <div className={styles.panelHeader}>
+                <span>{detailLabel}</span>
+                <DooGlyph size={28} />
+              </div>
+              <div className={styles.panelBody}>
+                <h3 className={styles.detailTitle}>{step.detailTitle}</h3>
+                <ul className={styles.details}>
+                  {step.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className={styles.outcome}>
+                <span>{outcomeLabel}</span>
+                <p>{step.outcome}</p>
+              </div>
             </div>
-            <div className={styles.events}>
-              {step.events.map(([time, event, status, tone], i) => (
-                <div className={styles.event} key={`${selected}-${i}`}>
-                  <span className={styles.time}>{time}</span>
-                  <span className={styles.eventText}>{event}</span>
-                  <StatusChip tone={tone}>{status}</StatusChip>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
