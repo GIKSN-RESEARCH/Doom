@@ -17,13 +17,6 @@
   align-items: center;
   gap: 10px;
 }
-.glassBox {
-  background: rgba(11, 11, 12, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
 .logo {
   display: flex;
   align-items: center;
@@ -46,15 +39,12 @@
   text-decoration: none;
   color: #c9c5bf;
   font-size: 15px;
-  transition:
-    color 0.2s,
-    background-color 0.2s;
+  transition: color 0.2s;
 }
 .segments a:hover {
   color: #fff;
 }
 .segments a.active {
-  background: rgba(255, 255, 255, 0.14);
   color: #fff;
 }
 .toggle,
@@ -202,9 +192,6 @@
   color: var(--ash);
 }
 .brandNav .logo {
-  background: none;
-  border-color: transparent;
-  backdrop-filter: none;
   padding-left: 0;
 }
 .brandNav .inner {
