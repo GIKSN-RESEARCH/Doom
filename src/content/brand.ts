@@ -82,7 +82,7 @@ export const brand = {
     {
       name: "Process gradient",
       image: "process",
-      description: "Behind white product cards and log panels.",
+      description: "Supporting artwork for product and service tiles.",
     },
   ],
   voice: [
@@ -94,11 +94,11 @@ export const brand = {
     ],
     [
       "Short boilerplate",
-      "Doom Studio is a design and engineering studio for AI startups, based in Bangalore. One team designs and builds landing pages, product UI, Next.js builds and AI automation for a fixed price, with a live preview from day one and the code handed over at the end.",
+      "Doom Studio is a design and engineering studio for AI startups, based in Bangalore. One team designs and builds landing pages, product UI, web and mobile applications and AI automation for a fixed price, with progress updates, agreed review points and the code handed over at the end.",
     ],
     [
       "Founder",
-      "Brooklyn (Siddharth Manjul) is the founder of Doom Studio. A technical founder, he designs interfaces and writes production code in TypeScript, Rust and Swift, and builds his own products on the same stack he uses for clients.",
+      "Siddharth Manjul is the founder of Doom Studio. A technical founder, he designs interfaces and writes production code in TypeScript, Rust and Swift, and builds his own products on the same stack he uses for clients.",
     ],
   ],
   do: [
@@ -120,7 +120,7 @@ export const brand = {
     "bottleneck",
     "ship",
     "fixed price",
-    "live preview",
+    "clear updates",
     "hand over",
     "stuck",
   ],
