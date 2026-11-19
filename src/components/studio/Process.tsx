@@ -16,8 +16,8 @@ export function Process() {
         <ProcessTabs
           steps={process.steps}
           defaultStep={process.defaultStep}
-          logTitle={process.logTitle}
-          logTag={process.logTag}
+          detailLabel={process.detailLabel}
+          outcomeLabel={process.outcomeLabel}
         />
       </div>
     </section>
