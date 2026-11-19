@@ -64,109 +64,68 @@
 .card {
   position: relative;
   width: min(420px, 100%);
-  border-radius: 18px;
-  overflow: hidden;
+  min-width: 0;
+  padding: clamp(24px, 2.4vw, 32px);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: var(--r-card);
+  background: rgb(20 20 21 / 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-frame);
+  color: var(--bone);
   text-align: left;
 }
 .header {
-  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(11, 11, 12, 0.08);
-  font-size: 14px;
-  color: #4a4846;
+  gap: 16px;
 }
-.live {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-}
-.live i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22a35a;
-  display: block;
-}
-.body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.dayRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-.day {
+.header h3 {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(32px, 3.2vw, 44px);
+  font-size: 24px;
   font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  line-height: 1;
-  white-space: nowrap;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
-.day span {
-  color: #9a9794;
+.header > img {
+  flex: none;
 }
-.fixed {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: #6b6966;
+.items {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
 }
-.segments {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 4px;
+.items li {
+  padding-block: 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  font-size: 15px;
+  line-height: 1.5;
 }
-.segments i {
-  height: 6px;
-  border-radius: 3px;
-  background: #e3e0dc;
-  display: block;
-}
-.segments i.done {
-  background: var(--ink);
-}
-.segments i.now {
-  background: var(--orange);
-}
-.bottom {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  color: #6b6966;
+.note {
+  margin: 24px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #bcb6b0;
 }
 .compact {
   width: 100%;
+  padding: 20px;
 }
-.compact .header {
-  padding: 12px 14px;
-  font-size: 11px;
+.compact .header h3 {
+  font-size: 18px;
 }
-.compact .body {
-  padding: 14px;
-  gap: 10px;
+.compact .items,
+.compact .note {
+  margin-top: 16px;
 }
-.compact .day {
-  font-size: 30px;
+.compact .items li {
+  padding-block: 12px;
+  font-size: 13px;
 }
-.compact .fixed {
-  font-size: 10px;
-}
-.compact .bottom {
-  font-size: 10px;
-}
-.compact .live {
-  font-size: 9px;
-  padding: 3px 7px;
+.compact .note {
+  font-size: 12px;
 }
 @media (max-width: 960px) {
   .panel::before {
@@ -196,17 +155,5 @@
   }
   .description {
     font-size: 16px;
-  }
-}
-@media (max-width: 380px) {
-  .header {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .dayRow {
-    gap: 8px;
-  }
-  .fixed {
-    font-size: 10px;
   }
 }
