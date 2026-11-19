@@ -9,7 +9,7 @@
   border-radius: 22px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.26);
-  background: rgba(11, 11, 12, 0.08);
+  background: rgba(11, 11, 12, 0.5);
   box-shadow: var(--shadow-frame);
 }
 .hud {
@@ -19,7 +19,7 @@
   gap: 8px 16px;
   min-height: 54px;
   padding: 8px 12px 8px 20px;
-  background: rgba(11, 11, 12, 0.5);
+  background: rgba(11, 11, 12, 0.8);
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -54,9 +54,10 @@
   white-space: nowrap;
 }
 .mode i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  flex: none;
   background: var(--orange);
   display: block;
 }
@@ -64,10 +65,10 @@
   appearance: none;
   min-height: 36px;
   padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  border-radius: var(--r-button);
+  border: 1px solid transparent;
+  background: var(--white);
+  color: var(--ink);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
@@ -77,8 +78,7 @@
     border-color 0.2s;
 }
 .restart:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: #fff;
+  background: var(--bone);
 }
 .canvas {
   display: block;
