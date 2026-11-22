@@ -43,7 +43,12 @@ export function Pricing() {
                 </div>
                 <span className={styles.time}>{plan.time}</span>
                 <p className={styles.description}>{plan.desc}</p>
-                <a className={styles.button} href={bookingHref}>
+                <a
+                  className={styles.button}
+                  href={bookingHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {plan.cta}
                   <Arrow direction="right" size={18} />
                 </a>
