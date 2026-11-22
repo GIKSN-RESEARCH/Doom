@@ -164,11 +164,11 @@
     "items": [
       {
         "title": "Landing pages",
-        "body": "Pages that explain your product in one read and turn visitors into calls. Built in Next.js and ready for search.",
+        "body": "Pages that explain your product in one read and turn visitors into calls. Built with TypeScript and React, ready for search.",
         "style": "image",
         "image": "/images/gradient-sunrise.jpg",
         "span": 2,
-        "chips": ["Copy", "Design", "Next.js"]
+        "includes": ["Copy", "Design", "TypeScript", "React"]
       },
       {
         "title": "Product UI",
