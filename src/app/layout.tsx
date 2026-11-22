@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Inter, Inter_Tight } from "next/font/google";
+import { ScrollProgress } from "@/components/studio/ScrollProgress";
 import { site } from "@/lib/content";
 import "./globals.css";
 
@@ -87,7 +88,10 @@ export default function RootLayout({
       lang="en"
       className={`${interTight.variable} ${inter.variable} ${geistMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <ScrollProgress />
+      </body>
     </html>
   );
 }
