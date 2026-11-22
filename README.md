@@ -53,6 +53,12 @@ node node_modules/typescript/bin/tsc --noEmit
 bun run start
 ```
 
+## Search and agent access
+
+See [the search and agent visibility guide](docs/search-and-agent-visibility.md)
+for the implemented sitemap, robots rules, Markdown/llms endpoints, research
+sources and the post-deployment steps for the verified Search Console property.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
