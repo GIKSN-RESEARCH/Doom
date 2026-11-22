@@ -1,5 +1,9 @@
 import Image from "next/image";
-import type { CSSProperties, ReactNode } from "react";
+import type {
+  CSSProperties,
+  HTMLAttributeAnchorTarget,
+  ReactNode,
+} from "react";
 import styles from "./ui.module.css";
 
 export function Arrow({
@@ -78,6 +82,7 @@ export function Logo({
 export function SplitButton({
   children,
   href,
+  target,
   size = 48,
   tone = "white",
   className = "",
@@ -85,6 +90,7 @@ export function SplitButton({
 }: {
   children: ReactNode;
   href: string;
+  target?: HTMLAttributeAnchorTarget;
   size?: number;
   tone?: "white" | "orange";
   className?: string;
@@ -94,6 +100,8 @@ export function SplitButton({
     <a
       className={`${styles.split} ${styles[tone]} ${className}`}
       href={href}
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
       style={{ "--sz": `${size}px` } as CSSProperties}
       onClick={onClick}
     >
