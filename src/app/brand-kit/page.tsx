@@ -472,7 +472,7 @@ export default function BrandKitPage() {
               <div className={styles.interfaceCard}>
                 <span>Primary action</span>
                 <div>
-                  <SplitButton href={bookingHref}>
+                  <SplitButton href={bookingHref} target="_blank">
                     {site.hero.primaryCta}
                   </SplitButton>
                 </div>
