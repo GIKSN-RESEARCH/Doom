@@ -9,19 +9,9 @@ import { Process } from "@/components/studio/Process";
 import { Services } from "@/components/studio/Services";
 import { Work } from "@/components/studio/Work";
 import { showShippedWork } from "@/content/visibility";
-import { site } from "@/lib/content";
+import { studioStructuredData } from "@/lib/seo";
 
 export default function Home() {
-  const organization = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Doom Studio",
-    url: site.meta.url,
-    logo: `${site.meta.url}/brand/doo-glyph.svg`,
-    description: site.meta.description,
-    sameAs: [site.links.x, site.links.github],
-  };
-
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -42,7 +32,7 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organization).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(studioStructuredData()).replace(/</g, "\\u003c"),
         }}
       />
     </>
