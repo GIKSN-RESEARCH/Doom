@@ -68,6 +68,34 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value:
+              '</llms.txt>; rel="describedby", </index.md>; rel="alternate"; type="text/markdown"',
+          },
+        ],
+      },
+      {
+        source: "/brand-kit",
+        headers: [
+          {
+            key: "Link",
+            value:
+              '</llms.txt>; rel="describedby", </brand-kit/index.md>; rel="alternate"; type="text/markdown"',
+          },
+        ],
+      },
+      {
+        source: "/og-preview/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
+      },
+      ...["/api/:path*", "/admin/:path*"].map((source) => ({
+        source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      })),
     ];
   },
 };
