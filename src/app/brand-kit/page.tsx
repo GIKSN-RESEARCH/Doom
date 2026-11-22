@@ -25,7 +25,10 @@ export const metadata: Metadata = {
   title: "Brand and media kit",
   description:
     "The Doom Studio brand and media kit. Logos, colour, typography, original artwork and ready-to-use media assets.",
-  alternates: { canonical: "/brand-kit" },
+  alternates: {
+    canonical: "/brand-kit",
+    types: { "text/markdown": "/brand-kit/index.md" },
+  },
   openGraph: {
     title: "Doom Studio brand and media kit",
     description: "The DOO glyph, brand guidelines and original media assets.",
