@@ -52,27 +52,32 @@ export function Services() {
               {i === 2 && <div className={styles.scrim} />}
               <div className={styles.inner}>
                 {i === 1 && (
-                  <span className={styles.icon}>
-                    <svg
-                      aria-hidden="true"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    width="92"
+                    height="92"
+                    viewBox="0 0 100 100"
+                    className={styles.productDiagram}
+                  >
+                    <g
                       fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      stroke="rgba(255,255,255,0.35)"
                     >
-                      <path d="M4 5h16v10H4z M8 19h8 M12 15v4" />
-                    </svg>
-                  </span>
+                      <rect x="4" y="4" width="92" height="92" />
+                      <rect x="20" y="20" width="60" height="60" />
+                      <rect x="36" y="36" width="28" height="28" />
+                    </g>
+                    <path
+                      d="M50 50V4h46v92Z"
+                      fill="rgba(255,255,255,0.18)"
+                    />
+                    <circle cx="80" cy="39" r="3" fill="white" />
+                    <circle cx="36" cy="55" r="3" fill="white" />
+                    <circle cx="64" cy="80" r="3" fill="white" />
+                  </svg>
                 )}
-                {i === 5 && (
-                  <span className={styles.icon}>
-                    <DooGlyph size={20} />
-                  </span>
-                )}
+                {i === 5 && <DooGlyph size={72} />}
                 {i === 4 && (
                   <svg
                     aria-hidden="true"
@@ -121,14 +126,16 @@ export function Services() {
                 >
                   {item.body}
                 </p>
-                {"chips" in item && item.chips && (
-                  <div className={styles.chips}>
-                    {item.chips.map((chip) => (
-                      <span className={styles.chip} key={chip}>
-                        {chip}
-                      </span>
+                {"includes" in item && item.includes && (
+                  <ul
+                    className={styles.includes}
+                    aria-label="Included services and technologies"
+                    role="list"
+                  >
+                    {item.includes.map((label) => (
+                      <li key={label}>{label}</li>
                     ))}
-                  </div>
+                  </ul>
                 )}
                 {"list" in item && item.list && (
                   <div className={styles.list}>
