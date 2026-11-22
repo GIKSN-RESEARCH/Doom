@@ -33,7 +33,9 @@ export function Hero() {
           <div className={styles.side}>
             <p className={styles.body}>{hero.body}</p>
             <div className={styles.buttons}>
-              <SplitButton href={bookingHref}>{hero.primaryCta}</SplitButton>
+              <SplitButton href={bookingHref} target="_blank">
+                {hero.primaryCta}
+              </SplitButton>
               <a className={styles.ghost} href={secondaryCta.href}>
                 {secondaryCta.label}
               </a>
