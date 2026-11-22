@@ -71,30 +71,17 @@
 .systemCopy {
   max-width: 460px;
 }
-.icon {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-hover);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--bone);
-}
-.chips {
+.includes {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: auto;
-}
-.chip {
+  gap: 8px 20px;
+  margin: auto 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  list-style: none;
   font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.38);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
 }
 .list {
   margin-top: auto;
@@ -122,10 +109,16 @@
   display: block;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
+.productDiagram,
 .radar {
-  align-self: flex-end;
   flex: none;
   display: block;
+}
+.productDiagram {
+  align-self: flex-start;
+}
+.radar {
+  align-self: flex-end;
 }
 @media (max-width: 1100px) {
   .grid {
