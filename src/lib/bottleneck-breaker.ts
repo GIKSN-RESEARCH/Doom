@@ -489,7 +489,7 @@ export class BottleneckBreaker {
     ctx.shadowColor = "rgba(11,11,12,0.45)";
     ctx.shadowBlur = 20;
     ctx.shadowOffsetY = 8;
-    this.rr(ctx, this.px - pw / 2, this.py - ph / 2, pw, ph, 9);
+    this.rr(ctx, this.px - pw / 2, this.py - ph / 2, pw, ph, 2);
     ctx.fillStyle = "#FFFFFF";
     ctx.fill();
     ctx.shadowColor = "transparent";
