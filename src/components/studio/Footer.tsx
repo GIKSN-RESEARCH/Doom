@@ -23,7 +23,6 @@ export function Footer() {
                     {label}
                   </a>
                 ))}
-                {column.title === "Studio" && <a href="/brand-kit">Brand kit</a>}
               </div>
             ))}
           </nav>
