@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Doom Studio: we doom the bottlenecks here",
+    "title": "Doom Studio | Design & Engineering for AI Startups",
     "description": "Design and engineering for AI startups. We design and build the landing page, product or workflow that is stuck, for a fixed price.",
     "url": "https://www.thedoomstudio.com",
     "ogImage": "/brand/og-image-1200x630.jpg",
@@ -9,6 +9,7 @@
   "links": {
     "booking": "https://cal.com/siddharth-manjul",
     "x": "https://x.com/siddharthmanjul",
+    "studioX": "https://x.com/thedoomstudio",
     "github": "https://github.com/SiddharthManjul"
   },
   "nav": {
@@ -343,6 +344,7 @@
     "fromLabel": "from"
   },
   "founder": {
+    "name": "Siddharth Manjul",
     "label": "The founder",
     "lead": "You talk to the person who builds it.",
     "leadMuted": "From the first call to the handover.",
@@ -377,8 +379,8 @@
         "a": "Yes. Everything made for your product is yours at handover. We keep the right to reuse generic building blocks in AI Library, never your brand, content or product design."
       },
       {
-        "q": "Do you work with teams outside India?",
-        "a": "Yes. The studio is based in Bangalore and works with founders in any time zone, async first with calls when they help."
+        "q": "Do you work with teams in other time zones?",
+        "a": "Yes. We work with founders in any time zone, async first with calls when they help."
       },
       {
         "q": "What do you build with?",
@@ -411,7 +413,7 @@
     }
   },
   "footer": {
-    "tagline": "Design and engineering for AI startups. Based in Bangalore, working everywhere.",
+    "tagline": "Design and engineering for AI startups. Working remotely, worldwide.",
     "columns": [
       {
         "title": "Services",
@@ -436,7 +438,10 @@
         "links": [
           ["Process", "#process"],
           ["Pricing", "#pricing"],
-          ["FAQ", "#faq"]
+          ["FAQ", "#faq"],
+          ["Brand kit", "/brand-kit"],
+          ["Sitemap", "/sitemap.xml"],
+          ["llms.txt", "/llms.txt"]
         ]
       },
       {
