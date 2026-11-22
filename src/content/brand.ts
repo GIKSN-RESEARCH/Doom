@@ -94,7 +94,7 @@ export const brand = {
     ],
     [
       "Short boilerplate",
-      "Doom Studio is a design and engineering studio for AI startups, based in Bangalore. One team designs and builds landing pages, product UI, web and mobile applications and AI automation for a fixed price, with progress updates, agreed review points and the code handed over at the end.",
+      "Doom Studio is a remote design and engineering studio for AI startups. One team designs and builds landing pages, product UI, web and mobile applications and AI automation for a fixed price, with progress updates, agreed review points and the code handed over at the end.",
     ],
     [
       "Founder",
