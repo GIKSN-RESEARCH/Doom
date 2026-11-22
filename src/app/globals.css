@@ -13,6 +13,38 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 32px;
 }
+@media (forced-colors: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--orange) var(--ink);
+  }
+  @supports selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: var(--ink);
+    }
+    ::-webkit-scrollbar-thumb {
+      min-height: 48px;
+      border: 2px solid var(--ink);
+      border-radius: 2px;
+      background: var(--orange);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff7b48;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: var(--orange);
+    }
+  }
+}
 body {
   margin: 0;
   background: var(--ink);
