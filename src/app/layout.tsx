@@ -31,7 +31,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Doom Studio", url: site.meta.url }],
   creator: "Doom Studio",
   publisher: "Doom Studio",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "text/markdown": "/index.md" },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
