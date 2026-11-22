@@ -48,7 +48,11 @@ export function Cta() {
             {cta.headline}
           </h2>
           <p className={styles.description}>{cta.body}</p>
-          <SplitButton href={bookingHref} className={styles.button}>
+          <SplitButton
+            href={bookingHref}
+            target="_blank"
+            className={styles.button}
+          >
             {cta.button}
           </SplitButton>
         </div>
