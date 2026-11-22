@@ -155,7 +155,7 @@ export function Nav({
                   </a>
                 ))}
               </nav>
-              <SplitButton href={bookingHref}>
+              <SplitButton href={bookingHref} target="_blank">
                 {cta}
               </SplitButton>
             </>
@@ -254,6 +254,7 @@ export function Nav({
             <SplitButton
               className={styles.mobileCta}
               href={hrefFor(bookingHref)}
+              target="_blank"
               onClick={closeMenu}
             >
               {cta}
