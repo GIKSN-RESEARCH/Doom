@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import type { NavItem } from "@/lib/content";
-import { Arrow, Logo, SplitButton } from "./ui";
+import type { ContactLinks, NavItem } from "@/lib/content";
+import { Arrow, Logo } from "./ui";
+import { ContactMenu } from "./ContactMenu";
 import styles from "./Nav.module.css";
 
 type MenuState = "closed" | "opening" | "open" | "closing";
@@ -12,12 +13,12 @@ type MenuState = "closed" | "opening" | "open" | "closing";
 export function Nav({
   items,
   cta,
-  bookingHref,
+  contactLinks,
   innerPage = false,
 }: {
   items: NavItem[];
   cta: string;
-  bookingHref: string;
+  contactLinks: ContactLinks;
   innerPage?: boolean;
 }) {
   const [active, setActive] = useState(items[0]?.href);
@@ -155,9 +156,7 @@ export function Nav({
                   </a>
                 ))}
               </nav>
-              <SplitButton href={bookingHref} target="_blank">
-                {cta}
-              </SplitButton>
+              <ContactMenu {...contactLinks} label={cta} />
             </>
           )}
         </div>
@@ -251,14 +250,12 @@ export function Nav({
             >
               Brand and media kit <Arrow size={16} />
             </a>
-            <SplitButton
+            <ContactMenu
+              {...contactLinks}
               className={styles.mobileCta}
-              href={hrefFor(bookingHref)}
-              target="_blank"
-              onClick={closeMenu}
-            >
-              {cta}
-            </SplitButton>
+              label={cta}
+              onAction={closeMenu}
+            />
             <span className={styles.menuTagline}>
               Design and engineering for AI startups
             </span>
