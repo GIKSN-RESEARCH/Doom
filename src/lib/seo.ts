@@ -8,8 +8,8 @@ export const PUBLIC_PAGES: readonly {
   path: string;
   lastModified?: string;
 }[] = [
-  { path: "/", lastModified: "2026-11-23T04:53:22+05:30" },
-  { path: "/brand-kit", lastModified: "2026-11-23T04:50:28+05:30" },
+  { path: "/", lastModified: "2026-11-25" },
+  { path: "/brand-kit", lastModified: "2026-11-25" },
   { path: "/reading" },
   { path: "/updates" },
 ];
