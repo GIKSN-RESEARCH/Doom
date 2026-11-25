@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { brand } from "@/content/brand";
 import palette from "@/content/palette.json";
-import { bookingHref, navItems, secondaryCta, site } from "@/lib/content";
+import { contactLinks, navItems, secondaryCta, site } from "@/lib/content";
+import { ContactMenu } from "@/components/studio/ContactMenu";
 import { Nav } from "@/components/studio/Nav";
 import { CallPrepCard } from "@/components/studio/Cta";
 import {
@@ -163,7 +164,7 @@ export default function BrandKitPage() {
           <Nav
             items={navItems}
             cta={site.nav.cta}
-            bookingHref={bookingHref}
+            contactLinks={contactLinks}
             innerPage
           />
           <div className={`container ${styles.heroCopy}`}>
@@ -475,9 +476,7 @@ export default function BrandKitPage() {
               <div className={styles.interfaceCard}>
                 <span>Primary action</span>
                 <div>
-                  <SplitButton href={bookingHref} target="_blank">
-                    {site.hero.primaryCta}
-                  </SplitButton>
+                  <ContactMenu {...contactLinks} label={site.hero.primaryCta} />
                 </div>
               </div>
               <div className={styles.interfaceCard}>
