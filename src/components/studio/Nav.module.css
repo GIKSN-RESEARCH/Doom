@@ -181,11 +181,9 @@
   font-size: 15px;
   color: var(--ash);
 }
-.mobileCta {
+.menuBottom .mobileCta {
   align-self: stretch;
-}
-.mobileCta > span:first-child {
-  flex: 1;
+  justify-content: space-between;
 }
 .menuTagline {
   font-size: 12px;
