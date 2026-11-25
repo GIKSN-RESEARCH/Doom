@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { bookingHref, navItems, secondaryCta, site } from "@/lib/content";
+import { contactLinks, navItems, secondaryCta, site } from "@/lib/content";
 import { BottleneckBreaker } from "./BottleneckBreaker";
 import { Nav } from "./Nav";
-import { DooGlyph, SplitButton } from "./ui";
+import { ContactMenu } from "./ContactMenu";
+import { DooGlyph } from "./ui";
 import styles from "./Hero.module.css";
 
 export function Hero() {
@@ -19,7 +20,7 @@ export function Hero() {
         sizes="(max-width: 960px) 1600px, 100vw"
       />
       <div className={styles.shade} />
-      <Nav items={navItems} cta={nav.cta} bookingHref={bookingHref} />
+      <Nav items={navItems} cta={nav.cta} contactLinks={contactLinks} />
       <div className={`container ${styles.grid}`}>
         <div className={styles.top}>
           <div className={styles.copy}>
@@ -33,9 +34,7 @@ export function Hero() {
           <div className={styles.side}>
             <p className={styles.body}>{hero.body}</p>
             <div className={styles.buttons}>
-              <SplitButton href={bookingHref} target="_blank">
-                {hero.primaryCta}
-              </SplitButton>
+              <ContactMenu {...contactLinks} label={hero.primaryCta} />
               <a className={styles.ghost} href={secondaryCta.href}>
                 {secondaryCta.label}
               </a>
