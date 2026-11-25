@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { bookingHref, site } from "@/lib/content";
-import { DooGlyph, Label, SplitButton } from "./ui";
+import { contactLinks, site } from "@/lib/content";
+import { DooGlyph, Label } from "./ui";
+import { ContactMenu } from "./ContactMenu";
 import styles from "./Cta.module.css";
 
 export function CallPrepCard({ compact = false }: { compact?: boolean }) {
@@ -48,13 +49,11 @@ export function Cta() {
             {cta.headline}
           </h2>
           <p className={styles.description}>{cta.body}</p>
-          <SplitButton
-            href={bookingHref}
-            target="_blank"
+          <ContactMenu
+            {...contactLinks}
+            label={cta.button}
             className={styles.button}
-          >
-            {cta.button}
-          </SplitButton>
+          />
         </div>
         <CallPrepCard />
       </div>
