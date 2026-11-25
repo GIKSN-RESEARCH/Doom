@@ -1,0 +1,153 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  flex: none;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--r-button);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--t-fast),
+    background-color var(--t-fast);
+}
+.trigger:hover,
+.trigger[data-state="open"] {
+  border-color: var(--bone);
+  background: var(--bone);
+}
+.chevron {
+  flex: none;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.trigger[data-state="open"] .chevron {
+  transform: rotate(180deg);
+}
+.menu {
+  --enter-y: -4px;
+  z-index: 30;
+  width: min(304px, calc(100vw - 32px));
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line-hover);
+  border-radius: var(--r-nav);
+  background: var(--surface);
+  box-shadow: var(--shadow-frame);
+  color: var(--bone);
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+.menu[data-side="top"] {
+  --enter-y: 4px;
+}
+.menu[data-state="open"] {
+  animation: menu-in 180ms var(--ease-out);
+}
+.menu[data-state="closed"] {
+  animation: menu-out 120ms ease-in;
+}
+.item {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  padding: 12px;
+  border-radius: var(--r-button);
+  outline: none;
+  color: var(--bone);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--t-fast);
+}
+.item[data-highlighted] {
+  background: var(--surface-2);
+}
+.item[data-highlighted] .contactIcon {
+  color: var(--orange);
+}
+.item:focus-visible {
+  outline: 1px solid var(--orange);
+  outline-offset: -1px;
+}
+.item > svg:last-of-type {
+  color: var(--ash);
+}
+.contactIcon {
+  color: var(--bone);
+  stroke-width: 1.6;
+  transition: color var(--t-fast);
+}
+.copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+.label {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.detail {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ash);
+  overflow-wrap: anywhere;
+}
+.separator {
+  height: 1px;
+  margin: 4px 12px;
+  background: var(--line);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--enter-y)) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes menu-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--enter-y)) scale(0.97);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu[data-state] {
+    animation: none;
+  }
+  .trigger,
+  .chevron,
+  .item,
+  .contactIcon {
+    transition: none;
+  }
+}
