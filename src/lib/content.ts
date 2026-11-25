@@ -6,6 +6,12 @@ export type ProcessStep = (typeof site.process.steps)[number];
 export type GameCopy = typeof site.hero.game;
 export type NavItem = (typeof site.nav.items)[number];
 export const bookingHref = site.links.booking;
+export const contactLinks = {
+  bookingHref,
+  emailHref: site.links.email,
+  telegramHref: site.links.telegram,
+};
+export type ContactLinks = typeof contactLinks;
 
 export const navItems = site.nav.items.filter(
   ({ href }) => showShippedWork || href !== "#work",
